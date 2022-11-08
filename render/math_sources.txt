@@ -1,0 +1,11 @@
+Sources used in rendering project:
+
+https://www.doomworld.com/forum/topic/69885-tools-for-converting-rgb-images-to-fixed-palette-indexed-w-lots-of-comparison-pics/
+
+http://www.brucelindbloom.com/index.html?Math.html
+
+https://en.wikipedia.org/wiki/SRGB#The_reverse_transformation
+
+https://en.wikipedia.org/wiki/CIELAB_color_space#Forward_transformation
+
+http://www.easyrgb.com/en/math.php

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../img/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="render.css">
+    <title>DredArt | Render</title>
+</head>
+
+<body>
+    <h1>DredArt | Render</h1>
+    <div>
+        <span id="show-help">?</span>
+        <p class="error"></p>
+        <div id="upload" class="active">
+            <input type="file" id="pngInp" accept="image/*">
+            <label id="drop-zone" for="pngInp">
+                <h2>Drag & Drop image here!</h2>
+                <p>or</p>
+                <h3>Copy and paste it</h3>
+                <p>or</p>
+                <h4>Click to choose from file system</h4>
+            </label>
+            <h1>About</h1>
+            <p>This tool is part of DredArt extension made by I am Shrek.</p>
+            <p>It let's you create fine pixelarts from ordinary images.<br>
+                Those pixelarts come in 2 forms:
+            <ul>
+                <li>color map </li>
+                <li>image to use in DredArt Extension</li>
+            </ul>
+            </p>
+            <p>Render is extremly simple, fast and intuitive. Works with most of image files.</p>
+            <span class="warning">
+                <span>Do not use any obscene pictures.</span>
+                <span>dredark.io developer is not affiliated with this project.</span>
+                <span>Source code is available on GitHub on MIT license.</span>
+            </span>
+        </div>
+        <div id="setup">
+            <div id="scalePanel">
+                <div id="canvasBox">
+                    <canvas id="canMove" width="500" height="500"></canvas>
+                    <div id="shipShape">
+                        <canvas width="78" height="78"></canvas>
+                        <canvas id="shipbg" class="hidden" width="400" height="400"></canvas>
+                    </div>
+                </div>
+                <input type="range" id="scalerange" step="0.001" orient="vertical" min="-0.2" max="0.2">
+                <div id="settings">
+                    <div id="sizebox">
+                        <span>Dimensions:</span>
+                        <input placeholder="78" type="text"><span> x </span>
+                        <input placeholder="78" type="text">
+                        <button class="btn-accent">Apply</button>
+                        <label><input type="checkbox" class="smallbox" checked><span></span>Aspect ratio</label>
+                        <span>Aspect Ratio:</span>
+                        <input placeholder="78" type="text"><span> : </span>
+                        <input placeholder="78" type="text">
+                    </div>
+                    <label><input type="checkbox"><span></span>Hide result</label>
+                    <label><input type="checkbox"><span></span>Show background tiles</label>
+                    <label class="switch">
+                        <span>Dithering algorithm:</span>
+                        <span>None</span><input type="checkbox"><span class="slider"></span><span>Floyd-Steinberg</span>
+                    </label>
+                    <label class="switch">
+                        <span>Color space:</span>
+                        <span>CIE-76</span><input type="checkbox"><span class="slider"></span><span>CIE-94</span>
+                    </label>
+                    <label><span>hue: </span><input type="range" step="1" min="0" max="360"><span>0 degrees</span></label>
+                    <label><span>saturation: </span><input type="range" step="1" min="0" max="500"><span>100%</span></label>
+                    <label><span>brightness: </span><input type="range" step="1" min="0" max="500"><span>100%</span></label>
+                    <label><span>contrast: </span><input type="range" step="1" min="0" max="500"><span>100%</span></label>
+                    <div>
+                        <button>Default colors</button><button>Reset settings</button><button class="btn-accent">Back</button><button class="btn-accent">Continue</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="download">
+            <button class="btn-accent">Back</button>
+            <p class="bigger">And here it is, your pixelart in full glory!</p>
+            <p class="big">Now you can download it using buttons below or right-click.</p>
+            <div>
+                <img src="" alt="Result picture thumbnail">
+            </div>
+            <div id="downloadbuttonbox">
+                <p>Pixelart name: </p>
+                <input type="text" placeholder="dredArt_pixelart" >
+                <a href="#">PNG for DredArt extension</a>
+                <a href="#">PNG with color map</a>
+            </div>
+            <p>To have the best and (the fastest) paiting experience, I recommend using the <a target="_blank" href="https://github.com/Kapixar/DredArt">DredArt extension</a></p>
+        </div>
+        <img id="MYDOG" src="" alt="">
+    </div>
+    <p><span id="version"></span> by I am Shrek | 
+            <a target="_blank"href="https://github.com/Kapixar/DredArt">GitHub</a> | 
+            <a target="_blank" href="https://discord.gg/uNgD6vv67c">Discord</a></p>
+    <div id="help">
+        <ul>
+            <li>click & drag to move image</li>
+            <li>to zoom use scroll or slider</li>
+            <hr>
+            <li>You can define ship size in blocks</li>
+            <li>If you need diffrent size, uncheck "Aspect ratio" box</li>
+            <li>You can show dredark paint background to visualize result</li>
+            <li>More info about <a href="https://en.wikipedia.org/wiki/Floyd%e2%80%93Steinberg_dithering"
+                    target="_blank">Dithering algorithms</a></li>
+            <li>Use Floyd-Steinberg when working with bigger pixelarts</li>
+            <li>Use color space that fits better</li>
+            <li>The last four sliders allow you to change color</li>
+        </ul>
+    </div>
+
+    <script src="render.js"></script>
+    <script src="blitz/blitz.min.js"></script>
+</body>
+
+</html>

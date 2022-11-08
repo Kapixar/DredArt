@@ -2,39 +2,45 @@
     cursor: pointer;
 }
 
-#top-bar span a:nth-last-child(2){
+#top-bar span a:nth-last-child(3){
     color:rgb(255, 217, 0);
 }
 
-#top-bar span a:last-child{
+#top-bar span a:nth-last-child(2){
     color:firebrick;
+}
+
+#top-bar span a:last-child{
+    color:rgb(128, 128, 128);
 }
 
 #paint-tool{
     position: absolute;
-    top: -1px;
-    right: -1px;
+    top: 0px;
+    right: 0px;
     width: 407px;
     height: 407px;
     padding: 7px;
     border: 1px solid black;
     background-color: rgb(25,35,45);
     border-bottom-left-radius: 10px;
-    transition: .5s;
+    visibility: visible; 
+    opacity: 1; 
     overflow: hidden;
     text-align: center;
-    animation-name: slideIn;
-    animation-duration: .5s;
+    transition: visibility 0.2s linear, opacity 0.2s linear;
+    animation-name: show;
+    animation: show 0.2s linear;
 }
 
-@keyframes slideIn {
-    from{right: -408px;}
-    to{right: -1px;}
+@keyframes show {
+    0%{opacity: 0;}
+    100%{opacity: 2;}
 }
 
-.hidden{
-    right: -425px!important;
-    color: white;
+#paint-tool.hidden{
+    opacity: 0; 
+    visibility: hidden;
 }
 
 
@@ -61,6 +67,12 @@ input[type='file']{
     justify-content: center;
     user-select: none;
 }
+
+#tool-menu label a{
+    color: white;
+    text-decoration: none;
+}
+
 #tool-menu label{
     width: 100px;
     height: 45px;
@@ -89,23 +101,40 @@ input[type='file']{
 #tool-nav :nth-child(4){background: linear-gradient(#0B4F6C,#000 200%)!important;}
 
 
-.error{
+
+#tool-message{
+    padding: 15px 7px 7px;
+}
+#tool-message p.error{
     font-weight: 500;
     color: red;
-    font-size: xx-large;
+    font-size: x-large;
 }
-.pixelart{
-    image-rendering: pixelated;
-    height: 200px;
+#tool-message button:first-child{
+    background: linear-gradient(#a44,#000 200%);
+    position: absolute;
+    top: 3px;
+    right: 3px;
 }
-#tool-sett button{
-    width: 40%;
+#tool-message p.desc span{
+    display: inline-block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 180px;
+    vertical-align: top;
 }
-#tool-sett{
+#tool-message input[type='text']{
+    border-radius: 10px;
+    width: 60px;
     text-align: center;
 }
-#tool-sett div{
-    text-align: left;
+.pixelart{
+    box-sizing: border-box;
+    image-rendering: pixelated;
+    width: 100%;
+    height: 160px;
+    object-fit: contain;
 }
 
 
@@ -144,6 +173,8 @@ input[type='file']{
     padding: 2px;
     user-select: none;
     color: white!important;
+    pointer-events: none;
+
 }
 #tbox td:hover::after:hover{
     color: pink;
@@ -166,8 +197,10 @@ input[type='file']{
 
 #tool-holo > div{
     border-radius: 10px;
-    padding: 5px;
-    border: 7px transparent solid;
+    padding: 3px;
+    border-width: 7px;
+    border-color: transparent;
+    border-style: dashed;
     text-shadow: 1px 1px black;
     color: white;
     cursor: pointer;
@@ -176,6 +209,21 @@ input[type='file']{
     align-items: center;
     justify-items: center;
     user-select: none;
+    transition: .2s;
+}
+
+#tool-holo > div:hover{
+    border-radius: 5px;
+}
+
+#tool-holo > div.done{
+    border-color: green;
+}
+
+#tool-holo > div.selected, #checkButton.selected{
+    pointer-events: none;
+    box-shadow: inset 0px 0px 10px green;
+    border-radius: 14px;
 }
 
 #tool-holo > p{grid-column: 1 / 4;}
@@ -189,54 +237,86 @@ input[type='file']{
 
 #tool-holo input{
     border-radius: 10px;
-    width: 120px;
+    width: 35px;
+    text-align: center;
 }
 
-#tool-holo > div.long{
+#tool-holo .long{
     grid-column: 1 / 4;
     cursor: initial;
-    background-color: rgb(45, 45, 45);
+    background-color: rgb(114, 114, 114);
 }
-#tool-holo > div.search{
+#tool-holo .search{
     cursor: initial;
     grid-column: 2 / 4;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 5fr 1fr 5fr 5fr;
+    margin: 5px;
 }
 
-#tool-holo > div.coords{
+#tool-holo .coords{
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
     background-color: rgb(114, 114, 114);
+    row-gap: 5px;
 }
 
-
-
-
-
-
-
-
-
-
-.cropbox{
-    position: absolute;
-    width: 500px;
-    background-color: pink;
-    height: 500px;
-}
-
-#tool-sett select{
-    width: 70px;
-    height: 25px;
-}
-
-.crop-image{
-    border: 3px solid black;
-    width: 260px;
-}
-
-#tool-sett figure{
-    display: inline-block;
-    width: 265px;
+#tool-holo #checkButton{
+    border-radius: 10px;
+    padding: 15px;
+    text-shadow: 1px 1px black;
+    background-color: rgb(0,180,20);
+    color: white;
+    cursor: pointer;
     margin: 5px;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    user-select: none;
+}
+
+#tool-holo .coords > div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+#tool-holo .sticky{
+    position: sticky;
+    top: -1px;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    transition: .3s;
+}
+
+#tool-holo .sticky.pinned{
+    border-radius: 0 0 10px 10px;
+    background-color: rgba(25,35,45, .95);
+}
+
+#tool-holo .cornerBox{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+}
+
+#tool-holo .cornerBox label{
+    background-color: #bcbcbc;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    border-radius: 2px;
+    transition: .2s;
+}
+
+#tool-holo .cornerBox input:checked+label{
+    background-color: rgb(0,180,20);
+    border-radius: 6px;
+}
+
+#tool-holo .cornerBox input{
+    display: none;
+}
+
+#tool-holo img{
+    height: 30px;
 }

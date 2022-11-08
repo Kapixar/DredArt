@@ -1,8 +1,8 @@
 {
     "name": "DredArt",
-    "description": "Dredark extension for big pixelarts. Use any PNG and paint it with Holo!",
+    "description": "Dredark extension for big pixelarts. Use any PNG and paint it using Holo!",
     "version": "1.0",
-    "author": "I am Shrek, Discord - Kapi73#3815",
+    "author": "I am Shrek, Kapi73#3815",
     "manifest_version": 3,
     "content_scripts": [
         {
@@ -12,11 +12,17 @@
         }
     ], 
     "icons": { 
-        "16": "icon16.png",
-        "48": "icon48.png",
-        "128": "icon128.png" 
+        "16": "img/icon16.png",
+        "48": "img/icon48.png",
+        "128": "img/icon128.png" 
     },
     "host_permissions": [
         "https://*.drednot.io/*"
+    ],
+    "web_accessible_resources": [
+        { 
+            "resources": ["render.html", "MOSAIC/*"],
+            "matches": ["https://drednot.io/*", "https://test.drednot.io/*"]
+          }
     ]
 }
