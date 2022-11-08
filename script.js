@@ -208,9 +208,12 @@ function renderTool(){
                 const info =document.createElement("p");
                 info.innerHTML = '<p>Define size of art you want. Drag image to position you want. Later you will be able to move and crop</p>'
                 info.classList.add("shipshape");
+                
+                const scaleBox =document.createElement("div");
+                scaleBox.classList.add("scalebox");
 
-                const shipShape =document.createElement("div");
-                shipShape.classList.add("shipshape");
+                const refShape =document.createElement("div");
+                refShape.classList.add("shipshape");
 
                 const sizeInput =document.createElement("div");
                 sizeInput.setAttribute('placeholder', '78x78');
