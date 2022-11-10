@@ -14,7 +14,7 @@
     <h1>DredArt | Render</h1>
     <div>
         <span id="show-help">?</span>
-        <div class="error"></div>
+        <p class="error"></p>
         <div id="upload" class="active">
             <input type="file" id="pngInp" accept="image/*">
             <label id="drop-zone" for="pngInp">
@@ -51,13 +51,15 @@
                 </div>
                 <input type="range" id="scalerange" step="0.001" orient="vertical" min="-0.2" max="0.2">
                 <div id="settings">
-                    <label>crop image</label>
-                    <div id="sizeBox">
+                    <div id="sizebox">
                         <span>Dimensions:</span>
                         <input placeholder="78" type="text"><span> x </span>
                         <input placeholder="78" type="text">
-                        <label><input type="checkbox" class="smallbox" checked><span></span>Aspect ratio</label>
                         <button class="btn-accent">Apply</button>
+                        <label><input type="checkbox" class="smallbox" checked><span></span>Aspect ratio</label>
+                        <span>Aspect Ratio:</span>
+                        <input placeholder="78" type="text"><span> : </span>
+                        <input placeholder="78" type="text">
                     </div>
                     <label><input type="checkbox"><span></span>Hide result</label>
                     <label><input type="checkbox"><span></span>Show background tiles</label>
@@ -95,9 +97,6 @@
             <p>To have the best and (the fastest) paiting experience, I recommend using the <a target="_blank" href="https://github.com/Kapixar/DredArt">DredArt extension</a></p>
         </div>
         <img id="MYDOG" src="" alt="">
-    </div>
-    <div id="crop">
-        
     </div>
     <p><span id="version"></span> by I am Shrek | 
             <a target="_blank"href="https://github.com/Kapixar/DredArt">GitHub</a> | 
