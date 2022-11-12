@@ -1,7 +1,3 @@
-// window.addEventListener("beforeunload", function (e) {
-//     e.preventDefault(); 
-//     e.returnValue = "";
-// });
 const container = document.querySelector("body div");
 const upload = document.querySelector("#upload");
 const setup = document.querySelector("#setup");
@@ -16,11 +12,7 @@ document.getElementById("version").textContent = version;
 
 
 document.querySelector("#show-help").onclick = () => {
-    help.classList.toggle("showed");
-}
-
-help.onclick = () => {
-    help.classList.remove("showed");
+    document.body.classList.toggle("show-help");
 }
 
 document.onpaste = function(e) {							                     //paste handler
@@ -95,13 +87,17 @@ drop.ondragover = function(e) {
     drop.classList.add("highlight");
 }
 
-function render(img) { 
+const rgb=[[222,165,164],[214,145,136],[173,111,105],[128,64,64],[77,0,0],[77,25,0],[128,0,0],[144,30,30],[186,1,1],[179,54,54],[179,95,54],[255,0,0],[216,124,99],[255,64,64],[255,128,128],[255,195,192],[195,153,83],[128,85,64],[128,106,64],[77,51,38],[77,51,0],[128,42,0],[155,71,3],[153,101,21],[213,70,0],[218,99,4],[255,85,0],[237,145,33],[255,179,31],[255,128,64],[255,170,128],[255,212,128],[181,179,92],[77,64,38],[77,77,0],[128,85,0],[179,128,7],[183,162,20],[179,137,54],[238,230,0],[255,170,0],[255,204,0],[255,255,0],[255,191,64],[255,255,64],[223,190,111],[255,255,128],[234,218,184],[199,205,144],[128,128,64],[77,77,38],[64,77,38],[128,128,0],[101,114,32],[141,182,0],[165,203,12],[179,179,54],[191,201,33],[206,255,0],[170,255,0],[191,255,64],[213,255,128],[248,249,156],[253,254,184],[135,169,107],[106,128,64],[85,128,64],[51,77,38],[51,77,0],[67,106,13],[85,128,0],[42,128,0],[103,167,18],[132,222,2],[137,179,54],[95,179,54],[85,255,0],[128,255,64],[170,255,128],[210,248,176],[143,188,143],[103,146,103],[64,128,64],[38,77,38],[25,77,0],[0,77,0],[0,128,0],[34,139,34],[3,192,60],[70,203,24],[54,179,54],[54,179,95],[0,255,0],[64,255,64],[119,221,119],[128,255,128],[64,128,85],[64,128,106],[38,77,51],[0,77,26],[0,77,51],[0,128,43],[23,114,69],[0,171,102],[28,172,120],[11,218,81],[0,255,85],[80,200,120],[64,255,128],[128,255,170],[128,255,212],[168,227,189],[110,174,161],[64,128,128],[38,77,64],[38,77,77],[0,77,77],[0,128,85],[0,166,147],[0,204,153],[0,204,204],[54,179,137],[54,179,179],[0,255,170],[0,255,255],[64,255,191],[64,255,255],[128,255,255],[133,196,204],[93,138,168],[64,106,128],[38,64,77],[0,51,77],[0,128,128],[0,85,128],[0,114,187],[8,146,208],[54,137,179],[33,171,205],[0,170,255],[100,204,219],[64,191,255],[128,212,255],[175,238,238],[64,85,128],[38,51,77],[0,26,77],[0,43,128],[0,47,167],[54,95,179],[40,106,205],[0,127,255],[0,85,255],[49,140,231],[73,151,208],[64,128,255],[113,166,210],[100,149,237],[128,170,255],[182,209,234],[146,161,207],[64,64,128],[38,38,77],[0,0,77],[25,0,77],[0,0,128],[42,0,128],[0,0,205],[54,54,179],[95,54,179],[0,0,255],[28,28,240],[106,90,205],[64,64,255],[133,129,217],[128,128,255],[177,156,217],[150,123,182],[120,81,169],[85,64,128],[106,64,128],[51,38,77],[51,0,77],[85,0,128],[137,54,179],[85,0,255],[138,43,226],[167,107,207],[127,64,255],[191,64,255],[148,87,235],[170,128,255],[153,85,187],[140,100,149],[128,64,128],[64,38,77],[77,38,77],[77,0,77],[128,0,128],[159,0,197],[179,54,179],[184,12,227],[170,0,255],[255,0,255],[255,64,255],[213,128,255],[255,128,255],[241,167,254],[128,64,106],[105,45,84],[77,38,64],[77,0,51],[128,0,85],[162,0,109],[179,54,137],[202,31,123],[255,0,170],[255,29,206],[233,54,167],[207,107,169],[255,64,191],[218,112,214],[255,128,213],[230,168,215],[145,95,109],[128,64,85],[77,38,51],[77,0,25],[128,0,42],[215,0,64],[179,54,95],[255,0,127],[255,0,85],[255,0,40],[222,49,99],[208,65,126],[215,59,62],[255,64,127],[249,90,97],[255,128,170],[17,17,17],[34,34,34],[51,51,51],[68,68,68],[85,85,85],[102,102,102],[119,119,119],[136,136,136],[153,153,153],[170,170,170],[187,187,187],[204,204,204],[221,221,221],[238,238,238],[255,255,255]];
+const lab= [[72.973,20.879,8.771],[66.769,24.986,15.414],[53.249,23.862,13.577],[35.257,27.519,12.689],[13.098,33.658,20.53],[16.862,23.24,25.362],[25.536,48.045,38.057],[31.701,46.623,30.116],[38.667,63.087,52.626],[41.987,50.289,29.243],[49.541,30.648,38.005],[53.241,80.092,67.203],[61.584,33.22,29.142],[57.37,70.55,44.821],[68.214,48.189,22.696],[84.017,21.005,9.826],[65.757,7.543,42.297],[40.34,15.274,19.489],[45.999,2.855,26.747],[23.953,9.928,12.964],[23.491,7.173,32.806],[30.026,35.52,41.853],[40.383,31.826,49.576],[47.152,14.539,49.295],[50.134,53.984,61.11],[55.93,42.797,63.893],[59.675,62.047,69.959],[68.292,27.316,67.337],[78.23,16.985,76.627],[67.333,44.136,55.352],[77.025,26.789,34.369],[86.952,4.923,46.938],[71.445,-11.476,44.275],[27.804,1.536,17.957],[31.545,-9.058,39.703],[39.727,11.681,48.136],[57.114,10.878,61.593],[66.489,-5.645,66.598],[59.656,7.393,48.975],[89.287,-16.584,88.142],[76.078,21.325,79.7],[84.2,3.68,85.217],[97.139,-21.554,94.478],[81.235,11.702,69.125],[97.289,-20.342,84.107],[78.266,1.874,43.989],[97.769,-16.538,59.982],[87.532,0.174,18.744],[80.638,-11.793,29.765],[52.284,-9.626,34.448],[31.865,-6.519,23.005],[30.73,-12.613,21.357],[51.869,-12.929,56.675],[45.505,-16.772,41.674],[68.837,-34.125,69.782],[76.52,-33.907,75.075],[70.934,-15.048,60.408],[77.852,-21.745,73.375],[93.728,-41.174,90.421],[91.714,-54.462,88.004],[92.999,-45.309,78.575],[94.833,-32.527,55.78],[96.042,-13.648,44.534],[98.125,-10.948,33.473],[65.427,-22.972,28.297],[50.538,-19.094,31.929],[49.178,-27.416,29.955],[29.791,-18.268,19.984],[29.441,-21.673,37.193],[40.459,-28.507,42.797],[48.722,-31.922,52.921],[46.882,-45.936,50.695],[62.138,-41.797,61.045],[80.264,-54.353,78.178],[67.891,-32.5,56.365],[65.7,-47.484,53.42],[88.661,-77.982,84.308],[90.08,-65.859,74.763],[92.408,-47.53,52.283],[93.438,-24.564,30.677],[72.087,-23.82,18.038],[56.506,-23.702,18.215],[48.131,-34.561,28.426],[29.055,-23.191,18.903],[28.152,-31.342,35.617],[27.593,-36.217,34.922],[46.227,-51.698,49.897],[50.593,-49.585,45.016],[68.052,-66.385,52.974],[72.28,-64.289,68.077],[64.394,-57.776,51.651],[64.842,-52.53,33.146],[87.735,-86.183,83.179],[88.436,-79.255,72.6],[80.159,-50.083,40.913],[90.626,-59.893,49.7],[48.49,-30.873,17.19],[48.968,-26.213,5.669],[29.308,-20.645,11.256],[27.796,-33.622,23.945],[28.238,-28.375,9.617],[46.461,-48.703,36.704],[42.224,-37.042,17.76],[61.726,-53.536,25.31],[62.597,-48.39,16.767],[76.56,-71.536,53.648],[88.051,-82.112,64.672],[72.473,-51.25,30.255],[89,-72.452,47.33],[91.238,-53.517,30.042],[92.068,-45.301,9.772],[85.471,-26.35,12.571],[66.641,-23.529,0.187],[49.6,-20.419,-6.327],[29.638,-17.478,3.458],[30.048,-13.765,-4.286],[29.013,-20.208,-5.938],[47.096,-41.089,15.062],[61.112,-40.542,-0.395],[73.208,-54.463,13.655],[74.534,-40.645,-11.944],[65.615,-44.076,11.715],[66.73,-32.963,-9.875],[89.119,-69.23,26.817],[91.113,-48.088,-14.131],[90.029,-60.87,17.459],[91.605,-44.86,-13.344],[93.156,-35.231,-10.868],[75.341,-18.059,-10.41],[55.411,-7.133,-20.656],[42.696,-8.14,-16.743],[25.607,-5.831,-10.975],[19.652,-4.522,-20.323],[48.254,-28.846,-8.477],[34.096,-4.929,-30.264],[46.473,0.824,-45.792],[57.231,-9.78,-40.723],[53.951,-11.222,-29.348],[64.846,-23.05,-27.178],[66.493,-6.232,-52.061],[76.683,-25.96,-16.644],[73.264,-13.886,-41.367],[81.232,-14.166,-28.877],[90.06,-19.638,-6.4],[36.262,4.786,-26.708],[21.265,2.857,-17.678],[11.095,14.187,-34.069],[21.153,24.141,-51.13],[26.221,37.034,-66.847],[41.567,14.328,-48.916],[45.859,15.324,-57.109],[54.444,19.402,-71.357],[43.82,45.821,-88.716],[57.246,4.912,-53.523],[59.98,-6.31,-36.323],[55.832,22.585,-69.058],[66.085,-5.708,-27.829],[61.926,9.333,-49.298],[69.864,8.672,-46.52],[82.639,-3.67,-15.303],[66.6,5.255,-25.207],[30.193,18.569,-36.318],[17.151,12.111,-24.171],[4.838,30.941,-44.392],[6.706,33.908,-41.243],[12.972,47.502,-64.702],[15.749,48.602,-59.997],[24.971,67.177,-91.5],[31.058,40.636,-65.996],[34.652,46.815,-59.97],[32.297,79.188,-107.86],[32.627,69.981,-98.835],[45.336,36.039,-57.772],[41.175,60.511,-93.028],[57.747,22.723,-44.645],[59.201,33.096,-63.458],[68.119,19.886,-28.197],[56.115,22.256,-27.246],[42.373,34.715,-41.451],[32.161,24.249,-33.066],[34.579,30.519,-29.083],[18.478,16.094,-21.98],[10.847,36.927,-34.275],[21.908,52.405,-49.622],[39.935,55.156,-51.156],[36.27,80.714,-101.127],[42.188,69.845,-74.763],[55.315,42.082,-42.63],[46.174,67.18,-84.617],[53.989,77.235,-71.539],[50.816,54.735,-65.764],[62.679,42.735,-57.697],[48.08,45.654,-42.7],[48.083,25.07,-20.496],[37.509,37.329,-24.282],[20.092,20.449,-19.326],[21.945,24.949,-16.296],[16.074,41.282,-25.561],[29.785,58.928,-36.487],[40.252,75.202,-61.06],[46.283,64.413,-40.646],[46.976,82.658,-67.237],[46.667,86.978,-83.605],[60.324,98.234,-60.825],[63.468,89.043,-55.808],[67.131,53.754,-50.355],[72.176,64.936,-42.077],[78.167,41.259,-32.367],[36.551,33.311,-12.053],[28.17,32.014,-11.001],[21.337,22.317,-8.405],[14.497,37.363,-9.708],[27.426,53.056,-12.411],[35.572,63.027,-14.904],[44.277,58.073,-18.679],[45.594,68.875,-7.735],[56.256,88.098,-18.819],[58.603,89.518,-36.008],[54.821,75.275,-19.612],[58.647,47.077,-15.324],[60.511,80.405,-24.471],[62.803,55.282,-34.404],[70.53,58.245,-21.545],[75.907,30.13,-14.787],[46.055,22.444,0.484],[35.816,30.078,0.134],[20.841,20.072,-0.197],[13.522,34.809,8.098],[26.034,49.396,14.749],[45.39,71.816,28.958],[42.84,53.266,5.066],[54.865,84.463,4.641],[53.945,82.006,28.688],[53.407,80.545,53.46],[50.254,67.533,14.169],[50.335,60.711,-2.41],[49.408,60.237,34.958],[58.476,74.112,9.794],[60.178,61.013,29.42],[69.188,52.519,0.476],[5.063,0,0],[13.228,0,0],[21.247,0,0],[28.852,0,0],[36.146,0,0],[43.192,0,0],[50.034,0,0],[56.703,0,0],[63.223,0,0],[69.61,0,0],[75.881,0,0],[82.046,0,0],[88.115,0,0],[94.098,0,0],[100,0,0]];
+
+function render(OGimg) { 
+    const img = new Image();
+    img.src = OGimg.src;
+
     if(this.width<5 || this.height<5){
         error.textContent = "Sorry, minimum picture size is 5x5 pixels";
         return settContent.appendChild(error);
     }
-    const rgb=[[222,165,164],[214,145,136],[173,111,105],[128,64,64],[77,0,0],[77,25,0],[128,0,0],[144,30,30],[186,1,1],[179,54,54],[179,95,54],[255,0,0],[216,124,99],[255,64,64],[255,128,128],[255,195,192],[195,153,83],[128,85,64],[128,106,64],[77,51,38],[77,51,0],[128,42,0],[155,71,3],[153,101,21],[213,70,0],[218,99,4],[255,85,0],[237,145,33],[255,179,31],[255,128,64],[255,170,128],[255,212,128],[181,179,92],[77,64,38],[77,77,0],[128,85,0],[179,128,7],[183,162,20],[179,137,54],[238,230,0],[255,170,0],[255,204,0],[255,255,0],[255,191,64],[255,255,64],[223,190,111],[255,255,128],[234,218,184],[199,205,144],[128,128,64],[77,77,38],[64,77,38],[128,128,0],[101,114,32],[141,182,0],[165,203,12],[179,179,54],[191,201,33],[206,255,0],[170,255,0],[191,255,64],[213,255,128],[248,249,156],[253,254,184],[135,169,107],[106,128,64],[85,128,64],[51,77,38],[51,77,0],[67,106,13],[85,128,0],[42,128,0],[103,167,18],[132,222,2],[137,179,54],[95,179,54],[85,255,0],[128,255,64],[170,255,128],[210,248,176],[143,188,143],[103,146,103],[64,128,64],[38,77,38],[25,77,0],[0,77,0],[0,128,0],[34,139,34],[3,192,60],[70,203,24],[54,179,54],[54,179,95],[0,255,0],[64,255,64],[119,221,119],[128,255,128],[64,128,85],[64,128,106],[38,77,51],[0,77,26],[0,77,51],[0,128,43],[23,114,69],[0,171,102],[28,172,120],[11,218,81],[0,255,85],[80,200,120],[64,255,128],[128,255,170],[128,255,212],[168,227,189],[110,174,161],[64,128,128],[38,77,64],[38,77,77],[0,77,77],[0,128,85],[0,166,147],[0,204,153],[0,204,204],[54,179,137],[54,179,179],[0,255,170],[0,255,255],[64,255,191],[64,255,255],[128,255,255],[133,196,204],[93,138,168],[64,106,128],[38,64,77],[0,51,77],[0,128,128],[0,85,128],[0,114,187],[8,146,208],[54,137,179],[33,171,205],[0,170,255],[100,204,219],[64,191,255],[128,212,255],[175,238,238],[64,85,128],[38,51,77],[0,26,77],[0,43,128],[0,47,167],[54,95,179],[40,106,205],[0,127,255],[0,85,255],[49,140,231],[73,151,208],[64,128,255],[113,166,210],[100,149,237],[128,170,255],[182,209,234],[146,161,207],[64,64,128],[38,38,77],[0,0,77],[25,0,77],[0,0,128],[42,0,128],[0,0,205],[54,54,179],[95,54,179],[0,0,255],[28,28,240],[106,90,205],[64,64,255],[133,129,217],[128,128,255],[177,156,217],[150,123,182],[120,81,169],[85,64,128],[106,64,128],[51,38,77],[51,0,77],[85,0,128],[137,54,179],[85,0,255],[138,43,226],[167,107,207],[127,64,255],[191,64,255],[148,87,235],[170,128,255],[153,85,187],[140,100,149],[128,64,128],[64,38,77],[77,38,77],[77,0,77],[128,0,128],[159,0,197],[179,54,179],[184,12,227],[170,0,255],[255,0,255],[255,64,255],[213,128,255],[255,128,255],[241,167,254],[128,64,106],[105,45,84],[77,38,64],[77,0,51],[128,0,85],[162,0,109],[179,54,137],[202,31,123],[255,0,170],[255,29,206],[233,54,167],[207,107,169],[255,64,191],[218,112,214],[255,128,213],[230,168,215],[145,95,109],[128,64,85],[77,38,51],[77,0,25],[128,0,42],[215,0,64],[179,54,95],[255,0,127],[255,0,85],[255,0,40],[222,49,99],[208,65,126],[215,59,62],[255,64,127],[249,90,97],[255,128,170],[17,17,17],[34,34,34],[51,51,51],[68,68,68],[85,85,85],[102,102,102],[119,119,119],[136,136,136],[153,153,153],[170,170,170],[187,187,187],[204,204,204],[221,221,221],[238,238,238],[255,255,255]];
-    const lab= [[72.973,20.879,8.771],[66.769,24.986,15.414],[53.249,23.862,13.577],[35.257,27.519,12.689],[13.098,33.658,20.53],[16.862,23.24,25.362],[25.536,48.045,38.057],[31.701,46.623,30.116],[38.667,63.087,52.626],[41.987,50.289,29.243],[49.541,30.648,38.005],[53.241,80.092,67.203],[61.584,33.22,29.142],[57.37,70.55,44.821],[68.214,48.189,22.696],[84.017,21.005,9.826],[65.757,7.543,42.297],[40.34,15.274,19.489],[45.999,2.855,26.747],[23.953,9.928,12.964],[23.491,7.173,32.806],[30.026,35.52,41.853],[40.383,31.826,49.576],[47.152,14.539,49.295],[50.134,53.984,61.11],[55.93,42.797,63.893],[59.675,62.047,69.959],[68.292,27.316,67.337],[78.23,16.985,76.627],[67.333,44.136,55.352],[77.025,26.789,34.369],[86.952,4.923,46.938],[71.445,-11.476,44.275],[27.804,1.536,17.957],[31.545,-9.058,39.703],[39.727,11.681,48.136],[57.114,10.878,61.593],[66.489,-5.645,66.598],[59.656,7.393,48.975],[89.287,-16.584,88.142],[76.078,21.325,79.7],[84.2,3.68,85.217],[97.139,-21.554,94.478],[81.235,11.702,69.125],[97.289,-20.342,84.107],[78.266,1.874,43.989],[97.769,-16.538,59.982],[87.532,0.174,18.744],[80.638,-11.793,29.765],[52.284,-9.626,34.448],[31.865,-6.519,23.005],[30.73,-12.613,21.357],[51.869,-12.929,56.675],[45.505,-16.772,41.674],[68.837,-34.125,69.782],[76.52,-33.907,75.075],[70.934,-15.048,60.408],[77.852,-21.745,73.375],[93.728,-41.174,90.421],[91.714,-54.462,88.004],[92.999,-45.309,78.575],[94.833,-32.527,55.78],[96.042,-13.648,44.534],[98.125,-10.948,33.473],[65.427,-22.972,28.297],[50.538,-19.094,31.929],[49.178,-27.416,29.955],[29.791,-18.268,19.984],[29.441,-21.673,37.193],[40.459,-28.507,42.797],[48.722,-31.922,52.921],[46.882,-45.936,50.695],[62.138,-41.797,61.045],[80.264,-54.353,78.178],[67.891,-32.5,56.365],[65.7,-47.484,53.42],[88.661,-77.982,84.308],[90.08,-65.859,74.763],[92.408,-47.53,52.283],[93.438,-24.564,30.677],[72.087,-23.82,18.038],[56.506,-23.702,18.215],[48.131,-34.561,28.426],[29.055,-23.191,18.903],[28.152,-31.342,35.617],[27.593,-36.217,34.922],[46.227,-51.698,49.897],[50.593,-49.585,45.016],[68.052,-66.385,52.974],[72.28,-64.289,68.077],[64.394,-57.776,51.651],[64.842,-52.53,33.146],[87.735,-86.183,83.179],[88.436,-79.255,72.6],[80.159,-50.083,40.913],[90.626,-59.893,49.7],[48.49,-30.873,17.19],[48.968,-26.213,5.669],[29.308,-20.645,11.256],[27.796,-33.622,23.945],[28.238,-28.375,9.617],[46.461,-48.703,36.704],[42.224,-37.042,17.76],[61.726,-53.536,25.31],[62.597,-48.39,16.767],[76.56,-71.536,53.648],[88.051,-82.112,64.672],[72.473,-51.25,30.255],[89,-72.452,47.33],[91.238,-53.517,30.042],[92.068,-45.301,9.772],[85.471,-26.35,12.571],[66.641,-23.529,0.187],[49.6,-20.419,-6.327],[29.638,-17.478,3.458],[30.048,-13.765,-4.286],[29.013,-20.208,-5.938],[47.096,-41.089,15.062],[61.112,-40.542,-0.395],[73.208,-54.463,13.655],[74.534,-40.645,-11.944],[65.615,-44.076,11.715],[66.73,-32.963,-9.875],[89.119,-69.23,26.817],[91.113,-48.088,-14.131],[90.029,-60.87,17.459],[91.605,-44.86,-13.344],[93.156,-35.231,-10.868],[75.341,-18.059,-10.41],[55.411,-7.133,-20.656],[42.696,-8.14,-16.743],[25.607,-5.831,-10.975],[19.652,-4.522,-20.323],[48.254,-28.846,-8.477],[34.096,-4.929,-30.264],[46.473,0.824,-45.792],[57.231,-9.78,-40.723],[53.951,-11.222,-29.348],[64.846,-23.05,-27.178],[66.493,-6.232,-52.061],[76.683,-25.96,-16.644],[73.264,-13.886,-41.367],[81.232,-14.166,-28.877],[90.06,-19.638,-6.4],[36.262,4.786,-26.708],[21.265,2.857,-17.678],[11.095,14.187,-34.069],[21.153,24.141,-51.13],[26.221,37.034,-66.847],[41.567,14.328,-48.916],[45.859,15.324,-57.109],[54.444,19.402,-71.357],[43.82,45.821,-88.716],[57.246,4.912,-53.523],[59.98,-6.31,-36.323],[55.832,22.585,-69.058],[66.085,-5.708,-27.829],[61.926,9.333,-49.298],[69.864,8.672,-46.52],[82.639,-3.67,-15.303],[66.6,5.255,-25.207],[30.193,18.569,-36.318],[17.151,12.111,-24.171],[4.838,30.941,-44.392],[6.706,33.908,-41.243],[12.972,47.502,-64.702],[15.749,48.602,-59.997],[24.971,67.177,-91.5],[31.058,40.636,-65.996],[34.652,46.815,-59.97],[32.297,79.188,-107.86],[32.627,69.981,-98.835],[45.336,36.039,-57.772],[41.175,60.511,-93.028],[57.747,22.723,-44.645],[59.201,33.096,-63.458],[68.119,19.886,-28.197],[56.115,22.256,-27.246],[42.373,34.715,-41.451],[32.161,24.249,-33.066],[34.579,30.519,-29.083],[18.478,16.094,-21.98],[10.847,36.927,-34.275],[21.908,52.405,-49.622],[39.935,55.156,-51.156],[36.27,80.714,-101.127],[42.188,69.845,-74.763],[55.315,42.082,-42.63],[46.174,67.18,-84.617],[53.989,77.235,-71.539],[50.816,54.735,-65.764],[62.679,42.735,-57.697],[48.08,45.654,-42.7],[48.083,25.07,-20.496],[37.509,37.329,-24.282],[20.092,20.449,-19.326],[21.945,24.949,-16.296],[16.074,41.282,-25.561],[29.785,58.928,-36.487],[40.252,75.202,-61.06],[46.283,64.413,-40.646],[46.976,82.658,-67.237],[46.667,86.978,-83.605],[60.324,98.234,-60.825],[63.468,89.043,-55.808],[67.131,53.754,-50.355],[72.176,64.936,-42.077],[78.167,41.259,-32.367],[36.551,33.311,-12.053],[28.17,32.014,-11.001],[21.337,22.317,-8.405],[14.497,37.363,-9.708],[27.426,53.056,-12.411],[35.572,63.027,-14.904],[44.277,58.073,-18.679],[45.594,68.875,-7.735],[56.256,88.098,-18.819],[58.603,89.518,-36.008],[54.821,75.275,-19.612],[58.647,47.077,-15.324],[60.511,80.405,-24.471],[62.803,55.282,-34.404],[70.53,58.245,-21.545],[75.907,30.13,-14.787],[46.055,22.444,0.484],[35.816,30.078,0.134],[20.841,20.072,-0.197],[13.522,34.809,8.098],[26.034,49.396,14.749],[45.39,71.816,28.958],[42.84,53.266,5.066],[54.865,84.463,4.641],[53.945,82.006,28.688],[53.407,80.545,53.46],[50.254,67.533,14.169],[50.335,60.711,-2.41],[49.408,60.237,34.958],[58.476,74.112,9.794],[60.178,61.013,29.42],[69.188,52.519,0.476],[5.063,0,0],[13.228,0,0],[21.247,0,0],[28.852,0,0],[36.146,0,0],[43.192,0,0],[50.034,0,0],[56.703,0,0],[63.223,0,0],[69.61,0,0],[75.881,0,0],[82.046,0,0],[88.115,0,0],[94.098,0,0],[100,0,0]];
     const   canResult= document.querySelector('#shipShape canvas'),
             ctxResult=canResult.getContext('2d', {willReadFrequently: true});
             ctxResult.imageSmoothingEnabled = false;
@@ -109,29 +105,37 @@ function render(img) {
             ctxTemp=canTemp.getContext('2d', {willReadFrequently: true});
     const   canSave=document.createElement("canvas"),
             ctxSave=canSave.getContext('2d');
-
-    canResult.width = img.width;
-    canResult.height = img.height;
-    ctxResult.drawImage(img, 0, 0);
-    const sD = ctxResult.getImageData(0,0,img.width,img.height).data;
-    var avg = {r:0,g:0,b:0, amount:sD.length/20};
-    for(let i = 0; i < sD.length; i += 4) {
-        if(sD[i+3]!=255){
-            var transparency=true;
-            break;
-        }
-        if(i%20 == 0){
-            avg.r+=sD[i]
-            avg.g+=sD[i+1]
-            avg.b+=sD[i+2]
-        }
-    }
-    avg.r = Math.floor(avg.r/avg.amount)
-    avg.g = Math.floor(avg.g/avg.amount)
-    avg.b = Math.floor(avg.b/avg.amount)
-    document.body.style.setProperty('--accent', `rgb(${avg.r}, ${avg.g}, ${avg.b})`)
+            canSave.width=78;
+            canSave.height=78;
     
-    renderScale();
+    var transparency = false;
+    img.onload = function(){
+        getColors();
+        renderScale();
+    }
+
+    function getColors() {
+        canResult.width = img.width;
+        canResult.height = img.height;
+        ctxResult.drawImage(img, 0, 0);
+        const sD = ctxResult.getImageData(0,0,img.width,img.height).data;
+        var avg = {r:0,g:0,b:0}, amount=0;
+        for(let i = 0; i < sD.length; i += 4) {
+            if(sD[i+3]!=255){
+                transparency=true;
+            }
+            if(i%20 == 0 && sD[i+3] == 255){
+                amount++;
+                avg.r += sD[i];
+                avg.g += sD[i+1];
+                avg.b += sD[i+2];
+            }
+        }
+        avg.r = Math.floor(avg.r/amount);
+        avg.g = Math.floor(avg.g/amount);
+        avg.b = Math.floor(avg.b/amount);
+        document.body.style.setProperty('--accent', `rgb(${avg.r}, ${avg.g}, ${avg.b})`);
+    }
 
     function renderScale() {
         var scale = 1;
@@ -140,12 +144,8 @@ function render(img) {
             item.classList.remove('active')
         setup.classList.add('active');
         
-        if(img.width<78) canResult.width=img.width;
-        else canResult.width=78;
-        if(img.height<78) canResult.height=img.height;
-        else canResult.height=78;
-
-        
+        canResult.width = Math.min(img.width, 78);
+        canResult.height = Math.min(img.height, 78);
 
         const canvasBox = document.querySelector('#canvasBox')                   // left panel of settings
         const shipShape = document.querySelector("#shipShape");
@@ -156,23 +156,16 @@ function render(img) {
         const bgPng = new Image();
         bgPng.src = "img/bg_ship.png";
 
-        const canMain = document.querySelector("#canMove");
+        const canMain = document.querySelector("#canMain");
         const ctxMain = canMain.getContext("2d");
         ctxMain.imageSmoothingEnabled = false;
 
+        const cropBox = document.querySelector("#cropBox");
+        const canCrop = document.querySelector("#canCrop");
+        const ctxCrop = canCrop.getContext("2d");
+
         const scaleRange = document.querySelector("#scalerange");                   // zoom range
         scaleRange.value='0';
-
-        // right panel of settings
-
-
-        // crop zone
-
-        const cropButton = document.querySelector("#settings label");
-        cropButton.onclick = function() {
-            
-        }
-
 
         let minzoom, maxzoom;
         let maxWidth=canResult.width, maxHeight=canResult.height, defaultWidth, defaultHeight;
@@ -183,6 +176,9 @@ function render(img) {
             defaultHeight=maxHeight;
             defaultWidth=Math.round(img.width*maxHeight/img.height);
         }
+
+        // right panel of settings
+
         
         const sizeWidth = document.querySelector("#sizeBox input:first-of-type");        //size inputs
         sizeWidth.setAttribute("placeholder",defaultWidth.toString());
@@ -241,48 +237,18 @@ function render(img) {
             });
         });
 
-        const sizeApply = document.querySelector("#sizeBox button");
-        sizeApply.onclick = function() {
-            if(sizeWidth.value!="")
-                 canResult.width = parseInt(sizeWidth.value);
-            else canResult.width=parseInt(sizeWidth.getAttribute("placeholder"));
-            if(sizeHeight.value!="")
-                 canResult.height = parseInt(sizeHeight.value);
-            else canResult.height=parseInt(sizeHeight.getAttribute("placeholder"));
-
-            if(canResult.height>=canResult.width){
-                shipShape.height=400;
-                shipShape.style.height="400px";
-                shipShape.width=Math.round(canResult.width*400/canResult.height);
-                shipShape.style.width=`${shipShape.width}px`;
-            }else{
-                shipShape.width=400;
-                shipShape.style.width="400px";
-                shipShape.height=Math.round(canResult.height*400/canResult.width);
-                shipShape.style.height=`${shipShape.height}px`;
-            }
-
-            if(canResult.width/img.width>canResult.height/img.height) {
-                minzoom=shipShape.width/img.width;
-                maxzoom = shipShape.width/canResult.width
-            }
-            else {
-                minzoom=shipShape.height/img.height; 
-                maxzoom = shipShape.width/canResult.width
-            }
-            if(transparency){
-                let c=rgb[document.querySelector("select").selectedIndex];
-                ctxResult.fillStyle = `rgb(${c[0]},${c[1]},${c[2]}")`;
-            }
-            renderShipBg();
-            zoomCanvas(minzoom);
-            scaleAndDither();
+        const sizeButton = document.querySelector("#sizeBox button");
+        sizeButton.onclick = function() {
+            sizeApply();
         }
 
         const hideCheck = document.querySelector("#settings > label:nth-of-type(2) input")         //hide canvas
         hideCheck.onchange = function() {
             if(!this.checked) scaleAndDither()
-            else shipShape.classList.add("hidden")
+            else {
+                shipShape.classList.add("hidden")
+                goDither.classList.add("disabled");
+            }
         }
 
         const shipBgCheck = document.querySelector("#settings > label:nth-of-type(3) input")     //ship background tiles
@@ -343,7 +309,8 @@ function render(img) {
         if(transparency){                                           //background color
             const bgLabel = document.createElement('label');
             bgLabel.textContent = `Found transparency. Choose backgound color:`;
-            bgLabel.setAttribute("for",'bgList');
+            bgLabel.setAttribute('data-help', 'Set bg color. Independent of the above color modifications.')
+            bgLabel.setAttribute("for", 'bgList');
 
             const bgSelect = document.createElement('select');
             bgSelect.id='bgList'
@@ -359,7 +326,7 @@ function render(img) {
                 this.style['background'] = this.options[this.selectedIndex].style['background'];
                 let c=rgb[bgSelect.selectedIndex];
                 c = `rgb(${c[0]},${c[1]},${c[2]})`;
-                ctxResult.fillStyle = c;
+                ctxTemp.fillStyle = c;
                 canvasBox.style['backgroundColor'] = c;
                 redraw();
                 scaleAndDither();
@@ -390,7 +357,7 @@ function render(img) {
             sizeHeight.value='';
             ratioCheck.checked = true;
             ratioCheck.dispatchEvent(new Event("change"));
-            sizeApply.click();
+            sizeApply(true);
             hideCheck.checked = false;
             shipBgCheck.checked = false;
             shipBgCheck.dispatchEvent(new Event("change"));
@@ -418,10 +385,177 @@ function render(img) {
 
         const goDither = document.querySelector("#settings > :last-child button:nth-of-type(4)")    //continue
         goDither.onclick = function(){
+            if(goDither.classList.contains("disabled")) return;
             hideCheck.checked = false;
             scaleAndDither();
             renderDownload();
         }
+
+        function sizeApply(qzoom=false) {
+            if(sizeWidth.value!="")
+                 canResult.width = parseInt(sizeWidth.value);
+            else canResult.width=parseInt(sizeWidth.getAttribute("placeholder"));
+            if(sizeHeight.value!="")
+                 canResult.height = parseInt(sizeHeight.value);
+            else canResult.height=parseInt(sizeHeight.getAttribute("placeholder"));
+
+            if(canResult.height>=canResult.width){
+                shipShape.height=500;
+                shipShape.style.height="500px";
+                shipShape.width=Math.round(canResult.width*500/canResult.height);
+                shipShape.style.width=`${shipShape.width}px`;
+            }else{
+                shipShape.width=500;
+                shipShape.style.width="500px";
+                shipShape.height=Math.round(canResult.height*500/canResult.width);
+                shipShape.style.height=`${shipShape.height}px`;
+            }
+
+            canTemp.width = shipShape.width;
+            canTemp.height = shipShape.height;
+            canSave.width = canResult.width;
+            canSave.height = canResult.height;
+
+            if(canResult.width/img.width>canResult.height/img.height) {
+                minzoom = shipShape.width/img.width;
+                maxzoom = shipShape.width/canResult.width;
+            }
+            else {
+                minzoom = shipShape.height/img.height; 
+                maxzoom = shipShape.width/canResult.width;
+            }
+
+            if(transparency){
+                let c=rgb[document.querySelector("select").selectedIndex];
+                ctxTemp.fillStyle = `rgb(${c[0]},${c[1]},${c[2]})`;
+            }
+            renderShipBg();
+            if(!ratioCheck.checked || qzoom) zoomCanvas(minzoom);
+            scaleAndDither();
+        }
+
+        //cropping Panel
+
+        const cropButton = document.querySelector("#settings label");
+        cropButton.onclick = function() {
+            canCrop.width = OGimg.width;
+            canCrop.height = OGimg.height;
+            ctxCrop.drawImage(OGimg, 0, 0);
+            cropBox.classList.add('cropping');
+
+            const cropBox2 = document.querySelector("#cropBox div");
+            const cropCont = document.querySelector("#cropBox div div");
+            var ar = OGimg.width / OGimg.height;
+            if(cropBox2.clientWidth/cropBox2.clientHeight > OGimg.width/OGimg.height){
+                var h = cropBox2.clientHeight;
+                var w = h*ar;
+            } else {
+                var w = cropBox2.clientWidth;
+                var h = w/ar;
+            }
+            cropCont.style.width = w+'px';
+            cropCont.style.height = h+'px';
+        }
+
+        const cropAccept = document.querySelector("#cropBox button");
+        cropAccept.onclick = function() {
+
+            const canCroped = document.createElement("canvas");
+            const ctxCropped = canCroped.getContext("2d");
+
+            const distorstion = OGimg.width / canCrop.clientWidth;
+            canCroped.width = selector.clientWidth * distorstion;
+            canCroped.height = selector.clientHeight * distorstion;
+
+            ctxCropped.drawImage(canCrop, l*distorstion, t* distorstion, selector.clientWidth*distorstion, selector.clientHeight*distorstion, 0, 0, canCroped.width, canCroped.height);
+            img.src = canCroped.toDataURL();
+            img.onload = function() {
+                canResult.width = Math.min(img.width, 78);
+                canResult.height = Math.min(img.height, 78);
+
+                
+                maxHeight = canResult.height;
+                maxWidth = canResult.width;
+                if(img.width>img.height){
+                    defaultWidth=maxWidth;
+                    defaultHeight=Math.round(img.height*maxWidth/img.width);
+                } else {
+                    defaultHeight=maxHeight;
+                    defaultWidth=Math.round(img.width*maxHeight/img.height);
+                }
+                sizeWidth.setAttribute("placeholder", defaultWidth.toString());
+                sizeHeight.setAttribute("placeholder", defaultHeight.toString());
+                sizeWidth.value = '';
+                sizeHeight.value = '';
+                getColors(); 
+                sizeApply(true);
+                checkBoundaries();
+                redraw();
+                scaleAndDither();
+            }
+            cropBox.classList.remove("cropping");
+        }
+
+        let t=0, r=0, b=0, l=0;                     //top right bottom left
+        const dist = canCrop.clientWidth / OGimg.width;
+
+        const selector = document.querySelector("#cropBox div div div");
+        const tEl = document.querySelector("#cropBox div div div div:nth-of-type(1)");
+        const rEl = document.querySelector("#cropBox div div div div:nth-of-type(2)");
+        const bEl = document.querySelector("#cropBox div div div div:nth-of-type(3)");
+        const lEl = document.querySelector("#cropBox div div div div:nth-of-type(4)");
+
+        var isDown = [false, false, false, false], offset=[0,0,0,0];
+        tEl.addEventListener('mousedown', function(e) {
+            isDown[0] = true;
+            offset[0] = t - e.clientY;
+        });
+        rEl.addEventListener('mousedown', function(e) {
+            isDown[1] = true;
+            offset[1] = r + e.clientX;
+        });
+        bEl.addEventListener('mousedown', function(e) {
+            isDown[2] = true;
+            offset[2] = b + e.clientY;
+        });
+        lEl.addEventListener('mousedown', function(e) {
+            isDown[3] = true;
+            offset[3] = l - e.clientX;
+        });
+
+        cropBox.addEventListener('mousemove', function(e) {
+            e.preventDefault();
+            if(isDown[0]){
+                if(canCrop.clientHeight - offset[0] - e.clientY - b <= 10) t = canCrop.clientHeight - 10 - b;
+                else if(e.clientY + offset[0] <= 0) t = 0;
+                else t = e.clientY + offset[0];
+                selector.style.top  = t + 'px';
+            }
+            if(isDown[1]){
+                if(canCrop.clientWidth - offset[1] + e.clientX - l <= 10) r = canCrop.clientWidth - 10 - l;
+                else if(offset[1] - e.clientX <= 0) r = 0;
+                else r = offset[1] - e.clientX;
+                selector.style.right = r + 'px';
+            }
+            if(isDown[2]){
+                if(canCrop.clientHeight - offset[2] + e.clientY - t <= 10) b = canCrop.clientHeight - 10 - t;
+                else if(offset[2] - e.clientY <= 0) b = 0;
+                else b = offset[2] - e.clientY;
+                selector.style.bottom  = b + 'px';
+            }
+            if(isDown[3]){
+                if(canCrop.clientWidth - offset[3] - e.clientX - r <= 10) l = canCrop.clientWidth - 10 - r;
+                else if(e.clientX + offset[3] <=0 ) l = 0;
+                else l = offset[3] + e.clientX;
+                selector.style.left  = l + 'px';
+            }
+        });
+
+
+        cropBox.addEventListener('mouseup', function() {isDown = isDown.fill(false);});
+        cropBox.addEventListener('mouseleave', function() {isDown = isDown.fill(false);});
+        
+
 
         //end of the settings
 
@@ -506,17 +640,17 @@ function render(img) {
                 scale *= factor;
                 // redraw();
             }
-            var tr=ctxMain.getTransform(), top=250-shipShape.height/2, side=250-shipShape.width/2;
+            var tr=ctxMain.getTransform(), top=300-shipShape.height/2, side=300-shipShape.width/2;
             if(tr['e']>side)
                 ctxMain.translate((side-tr['e'])/scale, null);
             if(tr['f']>top)
                 ctxMain.translate(null, (top-tr['f'])/scale);
                 
             tr=ctxMain.getTransform();
-            if(tr['e']+img.width*scale<500-side) 
-                ctxMain.translate((500-side-tr['e']-img.width*scale)/scale, null);
-            if(tr['f']+img.height*scale<500-top) 
-                ctxMain.translate(null, (500-top-tr['f']-img.height*scale)/scale);
+            if(tr['e']+img.width*scale<600-side) 
+                ctxMain.translate((600-side-tr['e']-img.width*scale)/scale, null);
+            if(tr['f']+img.height*scale<600-top) 
+                ctxMain.translate(null, (600-top-tr['f']-img.height*scale)/scale);
         }
         
         var rangeZoomGlobalID;
@@ -535,7 +669,7 @@ function render(img) {
             else if(scale*factor>maxzoom)   
                 factor=maxzoom/scale;               
             scale *= factor;
-            var pt = ctxMain.transformedPoint(250,250);
+            var pt = ctxMain.transformedPoint(300,300);
 
             ctxMain.translate(pt.x,pt.y);
             ctxMain.scale(factor,factor);
@@ -615,7 +749,7 @@ function render(img) {
 
         function zoomCanvas(newScale) {
             if(newScale>=minzoom){
-                var pt = ctxMain.transformedPoint(250,250);
+                var pt = ctxMain.transformedPoint(300,300);
                 ctxMain.translate(pt.x,pt.y);
                 ctxMain.scale(newScale/scale,newScale/scale);
                 scale=newScale;
@@ -631,15 +765,14 @@ function render(img) {
             scaleAndDither();
         }
 
-
-        sizeApply.click();
+        sizeApply(true);
 
 
         function renderShipBg() {
             if(bgPng.naturalWidth===0){
                 bgPng.onload=function(){renderShipBg()} 
             }
-            let factor = 400 / Math.max(canResult.width, canResult.height);
+            let factor = 600 / Math.max(canResult.width, canResult.height);
             if(factor>64) factor=64;
             shipBg.width=factor*canResult.width;
             shipBg.height=factor*canResult.height;
@@ -651,10 +784,10 @@ function render(img) {
         }
 
         var lastRun=0, timeoutStart=false;
-        function scaleAndDither(){
+        async function scaleAndDither(){
             goDither.classList.add("disabled");
             if(hideCheck.checked) return;
-            if(Date.now() - lastRun < 600) {
+            if(Date.now() - lastRun < 400) {
                 if(!timeoutStart){
                     timeoutStart=true;
                     setTimeout(() => {
@@ -665,28 +798,20 @@ function render(img) {
                 return;
             }
             lastRun=Date.now();
-            canTemp.width=shipShape.width;
-            canTemp.height=shipShape.height;
-            ctxTemp.drawImage(canMain, 250-shipShape.width/2, 250-shipShape.height/2, shipShape.width, shipShape.height, 0,0, canTemp.width, canTemp.height);
-            var b = Blitz.create();
-            b({
-                source: canTemp,
-                width: canResult.width,
-                height: canResult.height,
-                output: 'canvas'
-            }).then(output => {
-                if(transparency) {
-                    ctxSave.clearRect(0,0,canSave.width,canSave.height);
-                    ctxResult.fillRect(0,0,canResult.width,canResult.height);
-                }
-                ctxSave.drawImage(output,0,0);
-                dither();
-            });
+            ctxTemp.fillRect(0, 0, canTemp.width, canTemp.height);
+            ctxTemp.drawImage(canMain, 300-shipShape.width/2, 300-shipShape.height/2, shipShape.width, shipShape.height, 0,0, canTemp.width, canTemp.height);
+
+            downscale(canTemp.toDataURL(), canResult.width, canResult.height, {returnCanvas: true})
+                .then(output => {
+                    ctxSave.drawImage(output, 0, 0);
+                    dither();
+                })
         };
 
         scaleAndDither();
 
         function dither(){
+            if(hideCheck.checked) return;
             ctxResult.drawImage(canSave,0,0);
             shipShape.classList.remove("hidden");  
             goDither.classList.remove("disabled");
@@ -847,82 +972,77 @@ function render(img) {
         document.querySelector("#setup").classList.remove("active")
         document.querySelector("#download").classList.add("active")
 
-        const back = document.querySelector("#download button");
+        const names = ['never', 'somebody', 'gonna' ,'once', 'give', 'told', 'you', 'me', 'up']
+
+        const back = document.querySelector("#download button")
         back.onclick = function(){
             document.querySelector("#setup").classList.add("active")
             document.querySelector("#download").classList.remove("active")
         }
 
-        const thumbnail = document.querySelector("#download img");
-        thumbnail.src = canResult.toDataURL();
+        const thumbnail = document.querySelector("#download img")
+        thumbnail.src = canResult.toDataURL()
         
-        const nameBox = document.querySelector("#download input");
+        const nameBox = document.querySelector("#download input")
 
-        const downloadRaw = document.querySelector("#download a");
+        const downloadRaw = document.querySelector("#download a")
         downloadRaw.onclick = function(){
-            this.href= canResult.toDataURL();
-            this.download = `${nameBox.value ? nameBox.value : "dredArt_pixelart"}.png`;
+            this.href= canResult.toDataURL()
+            this.download = `${nameBox.value ? nameBox.value : names[Math.floor(Math.random()*9)]}.png`
         } 
 
-        const downloaMap = document.querySelector("#download a:nth-of-type(2)");
-        downloaMap.classList.add("disabled");
-        console.log("I did it here");
+        const downloaMap = document.querySelector("#download a:nth-of-type(2)")
+        downloaMap.classList.add("disabled")
 
         renderMap().then((c) => {
-            console.log("I did it");
-            downloaMap.href = c.toDataURL();
-            downloaMap.classList.remove("disabled");
+            downloaMap.href = c.toDataURL()
+            downloaMap.classList.remove("disabled")
         });
 
 
         downloaMap.onclick = function(){
-            this.download = `${nameBox.value ? nameBox.value : "dredArt_pixelart"}.png`;
+            this.download = `${nameBox.value ? nameBox.value : names[Math.floor(Math.random()*9)]}.png`
         }
     }
 
     function renderMap(){
         return new Promise(resolve =>{
-            const canMap = document.createElement("canvas");
+            const canMap = document.createElement("canvas")
             const ctxMap = canMap.getContext("2d", {alpha: false, willReadFrequently: true});
-            let scale=20;
-            canMap.width=canResult.width*scale;
-            canMap.height=canResult.height*scale+25;
-            ctxMap.imageSmoothingEnabled = false;
-            ctxMap.fillStyle = `white`;
-            ctxMap.font = '15px consolas';
-            ctxMap.shadowColor = 'black';
-            ctxMap.shadowBlur = 5;
+            let scale=20
+            canMap.width=canResult.width*scale
+            canMap.height=canResult.height*scale+25
+            ctxMap.imageSmoothingEnabled = false
+            ctxMap.fillStyle = `white`
+            ctxMap.font = '13px consolas'
+            ctxMap.shadowColor = 'black'
+            ctxMap.shadowBlur = 5
 
-            ctxMap.scale(scale,scale);
-            ctxMap.drawImage(canResult,0,0);
-            ctxMap.scale(1/scale,1/scale);
-            let data = ctxResult.getImageData(0, 0, canResult.width, canResult.height).data;
+            ctxMap.scale(scale,scale)
+            ctxMap.drawImage(canResult,0,0)
+            ctxMap.scale(1/scale,1/scale)
+            let data = ctxResult.getImageData(0, 0, canResult.width, canResult.height).data
             for(let i=0; i<canResult.height; i++){
                 for(let o=0; o<canResult.width; o++){
-                    let id = (o+i*canResult.width)*4;
-                    let t = getHexColor([data[id],data[id+1],data[id+2]]);
+                    let id = (o+i*canResult.width)*4
+                    let t = getHexColor([data[id],data[id+1],data[id+2]])
                     if(t==undefined) return error.textContent = "(un)There was a problem genering color map. Try again in a diffrent broswer. PS. pls use chrome"
-                    ctxMap.fillText(t, (o+0.1)*scale, (i+0.7)*scale);
+                    ctxMap.fillText(t, (o+0.15)*scale, (i+0.7)*scale)
                 }
             }
-            ctxMap.fillRect(0,canMap.height-25,canMap.width,25);
-            ctxMap.shadowBlur = 5;
-            ctxMap.fillStyle = `black`; 
-            ctxMap.fillText(`Created with DredArt tool ${version} by I am Shrek`, 10, canMap.height-10, canMap.width-20);
-            resolve(canMap);
+            ctxMap.fillRect(0,canMap.height-25,canMap.width,25)
+            ctxMap.shadowBlur = 5
+            ctxMap.fillStyle = `black`
+            ctxMap.fillText(`Created with DredArt tool ${version} by I am Shrek`, 10, canMap.height-10, canMap.width-20)
+            resolve(canMap)
         })
     }
 
     function getHexColor(a) {
-        // console.log(a);
-        // console.log(rgb.indexOf(a));
-        // rgb.indexOf(a).toString(16).toUpperCase();
         for(var i=0; i<255; i++){
-            c = rgb[i];
-            if(a[0]==c[0] && a[1]==c[1] && a[2]==c[2]) {
-                return i.toString(16).padEnd(2, '0').toUpperCase();  
-            }
+            c = rgb[i]
+            if(a[0]==c[0] && a[1]==c[1] && a[2]==c[2])
+                return i.toString(16).padEnd(2, '0').toUpperCase()
         }
-        console.log("THIS COLOR BROKE:"+a);
     }
 }
