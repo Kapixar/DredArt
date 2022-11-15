@@ -1,8 +1,9 @@
-const container = document.querySelector("body div");
+if(navigator.maxTouchPoints > 1) document.body.textContent = "Your device is not supported as tool is designed only for PC. If you think this is an error contact developer."
+
+const container = document.querySelector("#content");
 const upload = document.querySelector("#upload");
 const setup = document.querySelector("#setup");
 const download = document.querySelector("#download");
-const inputDiv = document.querySelector("body div");
 const drop = document.querySelector("#drop-zone");
 const error = document.querySelector(".error");
 const urlInp = document.querySelector("#url");
@@ -134,7 +135,10 @@ function render(OGimg) {
         avg.r = Math.floor(avg.r/amount);
         avg.g = Math.floor(avg.g/amount);
         avg.b = Math.floor(avg.b/amount);
-        document.body.style.setProperty('--accent', `rgb(${avg.r}, ${avg.g}, ${avg.b})`);
+
+        document.body.style.setProperty('--accent', `rgb(${avg.r},${avg.g},${avg.b})`);
+        let perceivedLightness = (avg.r*0.2126 + avg.g*0.7152 + avg.b*0.0722) / 255;
+        document.body.style.setProperty('--bg-accent', perceivedLightness < 0.5 ? `rgb(255,255,255)` : `rgb(17,22,28)`);
     }
 
     function renderScale() {
@@ -400,14 +404,14 @@ function render(OGimg) {
             else canResult.height=parseInt(sizeHeight.getAttribute("placeholder"));
 
             if(canResult.height>=canResult.width){
-                shipShape.height=500;
-                shipShape.style.height="500px";
-                shipShape.width=Math.round(canResult.width*500/canResult.height);
+                shipShape.height=400;
+                shipShape.style.height="400px";
+                shipShape.width=Math.round(canResult.width*400/canResult.height);
                 shipShape.style.width=`${shipShape.width}px`;
             }else{
-                shipShape.width=500;
-                shipShape.style.width="500px";
-                shipShape.height=Math.round(canResult.height*500/canResult.width);
+                shipShape.width=400;
+                shipShape.style.width="400px";
+                shipShape.height=Math.round(canResult.height*400/canResult.width);
                 shipShape.style.height=`${shipShape.height}px`;
             }
 
@@ -437,6 +441,7 @@ function render(OGimg) {
         //cropping Panel
 
         const cropButton = document.querySelector("#settings label");
+        let dist;
         cropButton.onclick = function() {
             canCrop.width = OGimg.width;
             canCrop.height = OGimg.height;
@@ -455,6 +460,7 @@ function render(OGimg) {
             }
             cropCont.style.width = w+'px';
             cropCont.style.height = h+'px';
+            dist = canCrop.clientWidth * 5 / OGimg.width
         }
 
         const cropAccept = document.querySelector("#cropBox button");
@@ -497,7 +503,7 @@ function render(OGimg) {
         }
 
         let t=0, r=0, b=0, l=0;                     //top right bottom left
-        const dist = canCrop.clientWidth / OGimg.width;
+        console.log(dist);
 
         const selector = document.querySelector("#cropBox div div div");
         const tEl = document.querySelector("#cropBox div div div div:nth-of-type(1)");
@@ -526,25 +532,25 @@ function render(OGimg) {
         cropBox.addEventListener('mousemove', function(e) {
             e.preventDefault();
             if(isDown[0]){
-                if(canCrop.clientHeight - offset[0] - e.clientY - b <= 10) t = canCrop.clientHeight - 10 - b;
+                if(canCrop.clientHeight - offset[0] - e.clientY - b <= dist) t = canCrop.clientHeight - dist - b;
                 else if(e.clientY + offset[0] <= 0) t = 0;
                 else t = e.clientY + offset[0];
                 selector.style.top  = t + 'px';
             }
             if(isDown[1]){
-                if(canCrop.clientWidth - offset[1] + e.clientX - l <= 10) r = canCrop.clientWidth - 10 - l;
+                if(canCrop.clientWidth - offset[1] + e.clientX - l <= dist) r = canCrop.clientWidth - dist - l;
                 else if(offset[1] - e.clientX <= 0) r = 0;
                 else r = offset[1] - e.clientX;
                 selector.style.right = r + 'px';
             }
             if(isDown[2]){
-                if(canCrop.clientHeight - offset[2] + e.clientY - t <= 10) b = canCrop.clientHeight - 10 - t;
+                if(canCrop.clientHeight - offset[2] + e.clientY - t <= dist) b = canCrop.clientHeight - dist - t;
                 else if(offset[2] - e.clientY <= 0) b = 0;
                 else b = offset[2] - e.clientY;
                 selector.style.bottom  = b + 'px';
             }
             if(isDown[3]){
-                if(canCrop.clientWidth - offset[3] - e.clientX - r <= 10) l = canCrop.clientWidth - 10 - r;
+                if(canCrop.clientWidth - offset[3] - e.clientX - r <= dist) l = canCrop.clientWidth - dist - r;
                 else if(e.clientX + offset[3] <=0 ) l = 0;
                 else l = offset[3] + e.clientX;
                 selector.style.left  = l + 'px';
@@ -640,17 +646,17 @@ function render(OGimg) {
                 scale *= factor;
                 // redraw();
             }
-            var tr=ctxMain.getTransform(), top=300-shipShape.height/2, side=300-shipShape.width/2;
+            var tr=ctxMain.getTransform(), top=250-shipShape.height/2, side=250-shipShape.width/2;
             if(tr['e']>side)
                 ctxMain.translate((side-tr['e'])/scale, null);
             if(tr['f']>top)
                 ctxMain.translate(null, (top-tr['f'])/scale);
                 
             tr=ctxMain.getTransform();
-            if(tr['e']+img.width*scale<600-side) 
-                ctxMain.translate((600-side-tr['e']-img.width*scale)/scale, null);
-            if(tr['f']+img.height*scale<600-top) 
-                ctxMain.translate(null, (600-top-tr['f']-img.height*scale)/scale);
+            if(tr['e']+img.width*scale<500-side) 
+                ctxMain.translate((500-side-tr['e']-img.width*scale)/scale, null);
+            if(tr['f']+img.height*scale<500-top) 
+                ctxMain.translate(null, (500-top-tr['f']-img.height*scale)/scale);
         }
         
         var rangeZoomGlobalID;
@@ -669,7 +675,7 @@ function render(OGimg) {
             else if(scale*factor>maxzoom)   
                 factor=maxzoom/scale;               
             scale *= factor;
-            var pt = ctxMain.transformedPoint(300,300);
+            var pt = ctxMain.transformedPoint(250,250);
 
             ctxMain.translate(pt.x,pt.y);
             ctxMain.scale(factor,factor);
@@ -749,7 +755,7 @@ function render(OGimg) {
 
         function zoomCanvas(newScale) {
             if(newScale>=minzoom){
-                var pt = ctxMain.transformedPoint(300,300);
+                var pt = ctxMain.transformedPoint(250,250);
                 ctxMain.translate(pt.x,pt.y);
                 ctxMain.scale(newScale/scale,newScale/scale);
                 scale=newScale;
@@ -772,7 +778,7 @@ function render(OGimg) {
             if(bgPng.naturalWidth===0){
                 bgPng.onload=function(){renderShipBg()} 
             }
-            let factor = 600 / Math.max(canResult.width, canResult.height);
+            let factor = 500 / Math.max(canResult.width, canResult.height);
             if(factor>64) factor=64;
             shipBg.width=factor*canResult.width;
             shipBg.height=factor*canResult.height;
@@ -787,7 +793,7 @@ function render(OGimg) {
         async function scaleAndDither(){
             goDither.classList.add("disabled");
             if(hideCheck.checked) return;
-            if(Date.now() - lastRun < 400) {
+            if(Date.now() - lastRun < 600) {
                 if(!timeoutStart){
                     timeoutStart=true;
                     setTimeout(() => {
@@ -799,7 +805,7 @@ function render(OGimg) {
             }
             lastRun=Date.now();
             ctxTemp.fillRect(0, 0, canTemp.width, canTemp.height);
-            ctxTemp.drawImage(canMain, 300-shipShape.width/2, 300-shipShape.height/2, shipShape.width, shipShape.height, 0,0, canTemp.width, canTemp.height);
+            ctxTemp.drawImage(canMain, 250-shipShape.width/2, 250-shipShape.height/2, shipShape.width, shipShape.height, 0,0, canTemp.width, canTemp.height);
 
             downscale(canTemp.toDataURL(), canResult.width, canResult.height, {returnCanvas: true})
                 .then(output => {
@@ -985,13 +991,13 @@ function render(OGimg) {
         
         const nameBox = document.querySelector("#download input")
 
-        const downloadRaw = document.querySelector("#download a")
-        downloadRaw.onclick = function(){
-            this.href= canResult.toDataURL()
-            this.download = `${nameBox.value ? nameBox.value : names[Math.floor(Math.random()*9)]}.png`
-        } 
+        // const downloadRaw = document.querySelector("#download a")
+        // downloadRaw.onclick = function(){
+        //     this.href= canResult.toDataURL()
+        //     this.download = `${nameBox.value ? nameBox.value : names[Math.floor(Math.random()*9)]}.png`
+        // } 
 
-        const downloaMap = document.querySelector("#download a:nth-of-type(2)")
+        const downloaMap = document.querySelector("#download a")
         downloaMap.classList.add("disabled")
 
         renderMap().then((c) => {
@@ -1016,7 +1022,7 @@ function render(OGimg) {
             ctxMap.fillStyle = `white`
             ctxMap.font = '13px consolas'
             ctxMap.shadowColor = 'black'
-            ctxMap.shadowBlur = 5
+            ctxMap.shadowBlur = 4
 
             ctxMap.scale(scale,scale)
             ctxMap.drawImage(canResult,0,0)
@@ -1027,13 +1033,13 @@ function render(OGimg) {
                     let id = (o+i*canResult.width)*4
                     let t = getHexColor([data[id],data[id+1],data[id+2]])
                     if(t==undefined) return error.textContent = "(un)There was a problem genering color map. Try again in a diffrent broswer. PS. pls use chrome"
-                    ctxMap.fillText(t, (o+0.15)*scale, (i+0.7)*scale)
+                    ctxMap.fillText(t, (o+0.1)*scale, (i+0.7)*scale)
                 }
             }
-            ctxMap.fillRect(0,canMap.height-25,canMap.width,25)
+            ctxMap.fillRect(0, canMap.height-25, canMap.width, 25)
             ctxMap.shadowBlur = 5
             ctxMap.fillStyle = `black`
-            ctxMap.fillText(`Created with DredArt tool ${version} by I am Shrek`, 10, canMap.height-10, canMap.width-20)
+            ctxMap.fillText(`DredArt ${version} by I am Shrek`, 10, canMap.height-10, canMap.width-20)
             resolve(canMap)
         })
     }

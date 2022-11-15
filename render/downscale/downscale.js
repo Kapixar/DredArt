@@ -1,23 +1,8 @@
 function createTiming(enabled, source, destWidth, destHeight)
 {
-  var start  = new Date
-  var timing = {}
-  var prev   = start
-  var n      = "01"
-
   return {
-    mark: enabled ? function(name) {
-      name = n + ". " + (name || "...")
-      timing[name] = { "time (ms)": (new Date) - prev }
-      prev = new Date
-      n = ("0" + ((n >> 0) + 1)).substr(-2)
-    } : new Function,
-    finish: enabled ? function() {
-      timing[n + " TOTAL"] = { "time (ms)": (new Date) - start }
-      console.log("IMAGE SOURCE:", source)
-      console.log("DOWNSCALE TO:", destWidth + "x" + destHeight)
-      console.table(timing)
-    } : new Function
+    mark: function(name) {},
+    finish: function() {}
   }
 }
 

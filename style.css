@@ -43,6 +43,10 @@
     visibility: hidden;
 }
 
+#tool-content.hidden, #tool-content > div.hidden, #tool-nav.hidden, #tool-message.hidden{
+    display: none;
+}
+
 
 
 #tool-menu{
@@ -83,6 +87,9 @@ input[type='file']{
 
 #tool-menu label + div{
     width: 280px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 #tool-menu div:first-child, #tool-menu div:last-child{
     grid-column: 1 / 3;
@@ -94,6 +101,13 @@ input[type='file']{
     display: inline-block;
     cursor: pointer;
     width: 90px;
+    transition: .2s;
+}
+#tool-nav button.chosen{
+    border-radius: 15px;
+}
+#tool-nav button.hidden{
+    display: none;
 }
 #tool-nav :nth-child(1){background: linear-gradient(darkred,#000 200%)!important;}
 #tool-nav :nth-child(2){background: linear-gradient(#DE9151,#000 200%)!important;}
@@ -103,7 +117,11 @@ input[type='file']{
 
 
 #tool-message{
-    padding: 15px 7px 7px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 15px;
 }
 #tool-message p.error{
     font-weight: 500;
@@ -128,6 +146,9 @@ input[type='file']{
     border-radius: 10px;
     width: 60px;
     text-align: center;
+}
+#tool-message p{
+    line-height: 2em;
 }
 .pixelart{
     box-sizing: border-box;
@@ -196,11 +217,9 @@ input[type='file']{
 
 
 #tool-holo > div{
-    border-radius: 10px;
+    border-radius: 7px;
     padding: 3px;
-    border-width: 7px;
-    border-color: transparent;
-    border-style: dashed;
+    border: 7px dashed transparent;
     text-shadow: 1px 1px black;
     color: white;
     cursor: pointer;
@@ -212,18 +231,23 @@ input[type='file']{
     transition: .2s;
 }
 
-#tool-holo > div:hover{
-    border-radius: 5px;
+#tool-holo > div.colorLabel{
+    display: flex;
+    flex-direction: row;
+    accent-color: green;
 }
 
-#tool-holo > div.done{
-    border-color: green;
+#tool-holo > div.colorLabel input{
+    border: none;
+}
+
+#tool-holo > div.colorLabel:not(.selected):hover{
+    border-color: rgba(25,35,45, .3);
 }
 
 #tool-holo > div.selected, #checkButton.selected{
-    pointer-events: none;
-    box-shadow: inset 0px 0px 10px green;
-    border-radius: 14px;
+    border-color: green;
+    border-radius: 15px;
 }
 
 #tool-holo > p{grid-column: 1 / 4;}
@@ -251,6 +275,7 @@ input[type='file']{
     grid-column: 2 / 4;
     grid-template-columns: 5fr 1fr 5fr 5fr;
     margin: 5px;
+    border-radius: 10px;
 }
 
 #tool-holo .coords{
@@ -319,4 +344,14 @@ input[type='file']{
 
 #tool-holo img{
     height: 30px;
+}
+
+#tool-about{
+    height: 380px;
+    overflow-y: scroll;
+}
+
+#tool-about li{
+    text-align: left;
+    margin-block: 1em;
 }

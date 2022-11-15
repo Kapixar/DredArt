@@ -1,6 +1,6 @@
 {
     "name": "DredArt",
-    "description": "Dredark extension for big pixelarts. Use any PNG and paint it using Holo!",
+    "description": "Dredark extension for pixel arts. Use any PNG and paint it using Holo!",
     "version": "1.0",
     "author": "I am Shrek, Kapi73#3815",
     "manifest_version": 3,
@@ -21,7 +21,7 @@
     ],
     "web_accessible_resources": [
         { 
-            "resources": ["render.html", "MOSAIC/*"],
+            "resources": ["render/index.html"],
             "matches": ["https://drednot.io/*", "https://test.drednot.io/*"]
           }
     ]

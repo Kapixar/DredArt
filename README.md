@@ -1,5 +1,6 @@
 # DredArt - your paiting comrade
-Chrome extension for Dredark/Drednot/DSA  
+Chrome extension for Dredark/Drednot/DSA
+Consists of 2 parts: Render and Creator
   
 Created from the idea of **MOSAIC** project
 
@@ -8,13 +9,17 @@ Created from the idea of **MOSAIC** project
 2. Download ZIP
 
 ## Instalation
-0. Unpack zip
+0. Extract zip
 1. Head to chrome://extensions/
-2. Drag unzipped folder into the window
+2. Enable Developer Mode
+3. Click Load unpacked button
+4. Select and upload the extracted folder
+5. Disable Developer Mode
 
-### DredArt Render
-Part of the tool is available on this website:
-This generates pixelarts from images.
 
-### Discord server with details about MOSAIC
+### DredArt | Render
+Part of the tool is available on this website: http://dredart.myartsonline.com
+Render generates pixel arts from images.
+
+### Discord server with more details
 https://discord.gg/uNgD6vv67c

@@ -1,10 +1,11 @@
 //Top bar buttons
-const a=document.createElement("a");
-const topBar=document.querySelector("#top-bar span") 
+const a = document.createElement("a");
+const topBar = document.querySelector("#top-bar span");
 a.onclick = function(){
-    if(!document.querySelector("#paint-tool")) return renderTool();
-    document.querySelector("#paint-tool").classList.toggle("hidden");
-    if(document.querySelector("div div h2").textContent == 'PixelMaker settings') document.querySelector("div div button").click();
+    let t = document.getElementById("paint-tool");
+    if(!t) return renderTool();
+    t.classList.toggle("hidden");
+    document.getElementById("motd").style['display'] = t.classList.contains("hidden") ? 'none' : '';
 } 
 a.innerHTML = "<i class='fas big-icon fa-palette'></i><div class='tooltip tooltip-low dark'>DredArt</div>";
 topBar.appendChild(a);
@@ -12,13 +13,12 @@ topBar.appendChild(a);
 const holoOff = document.createElement("a");
 holoOff.onclick = function(){
     removeHolo();
-    document.querySelectorAll("#tool-holo div").forEach(e => {e.style["pointer-events"] = "";e.style["border-color"] = "";});
 }
 holoOff.innerHTML = "<i class='fas big-icon fa-times-circle'></i><div class='tooltip tooltip-low dark'>Disable Holo</div>";
 topBar.appendChild(holoOff);
 
 const refresh = document.createElement("a");
-refresh.onclick = function(){refreshTXT()}
+refresh.onclick = function(){ refreshTXT(); }
 refresh.innerHTML = "<i class='fas big-icon fa-redo'></i><div class='tooltip tooltip-low dark'>Refresh</div>";
 topBar.appendChild(refresh);
 
@@ -29,42 +29,128 @@ function renderTool(){
     const tool = document.createElement("div");
     tool.id = "paint-tool";
     tool.innerHTML = `<div id='tool-nav'>
-    <button>Menu</button><button style='display:none'>Map</button><button style='display:none'>Holo</button><button>About</button>
+    <button class='chosen'>Menu</button><button class='hidden'>Map</button><button class='hidden'>Holo</button><button>Help</button>
     </div><div id='tool-content'>
 
     <div id='tool-menu'>
-        <div><h3>DredArt - your personal art creator</h3></div>
-        <input type='file' accept='.png' id='pImg'><label for='pImg'>Use pixelart</label><div><span>Drop here or select pixelated PNG image to paint it into the game.</span></div>
-        <label id='nImg'>Create pixelart</label><div><span>Open DredArt Render. Crop, scale and convernt pictures to game color pallete.</span></div>
+        <div><h3>DredArt | Art Creator</h3></div>
+        <input type='file' accept='.png' id='pImg'><label for='pImg'>Use pixel art</label><div><span>Select Pixel Map to paint it into the game.</span></div>
+        <label id='nImg'>Create pixel art</label><div><span>Open DredArt Render. Crop, scale and convernt pictures to game color pallete.</span></div>
         <label id='iMOSAIC'><a target='_blank' href='https://discord.gg/uNgD6vv67c'>Join MOSAIC server</a></label><div><span>Join the coolest Dredark event!</span></div>
         <div><p>DredArt v1.0 by I am Shrek</p></div>
     </div><div id='tool-map'></div>
     <div id='tool-holo'></div>
     <div id='tool-about'>
-        <p>Extension is work in progress (Updates soon). In current version, only map and holo features are available. In plans: rendering pixelart from PNG, tool guide...</p>
+
+<h1>How to use DredArt?</h1>
+<section>
+<ul>
+<li>DredArt | Render (aslo available <a href="http://dredart.myartsonline.com" target="_blank">on website</a>) Comes with build-in help.</li>
+<li>DredArt | Creator</li>
+</ul>
+</section>
+<hr>
+<section>
+<ol>
+<li><a href="#help-over">Overwiev</a></li>
+<li><a href="#help-map">Map</a></li>
+<li><a href="#help-holo">Holo</a></li>
+<li><a href="#help-trouble">Fix problems</a></li>
+</ol>
+</section>
+<hr>
+<section id="help-over">
+<h2>1. Overview</h2>
+<p>In this section we will focus on Creator.</p>
+<p>In top bar there are 3 new buttons:</p>
+<ul>
+<li>Pallete - open / close Creator</li>
+<li>Red Cross - remove Holo (removes textures)</li>
+<li>Refresh - Refreshes textures in case of their absence.</li>
+</ul>
+<p>In Creator menu you can go to Render or Paint</p>
+<p>To paint a pixel art follow these steps:</p>
+<ol start="0">
+<li>Prepare Freeport Anchor and 3 signs</li>
+<li>Upload Pixel Map created in Render</li>
+<li>Summary will show up. If your pixel art is not in ship's corner, enter correct coordinates.</li>
+<li>Click Generate!</li>
+<li>First time warning will show up. Read it!</li>
+<li>New tabs showed up:
+    <ul>
+        <li>Map - mini map of the pixel art. Hovering on pixels will show their coordinates.</li>
+        <li>Holo - Holo uses textures to display big stencils of the pixel art.</li>
+    </ul>
+</li>
+</ol>
+</section><hr>
+<section id="help-map">
+<h2>2. Map</h2>
+<p>Very simple tab that contains map of pixel art.</p>
+<p>To scroll horizontaly without clicking use SHIFT+SCROLL</p>
+</section><hr>
+<section id="help-holo">
+<h2>3. Holo</h2>
+<p>Overview of elements:</p>
+<ol>
+<li>Text instruction</li>
+<li>Coordinates for blocks you need to place to display hologram. They depend on coords you entered before.</li>
+<li><span>Floating panel</span>
+    <ul>
+        <li>Check - use to check for errors in placing paint. Correct pixels should turn into one shade of grey.</li>
+        <li>Color from coords - After enterring a coordinate returns Color. Usefull for correcting mistakes.</li>
+        <li>Sector Select - select ship sector you are currently inside. (exist due to limitations)</li>
+    </ul>
+</li>
+<li>Individual colors - clicking on them displays a stencil where to put color. Black - don't put / transparent - put. Each color has checkbox that you can tap if you finish paiting color.</li>
+</ol>
+<br>
+<p>Limitations</p>
+<ul>
+<li>Curently there is a size limit for texture, caused by cogg's fights with WebGLContext. For us that means that Holo won't always fit in. Solution is to use holo in empty ship, with max zoom.</li>
+<li>In any moment cogg can make this stop working <small>(pls no i worked on it for too long)</small></li>
+</ul>
+</section><hr>
+<section id="help-trouble">
+<h2>5. Troubleshooting</h2>
+<ul>
+<li><b>Grey screen</b>
+    Happens after combo of rendering approx. 80 stencils. Refresh site to fix.
+</li>
+<li><b>No visible holo after clicking on color</b>
+    Use holo in empty ship, with max zoom. If doesn't help, refresh site.
+</li>
+<li><b>There is a thing not described here</b>
+    Report it in MOSIAC Discord server.
+</li>
+</ul>
+</section>
+
     </div></div>
-    <div id='tool-message' style='display:none'>
+    <div id='tool-message' class='hidden'>
         <button>Close</button><div></div>
     </div>`;
 
     document.getElementById("motd").appendChild(tool);
+    document.getElementById("motd").style['display'] = '';
     
     const nav = document.getElementById("tool-nav");
     const navChildren = nav.children;
     const content = document.getElementById("tool-content");
+    const messageBox = document.getElementById("tool-message");
     const message = document.querySelector("#tool-message div");
-    const menu = document.getElementById("tool-menu");
     const map = document.getElementById("tool-map");
     const holo = document.getElementById("tool-holo");
-    const about = document.getElementById("tool-about");
 
     showSection(0);
     for(let i=0; i<navChildren.length; i++){
-        navChildren[i].onclick = function() {showSection(i);}
+        navChildren[i].onclick = function() {
+            showSection(i);
+        }
     }
 
-    //Create pixelart
-    document.getElementById("nImg").onclick = function() {window.open(chrome.runtime.getURL('render.html'));}
+    //Create pixel art
+    document.getElementById("nImg").onclick = function() {window.open(chrome.runtime.getURL('render/index.html'));}
 
     //Pixelated PNG
     document.getElementById("pImg").onchange = function(){
@@ -81,7 +167,7 @@ function renderTool(){
             return info('Error. Propably file is empty.');
         }
         if(file.type!="image/png"){
-            return info('Error. File is not PNG. (Use DredArt-render for making pixelarts)');
+            return info('Error. File is not PNG. (Use DredArt-render for making pixel arts)');
         }
     
         const img = new Image();
@@ -89,40 +175,62 @@ function renderTool(){
         img.src = imgurl;
         img.onload = function() {
             URL.revokeObjectURL(imgurl);
-            if(this.width>80 || this.height>80){
-                return info('Images bigger than 80x80 pixels are not allowed! (Use DredArt-render for making pixelarts)');
+            if(this.width>1560 || this.height>1585){
+                return info('This image is not created with DredArt | Render!');
             }
+            const source = document.createElement('canvas');
+            source.width = this.width/20;
+            source.height = (this.height-25)/20;
+            const sourceCtx = source.getContext('2d');
+            sourceCtx.fillRect(0,0,source.width,source.height)
+            const sourceData = sourceCtx.getImageData(0,0,source.width,source.height);
+            const sData = sourceData.data;
+
             const scanner = document.createElement('canvas');
             scanner.width = this.width;
-            scanner.height = this.height;
-            const scanCtx=scanner.getContext('2d');
+            scanner.height = this.height-25;
+            const scanCtx = scanner.getContext('2d');
             scanCtx.drawImage(this, 0, 0);
             const sD = scanCtx.getImageData(0,0,scanner.width,scanner.height).data;
-            for (var i = 0; i < sD.length; i += 4) {
-                if(findIndex([sD[i],sD[i+1],sD[i+2]])==256) {
-                    return info("Image contains color that dont exist in Dredark color pallete. (Use DredArt-render for making pixelarts)");
+            for(var y = 0; y < scanner.height; y+=20){
+                for(var x = 0; x < scanner.width; x+=20){
+                    let i = pxIndex(x,y, scanner.width);
+                    if(findIndex([sD[i],sD[i+1],sD[i+2]])==256) {
+                        console.log("BROKE 1");
+                        return info(i+" Image contains color that dont exist in Dredark color pallete. (Use DredArt | render for making pixel arts)");
+                    }
+                    if(sD[i+3]!=255){
+                        console.log("BROKE 2");
+                        return info('Image contains transparency. No transparency is allowed. (Use DredArt | render for making pixel arts)');
+                    }
+                    let j = pxIndex(x/20,y/20, source.width);
+                    sData[j] = sD[i];
+                    sData[j+1] = sD[i+1];
+                    sData[j+2] = sD[i+2];
                 }
-                if(sD[i+3]!=0&&sD[i+3]!=255){
-                    return info('Image contains partial transparency. Only full transparency is allowed. (Use DredArt-render for making pixelarts)');
-                }
+            }
+            sourceCtx.putImageData(sourceData, 0, 0);
+
+            function pxIndex(x,y,w) {
+                return (x+y*w)*4;
             }
 
             //displaying info 
             info();
             const desc = document.createElement("p");
             desc.classList.add("desc");
-            desc.innerHTML =`Image: <span>${file.name}</span>, ${img.width} width x ${img.height} height`;
+            desc.innerHTML =`<span>${file.name}</span>, ${source.width} width x ${source.height} height`;
             message.appendChild(desc);
 
             const thumbnail = document.createElement('img');
-            let thurl=URL.createObjectURL(file);
+            let thurl = source.toDataURL();;
             thumbnail.src = thurl;
             thumbnail.onload = function() {URL.revokeObjectURL(thurl);}
             thumbnail.setAttribute("class", "pixelart");
             message.appendChild(thumbnail);
 
             const settingD = document.createElement("div");
-            settingD.innerHTML = `<p>Coordinates for bottom-left corner of painting<input type='text' placeholder='1' id='corner1'> x <input type='text' placeholder='1' id='corner2'></p>`;
+            settingD.innerHTML = `<p>Coordinates for bottom-left corner of painting<br><input type='text' placeholder='1' id='corner1'> x <input type='text' placeholder='1' id='corner2'></p>`;
             message.appendChild(settingD);
             const corner1=document.getElementById("corner1");
             const corner2=document.getElementById("corner2");
@@ -131,25 +239,25 @@ function renderTool(){
 
             const rPix = document.createElement("button");
             rPix.textContent = "Generate!";
-            rPix.onclick = function(){renderPixelart(scanner)}
+            rPix.onclick = function(){renderPixelart(source)}
             message.appendChild(rPix);
         }
 
-        function renderPixelart(scanner){
-            nav.style["display"]='';
-            content.style["display"]='';
-            message.parentElement.style["display"]='none';
+        function renderPixelart(source){
+            nav.classList.remove('hidden');
+            content.classList.remove('hidden');
+            messageBox.classList.add('hidden');
             for(let i=0; i<navChildren.length; i++)
-                navChildren[i].style = "";
+                navChildren[i].classList.remove('hidden');
 
             const can = document.createElement('canvas');
-            can.width = img.width;
-            can.height = img.height;
-            const ctx=can.getContext('2d');
+            can.width = source.width;
+            can.height = source.height;
+            const ctx = can.getContext('2d', {willReadFrequently: true});
             ctx.fillStyle = "rgb(187,187,187)";
-            ctx.drawImage(scanner, 0, 0);
+            ctx.drawImage(source, 0, 0);
 
-            showSection(1);
+            showSection(2);
             let corner=[1,0], corner1=document.querySelector('#corner1'),corner2=document.querySelector('#corner2');
 
             if(corner1.value!="")
@@ -172,8 +280,8 @@ function renderTool(){
                 for(let o=0; o<can.width; o++){
                     let c=ctx.getImageData(o, i, 1, 1).data;
                     let td = document.createElement('td');
-                    td.style["background-color"] = "rgb("+c[0]+','+c[1]+','+c[2]+")";
-                    td.setAttribute("data-xy", (corner[0]+o)+","+(can.height-i+corner[1]));
+                    td.style["background-color"] = `rgb(${c[0]},${c[1]},${c[2]})`;
+                    td.setAttribute("data-xy", `${(corner[0]+o)},${(can.height-i+corner[1])}`);
                     let gc = findIndex([c[0],c[1],c[2]]).toString(16).padEnd(2, '0').toUpperCase();
                     td.textContent = gc;
                     if(!imgColors.includes(gc)) imgColors.push(gc);
@@ -200,16 +308,20 @@ function renderTool(){
                 warnheader.style["background-color"]="red";
                 message.appendChild(warnheader);
                 const parag1 = document.createElement("h3");
-                parag1.textContent ="Hologram overwrites these textures: signs, anchor, bg_ship, tiles_subworld, tiles_overworld, bg_gradient. If you have any textures installed make sure you saved them.";
+                parag1.textContent = "Hologram overwrites these textures: signs, anchor, bg_ship, tiles_subworld, tiles_overworld, bg_gradient.";
                 message.appendChild(parag1);
                 const parag2 = document.createElement("h3");
-                parag2.textContent ="To remove Hologram click X in top bar.";
+                parag2.textContent = "To remove Hologram click X in top bar.";
                 parag2.style["color"]="red";
                 message.appendChild(parag2);
                 const parag3 = document.createElement("h3");
                 parag3.style["background-color"]="red";
                 parag3.textContent ="Note that after rendering colors around 80 times screen will become grey. This is due to broswers limitations. Refreshing page solves problem.";
                 message.appendChild(parag3);
+                const parag4 = document.createElement("p");
+                parag4.textContent = "At first your Holo propably won't work. Read the Help tab to fix your issues."
+                message.appendChild(parag4);
+
                 const dontShow = document.createElement("input");
                 dontShow.type = 'checkbox';
                 dontShow.id = 'dontShow'
@@ -396,20 +508,25 @@ function renderTool(){
             imgColors.sort();
             imgColors.forEach(c => {
                 const col = document.createElement("div");
-                col.textContent = c;
+                col.classList.add('colorLabel');
+
+                const checkDone = document.createElement("input");
+                checkDone.type = 'checkbox';
+                const colorName = document.createElement("span");
+                colorName.textContent = c;
+
+                col.append(checkDone);
+                col.append(colorName);
                 c=rgb[parseInt(c, 16)];
                 col.onclick = function(){
-                    renderShadow(c); 
                     check.classList.remove('selected');
                     document.querySelectorAll("#tool-holo>div").forEach(e => {
                         e.classList.remove('selected');
                     });
+                    if(!this.classList.contains('selected')) renderShadow(c); 
                     this.classList.add('selected');
                 }
-                col.ondblclick = function(){
-                    col.classList.toggle('done');
-                }
-                col.style['background-color'] = "rgb("+c[0]+','+c[1]+','+c[2]+")";
+                col.style['background-color'] = col.style['accent-color'] = `rgb(${c[0]},${c[1]},${c[2]})`;
                 holo.appendChild(col);
             });
 
@@ -541,20 +658,16 @@ function renderTool(){
         }
     }
 
-    //MOSAIC img base
-    document.getElementById("iMOSAIC").onclick = function() {
-        info("This part is work in progres");
-    }
 
     document.querySelector("#tool-message button").onclick = function() {
-        nav.style["display"]='';
-        content.style["display"]='';
-        message.parentElement.style["display"]='none';
+        nav.classList.remove('hidden');
+        content.classList.remove('hidden');
+        messageBox.classList.add('hidden');
     }
-    function info(info=null) {
-        nav.style["display"]='none';
-        content.style["display"]='none';
-        message.parentElement.style["display"]='';
+    function info(info = null) {
+        nav.classList.add('hidden');
+        content.classList.add('hidden');
+        messageBox.classList.remove('hidden');
         while(message.firstChild) message.firstChild.remove();
         if(info){
             const p=document.createElement("p");
@@ -566,9 +679,13 @@ function renderTool(){
 
     function showSection(s){
         for(let i=0; i<content.children.length; i++){
-            content.children[i].style = "display:none";
+            content.children[i].classList.add("hidden");
         }
-        content.children[s].style = "";
+        content.children[s].classList.remove("hidden");
+        for(let o=0; o<navChildren.length; o++){
+            navChildren[o].classList.remove('chosen');
+        }
+        navChildren[s].classList.add('chosen');
     }
 }
 
@@ -582,10 +699,10 @@ function refreshTXT() {
 function removeHolo() {
     document.evaluate('//button[text()=" Settings"]', document.getElementById("team_menu"), null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click();
     document.evaluate('//button[text()="Modify Assets"]', document.getElementById("team_menu"), null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click();
-        if(document.querySelector("#tool-holo div")) {document.querySelectorAll("#tool-holo div").forEach(e => {e.style["border-color"] = ""})}
-        ['sign','sign_hover','sign_near','anchor','bg_ship', 'tiles_subworld', 'tiles_overworld', 'bg_gradient'].forEach(n =>{
+        new Array('sign','sign_hover','sign_near','anchor','bg_ship', 'tiles_subworld', 'tiles_overworld', 'bg_gradient').forEach(n =>{
             if(document.evaluate('//td[text()="'+n+'.png"]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue!=null) document.evaluate('//td[text()="'+n+'.png"]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.parentElement.querySelector("td:nth-of-type(3) button").click();
         })
     localStorage.removeItem("tool-holo");
     document.querySelector("#new-ui-left button").click();
+    document.querySelectorAll("#tool-holo div").forEach(e => {e.classList.remove('selected');});
 }
