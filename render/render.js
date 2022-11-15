@@ -1048,7 +1048,7 @@ function render(OGimg) {
         for(var i=0; i<255; i++){
             c = rgb[i]
             if(a[0]==c[0] && a[1]==c[1] && a[2]==c[2])
-                return i.toString(16).padEnd(2, '0').toUpperCase()
+                return i.toString(16).padStart(2, '0').toUpperCase()
         }
     }
 }

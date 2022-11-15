@@ -223,7 +223,7 @@ function renderTool(){
             message.appendChild(desc);
 
             const thumbnail = document.createElement('img');
-            let thurl = source.toDataURL();;
+            let thurl = source.toDataURL();
             thumbnail.src = thurl;
             thumbnail.onload = function() {URL.revokeObjectURL(thurl);}
             thumbnail.setAttribute("class", "pixelart");
@@ -282,7 +282,7 @@ function renderTool(){
                     let td = document.createElement('td');
                     td.style["background-color"] = `rgb(${c[0]},${c[1]},${c[2]})`;
                     td.setAttribute("data-xy", `${(corner[0]+o)},${(can.height-i+corner[1])}`);
-                    let gc = findIndex([c[0],c[1],c[2]]).toString(16).padEnd(2, '0').toUpperCase();
+                    let gc = findIndex([c[0],c[1],c[2]]).toString(16).padStart(2, '0').toUpperCase();
                     td.textContent = gc;
                     if(!imgColors.includes(gc)) imgColors.push(gc);
                     td.ondblclick = function(){showOnly(gc)}
