@@ -37,7 +37,7 @@ function renderTool(){
         <input type='file' accept='.png' id='pImg'><label for='pImg'>Use pixel art</label><div><span>Select Pixel Map to paint it into the game.</span></div>
         <label id='nImg'>Create pixel art</label><div><span>Open DredArt Render. Crop, scale and convernt pictures to game color pallete.</span></div>
         <label id='iMOSAIC'><a target='_blank' href='https://discord.gg/uNgD6vv67c'>Join MOSAIC server</a></label><div><span>Join the coolest Dredark event!</span></div>
-        <div><p>DredArt v1.0 by I am Shrek</p></div>
+        <div><p>DredArt v1.01 by I am Shrek</p></div>
     </div><div id='tool-map'></div>
     <div id='tool-holo'></div>
     <div id='tool-about'>
@@ -195,14 +195,10 @@ function renderTool(){
             for(var y = 0; y < scanner.height; y+=20){
                 for(var x = 0; x < scanner.width; x+=20){
                     let i = pxIndex(x,y, scanner.width);
-                    if(findIndex([sD[i],sD[i+1],sD[i+2]])==256) {
-                        console.log("BROKE 1");
+                    if(findIndex([sD[i],sD[i+1],sD[i+2]])==256)
                         return info(i+" Image contains color that dont exist in Dredark color pallete. (Use DredArt | render for making pixel arts)");
-                    }
-                    if(sD[i+3]!=255){
-                        console.log("BROKE 2");
+                    if(sD[i+3]!=255)
                         return info('Image contains transparency. No transparency is allowed. (Use DredArt | render for making pixel arts)');
-                    }
                     let j = pxIndex(x/20,y/20, source.width);
                     sData[j] = sD[i];
                     sData[j+1] = sD[i+1];

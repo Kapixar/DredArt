@@ -8,7 +8,7 @@ const drop = document.querySelector("#drop-zone");
 const error = document.querySelector(".error");
 const urlInp = document.querySelector("#url");
 const help = document.querySelector("#help");
-const version = '1.0 version';
+const version = '1.01 version';
 document.getElementById("version").textContent = version;
 
 
@@ -1020,9 +1020,9 @@ function render(OGimg) {
             canMap.height=canResult.height*scale+25
             ctxMap.imageSmoothingEnabled = false
             ctxMap.fillStyle = `white`
-            ctxMap.font = '13px consolas'
+            ctxMap.font = '13px Courier'
             ctxMap.shadowColor = 'black'
-            ctxMap.shadowBlur = 4
+            ctxMap.shadowBlur = 3
 
             ctxMap.scale(scale,scale)
             ctxMap.drawImage(canResult,0,0)
