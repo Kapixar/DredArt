@@ -16,6 +16,9 @@ Created from the idea of **MOSAIC** project
 4. Select and upload the extracted folder
 5. Disable Developer Mode
 
+## Usage
+In top bar (where socials are) there should be yellow pallete you can click.
+
 
 ### DredArt | Render
 Part of the tool is available on this website: http://dredart.myartsonline.com

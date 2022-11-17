@@ -100,12 +100,12 @@ function render(OGimg) {
         return settContent.appendChild(error);
     }
     const   canResult= document.querySelector('#shipShape canvas'),
-            ctxResult=canResult.getContext('2d', {willReadFrequently: true});
+            ctxResult=canResult.getContext('2d', {willReadFrequently: true, colorSpace: "srgb"});
             ctxResult.imageSmoothingEnabled = false;
     const   canTemp=document.createElement("canvas"),
-            ctxTemp=canTemp.getContext('2d', {willReadFrequently: true});
+            ctxTemp=canTemp.getContext('2d', {willReadFrequently: true, colorSpace: "srgb"});
     const   canSave=document.createElement("canvas"),
-            ctxSave=canSave.getContext('2d');
+            ctxSave=canSave.getContext('2d', {colorSpace: "srgb"});
             canSave.width=78;
             canSave.height=78;
     
@@ -155,18 +155,18 @@ function render(OGimg) {
         const shipShape = document.querySelector("#shipShape");
 
         const shipBg = document.querySelector("#shipbg");
-        const ctxShip = shipBg.getContext("2d");
+        const ctxShip = shipBg.getContext("2d", {colorSpace: "srgb"});
 
         const bgPng = new Image();
         bgPng.src = "img/bg_ship.png";
 
         const canMain = document.querySelector("#canMain");
-        const ctxMain = canMain.getContext("2d");
+        const ctxMain = canMain.getContext("2d", {colorSpace: "srgb"});
         ctxMain.imageSmoothingEnabled = false;
 
         const cropBox = document.querySelector("#cropBox");
         const canCrop = document.querySelector("#canCrop");
-        const ctxCrop = canCrop.getContext("2d");
+        const ctxCrop = canCrop.getContext("2d", {colorSpace: "srgb"});
 
         const scaleRange = document.querySelector("#scalerange");                   // zoom range
         scaleRange.value='0';
@@ -467,7 +467,7 @@ function render(OGimg) {
         cropAccept.onclick = function() {
 
             const canCroped = document.createElement("canvas");
-            const ctxCropped = canCroped.getContext("2d");
+            const ctxCropped = canCroped.getContext("2d", {colorSpace: "srgb"});
 
             const distorstion = OGimg.width / canCrop.clientWidth;
             canCroped.width = selector.clientWidth * distorstion;
@@ -793,7 +793,7 @@ function render(OGimg) {
         async function scaleAndDither(){
             goDither.classList.add("disabled");
             if(hideCheck.checked) return;
-            if(Date.now() - lastRun < 600) {
+            if(Date.now() - lastRun < 400) {
                 if(!timeoutStart){
                     timeoutStart=true;
                     setTimeout(() => {
@@ -1014,7 +1014,7 @@ function render(OGimg) {
     function renderMap(){
         return new Promise(resolve =>{
             const canMap = document.createElement("canvas")
-            const ctxMap = canMap.getContext("2d", {alpha: false, willReadFrequently: true});
+            const ctxMap = canMap.getContext("2d", {alpha: false, willReadFrequently: true, colorSpace: "srgb"});
             let scale=20
             canMap.width=canResult.width*scale
             canMap.height=canResult.height*scale+25
