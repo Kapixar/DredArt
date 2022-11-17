@@ -1,0 +1,20 @@
+1.0
+- initial release
+
+1.01 
+- macOS fixes - forcing sRGB
+
+
+
+FUTURE:
+
+1.02 goals
+- restricting pixel art minimum size
+- small bug fixes
+
+1.1 goals
+- CIE 2000 and sRGB colorSpace in Render
+- more Dithering alghoritms for Render
+
+- more user friendy Creator inteface
+- welcome page for Creator 
