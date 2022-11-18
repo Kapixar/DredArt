@@ -16,13 +16,10 @@
         "48": "img/icon48.png",
         "128": "img/icon128.png" 
     },
-    "host_permissions": [
-        "https://*.drednot.io/*"
-    ],
     "web_accessible_resources": [
         { 
             "resources": ["render/index.html"],
             "matches": ["https://drednot.io/*", "https://test.drednot.io/*"]
-          }
+        }
     ]
 }

@@ -197,8 +197,7 @@ function renderTool(){
                 for(var x = 0; x < scanner.width; x+=20){
                     let i = pxIndex(x,y, scanner.width);
                     if(findIndex([sD[i],sD[i+1],sD[i+2]])==256){
-                        alert(`broke!: ${x},${y} | ${sD[i]},${sD[i+1]},${sD[i+2]}`);
-                        return info(i+" Image contains color that dont exist in Dredark color pallete. (Use DredArt | render for making pixel arts)");
+                        return info("Image contains color that dont exist in Dredark color pallete. (Use DredArt | render for making pixel arts)");
                     }
                     if(sD[i+3]!=255)
                         return info('Image contains transparency. No transparency is allowed. (Use DredArt | render for making pixel arts)');
