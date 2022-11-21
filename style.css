@@ -1,3 +1,24 @@
+::-webkit-scrollbar {
+    width: 13px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0,0,0,.3);
+}
+
+::-webkit-scrollbar-corner{
+    background: rgba(0,0,0,.3);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgb(123, 123, 123);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(82, 82, 82);
+}
+
 #top-bar span a:hover{
     cursor: pointer;
 }

@@ -1,11 +1,12 @@
 //Top bar buttons
 const a = document.createElement("a");
 const topBar = document.querySelector("#top-bar span");
+const game = document.getElementById("big-ui-container");
 a.onclick = function(){
     let t = document.getElementById("paint-tool");
     if(!t) return renderTool();
     t.classList.toggle("hidden");
-    document.getElementById("motd").style['display'] = t.classList.contains("hidden") ? 'none' : '';
+    document.getElementById("motd").style['display'] = t.classList.contains("hidden") && game.style['display']=='' ? 'none' : '';
 } 
 a.innerHTML = "<i class='fas big-icon fa-palette'></i><div class='tooltip tooltip-low dark'>DredArt</div>";
 topBar.appendChild(a);
@@ -217,7 +218,7 @@ function renderTool(){
             info();
             const desc = document.createElement("p");
             desc.classList.add("desc");
-            desc.innerHTML =`<span>${file.name}</span>, ${source.width} width x ${source.height} height`;
+            desc.textContent =`${file.name.length > 15 ? file.name.substring(0, 14)+'...' : file.name}, ${source.width} width x ${source.height} height`;
             message.appendChild(desc);
 
             const thumbnail = document.createElement('img');
@@ -360,7 +361,18 @@ function renderTool(){
             holo.appendChild(holoHelp);
             const coords = document.createElement("div");
             coords.classList.add('long', 'coords');
-            coords.innerHTML = `<div><img src='./img/anchor.png'> ${x1},${y1}</div><div><img src='./img/sign_hover.png'> ${x2},${y1}</div><div><img src='./img/sign.png'> ${x1},${y2}</div><div><img src='./img/sign_near.png'> ${x2},${y2}</div>`;
+            const blocks = ['anchor', 'sign_hover', 'sign', 'sign_near'];
+            const blocksXY = [`${x1},${x1}`,`${x2},${y1}`,`${x1},${y2}`,`${x2},${y2}`]
+            for(let i=0; i<4; i++){
+                const block = document.createElement("div");
+                const blockI = document.createElement("img");
+                blockI.src = `./img/${blocks[i]}.png`;
+                const blockS = document.createElement("span");
+                blockS.textContent = blocksXY[i];
+                block.append(blockI);
+                block.append(blockS);
+                coords.append(block);
+            }
             holo.appendChild(coords);
 
 
@@ -529,6 +541,7 @@ function renderTool(){
             });
 
             var lastColor;
+            const data = ctx.getImageData(0, 0, can.width, can.height).data;
             //rendering holo for each color (dynamically)
             function renderShadow(c) {
                 lastColor=c;
@@ -542,12 +555,11 @@ function renderTool(){
                 const shadowCan = document.createElement("canvas");
                 shadowCan.width = can.width;
                 shadowCan.height = can.height;
-                const shadowCtx = shadowCan.getContext("2d", { alpha: false, colorSpace: "srgb"});
+                const shadowCtx = shadowCan.getContext("2d");
                 shadowCtx.fillStyle = 'rgb(0,0,0)';
                 shadowCtx.fillRect(0,0,shadowCan.width,shadowCan.height);
                 const holoData = shadowCtx.getImageData(0,0,shadowCan.width,shadowCan.height);
                 const hData = holoData.data;
-                const data = ctx.getImageData(0, 0, can.width, can.height).data;
                 for (var i = 0; i < data.length; i += 4) {
                     if(data[i]==c[0] && data[i+1]==c[1] && data[i+2]==c[2]){
                         hData[i+3]=0;
@@ -604,10 +616,9 @@ function renderTool(){
                 canvas.toBlob(function(blob) {
                     document.evaluate('//button[text()=" Settings"]', document.getElementById("team_menu"), null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click();
                     document.evaluate('//button[text()="Modify Assets"]', document.getElementById("team_menu"), null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click();
-                    let dataTransfer = new DataTransfer();
+                    const dataTransfer = new DataTransfer();
                     dataTransfer.items.add(new File([blob], name));
                     document.querySelector(".file-pane").dispatchEvent(new DragEvent('drop', {dataTransfer}));
-                    dataTransfer = null;
                     document.querySelector("#new-ui-left button").click();
                     return canvas;
                 });

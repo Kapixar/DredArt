@@ -503,7 +503,6 @@ function render(OGimg) {
         }
 
         let t=0, r=0, b=0, l=0;                     //top right bottom left
-        console.log(dist);
 
         const selector = document.querySelector("#cropBox div div div");
         const tEl = document.querySelector("#cropBox div div div div:nth-of-type(1)");
@@ -880,10 +879,10 @@ function render(OGimg) {
             let mD=999999, id;
             let c=rgbToLab(r,g,b);
             for(let i=0;i<255;i++){
-                let d=Math.sqrt((c[0]-lab[i][0])**2 + (c[1]-lab[i][1])**2 + (c[2]-lab[i][2])**2);
-                if(d<mD){
-                    mD=d;
-                    id=i;
+                let deltaE=Math.sqrt((c[0]-lab[i][0])**2 + (c[1]-lab[i][1])**2 + (c[2]-lab[i][2])**2);
+                if(deltaE < mD){
+                    mD = deltaE;
+                    id = i;
                 }
             }
             return id;
@@ -911,11 +910,11 @@ function render(OGimg) {
                         Math.pow(deltaC/sc, 2) +
                         Math.pow(deltaH/sh, 2);
 
-                let d = o < 0 ? 0 : Math.sqrt(o);
+                let deltaE = o < 0 ? 0 : Math.sqrt(o);
                 
-                if(d<mD){
-                    mD=d;
-                    id=i;
+                if(deltaE < mD){
+                    mD = deltaE;
+                    id = i;
                 }
             }
             return id;

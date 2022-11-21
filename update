@@ -1,2 +1,9 @@
 1.0
 - initial Chrome Web Store release
+- initail Firefox release
+
+1.1
+- custom scrollbar in game
+- fixed MOTD missing
+- performance improvements
+- small bug fixes
