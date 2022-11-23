@@ -39,7 +39,7 @@ function renderTool(){
         <input type='file' accept='.png' id='pImg'><label for='pImg'>Use pixel art</label><div><span>Select Pixel Map to paint it into the game.</span></div>
         <label id='nImg'>Create pixel art</label><div><span>Open DredArt Render. Crop, scale and convernt pictures to game color pallete.</span></div>
         <label id='iMOSAIC'><a target='_blank' href='https://discord.gg/uNgD6vv67c'>Join MOSAIC server</a></label><div><span>Join the coolest Dredark event!</span></div>
-        <div><p>DredArt v1.01 by I am Shrek</p></div>
+        <div><p>DredArt v1.1.1 by I am Shrek</p></div>
     </div><div id='tool-map'></div>
     <div id='tool-holo'></div>
     <div id='tool-about'>
@@ -152,7 +152,7 @@ function renderTool(){
     }
 
     //Create pixel art
-    document.getElementById("nImg").onclick = function() {window.open(chrome.runtime.getURL('render/index.html'));}
+    document.getElementById("nImg").onclick = function() {window.open(chrome.runtime.getURL('../render/index.html'));}
 
     //Pixelated PNG
     document.getElementById("pImg").onchange = function(){
@@ -177,7 +177,7 @@ function renderTool(){
         img.src = imgurl;
         img.onload = function() {
             URL.revokeObjectURL(imgurl);
-            if(this.width>1560 || this.height>1585){
+            if(this.width>1600 || this.height>1625){
                 return info('This image is not created with DredArt | Render!');
             }
             const source = document.createElement('canvas');
@@ -362,7 +362,7 @@ function renderTool(){
             const coords = document.createElement("div");
             coords.classList.add('long', 'coords');
             const blocks = ['anchor', 'sign_hover', 'sign', 'sign_near'];
-            const blocksXY = [`${x1},${x1}`,`${x2},${y1}`,`${x1},${y2}`,`${x2},${y2}`]
+            const blocksXY = [`${x1},${y1}`,`${x2},${y1}`,`${x1},${y2}`,`${x2},${y2}`]
             for(let i=0; i<4; i++){
                 const block = document.createElement("div");
                 const blockI = document.createElement("img");

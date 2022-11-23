@@ -8,7 +8,7 @@ const drop = document.querySelector("#drop-zone");
 const error = document.querySelector(".error");
 const urlInp = document.querySelector("#url");
 const help = document.querySelector("#help");
-const version = '1.01 version';
+const version = '1.1.1 version';
 document.getElementById("version").textContent = version;
 
 

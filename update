@@ -7,3 +7,7 @@
 - fixed MOTD missing
 - performance improvements
 - small bug fixes
+
+1.1.1
+- preparation for MOSAIC pixel arts
+- fixed bug with blocks coords
