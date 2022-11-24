@@ -297,6 +297,7 @@ input[type='file']{
     grid-template-columns: 5fr 1fr 5fr 5fr;
     margin: 5px;
     border-radius: 10px;
+    padding: 5px;
 }
 
 #tool-holo .coords{

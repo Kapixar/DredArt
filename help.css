@@ -62,8 +62,13 @@ body div:first-of-type{
 body div:first-of-type span{
     border-radius: 5px;
     padding: 5px;
+    background-color: rgb(0, 0, 0);
 }
 
 a{
     color: rgb(177, 177, 177);
+}
+
+iframe{
+    margin: auto;
 }

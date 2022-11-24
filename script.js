@@ -39,7 +39,7 @@ function renderTool(){
         <input type='file' accept='.png' id='pImg'><label for='pImg'>Use pixel art</label><div><span>Select Pixel Map to paint it into the game.</span></div>
         <label id='nImg'>Create pixel art</label><div><span>Open DredArt Render. Crop, scale and convernt pictures to game color pallete. <a target='_blank' href='http://dredart.myartsonline.com/'>Also on web.</a></span></div>
         <label id='iMOSAIC'><a target='_blank' href='https://discord.gg/uNgD6vv67c'>Join MOSAIC server</a></label><div><span>Join the coolest Dredark event!</span></div>
-        <div><p>DredArt v1.1.2 by I am Shrek</p></div>
+        <div><p>DredArt v1.1.3 by I am Shrek</p></div>
     </div><div id='tool-map'></div>
     <div id='tool-holo'></div></div>
     <div id='tool-message' class='hidden'>
