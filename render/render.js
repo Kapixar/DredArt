@@ -1,5 +1,3 @@
-if(navigator.maxTouchPoints > 1) document.body.textContent = "Your device is not supported as tool is designed only for PC. If you think this is an error contact developer."
-
 const container = document.querySelector("#content");
 const upload = document.querySelector("#upload");
 const setup = document.querySelector("#setup");
@@ -8,7 +6,7 @@ const drop = document.querySelector("#drop-zone");
 const error = document.querySelector(".error");
 const urlInp = document.querySelector("#url");
 const help = document.querySelector("#help");
-const version = '1.1.1 version';
+const version = '1.1.2 version';
 document.getElementById("version").textContent = version;
 
 
@@ -821,53 +819,133 @@ function render(OGimg) {
             shipShape.classList.remove("hidden");  
             goDither.classList.remove("disabled");
             var closest = alghCheck.checked ? closestCIE94 : closestCIE76;
+            
+            const scaleD = ctxResult.getImageData(0,0,canResult.width,canResult.height);
+            let sD=scaleD.data;
             if(!ditherCheck.checked){                                                       //no dithering
-                const scaleD = ctxResult.getImageData(0,0,canResult.width,canResult.height);
-                let sD=scaleD.data;
-                for (var i = 0; i < sD.length; i += 4) {
-                    let c=closest(sD[i],sD[i+1],sD[i+2]);
+                noDithering(sD, closest);
+            }else{                                                                          //floyd-steinberg
+                floydSteinberg(sD, closest);
+            }
+            ctxResult.putImageData(scaleD,0,0);
+        }
+
+        function floydSteinberg(sD, closest){
+            for(var y=0; y<canResult.height; y++){
+                for(var x=0; x<canResult.width; x++){
+                    let i=pxIndex(x,y);
+                    const c=closest(sD[i],sD[i+1],sD[i+2]);
+                    const r_er=sD[i]-rgb[c][0];
+                    const g_er=sD[i+1]-rgb[c][1];
+                    const b_er=sD[i+2]-rgb[c][2];
+
                     sD[i]=rgb[c][0];
                     sD[i+1]=rgb[c][1];
                     sD[i+2]=rgb[c][2];
+
+                    i=pxIndex(x+1,y);
+                    sD[i] += r_er*7/16;
+                    sD[i+1] += g_er*7/16;
+                    sD[i+2] += b_er*7/16;
+                    
+                    i=pxIndex(x-1,y+1);
+                    sD[i] += r_er*3/16;
+                    sD[i+1] += g_er*3/16;
+                    sD[i+2] += b_er*3/16;
+
+                    i=pxIndex(x,y+1);
+                    sD[i] += r_er*5/16;
+                    sD[i+1] += g_er*5/16;
+                    sD[i+2] += b_er*5/16;
+
+                    i=pxIndex(x+1,y+1);
+                    sD[i] += r_er/16;
+                    sD[i+1] += g_er/16;
+                    sD[i+2] += b_er/16;
                 }
-                ctxResult.putImageData(scaleD,0,0);
-            }else{                                                                          //floyd-steinberg
-                const scaleD = ctxResult.getImageData(0,0,canResult.width,canResult.height);
-                let sD=scaleD.data;
-                for(var y=0; y<canResult.height; y++){
-                    for(var x=0; x<canResult.width; x++){
-                        let i=pxIndex(x,y);
-                        const c=closest(sD[i],sD[i+1],sD[i+2]);
-                        const r_er=sD[i]-rgb[c][0];
-                        const g_er=sD[i+1]-rgb[c][1];
-                        const b_er=sD[i+2]-rgb[c][2];
+            }
+        }
 
-                        sD[i]=rgb[c][0];
-                        sD[i+1]=rgb[c][1];
-                        sD[i+2]=rgb[c][2];
+        function floydSteinbergHSL(sD, closest){
+            for(var p=0; p<sD.lenght; p+=4){
+                let hsl = RGBToHSL(sD[p],sD[p+1],sD[p+2])
+                sD[p] = hsl[0];
+                sD[p+1] = hsl[1];
+                sD[p+2] = hsl[2];
+            }
+            for(var y=0; y<canResult.height; y++){
+                for(var x=0; x<canResult.width; x++){
+                    let i=pxIndex(x,y);
+                    let r = HSLToRGB(sD[i],sD[i+1],sD[i+2]);
+                    const c=closest(r[0],r[1],r[2]);
+                    const hsll = RGBToHSL(rgb[c][0], rgb[c][1], rgb[c][2])
+                    const h_er=sD[i]-hsll[0];
+                    const s_er=sD[i+1]-hsll[1];
+                    const l_er=sD[i+2]-hsll[2];
 
-                        i=pxIndex(x+1,y);
-                        sD[i] += r_er*7/16;
-                        sD[i+1] += g_er*7/16;
-                        sD[i+2] += b_er*7/16;
-                        
-                        i=pxIndex(x-1,y+1);
-                        sD[i] += r_er*3/16;
-                        sD[i+1] += g_er*3/16;
-                        sD[i+2] += b_er*3/16;
+                    sD[i]=rgb[c][0];
+                    sD[i+1]=rgb[c][1];
+                    sD[i+2]=rgb[c][2];
 
-                        i=pxIndex(x,y+1);
-                        sD[i] += r_er*5/16;
-                        sD[i+1] += g_er*5/16;
-                        sD[i+2] += b_er*5/16;
+                    i=pxIndex(x+1,y);
+                    sD[i] += h_er*7/16;
+                    sD[i+1] += s_er*7/16;
+                    sD[i+2] += l_er*7/16;
+                    
+                    i=pxIndex(x-1,y+1);
+                    sD[i] += h_er*3/16;
+                    sD[i+1] += s_er*3/16;
+                    sD[i+2] += l_er*3/16;
 
-                        i=pxIndex(x+1,y+1);
-                        sD[i] += r_er/16;
-                        sD[i+1] += g_er/16;
-                        sD[i+2] += b_er/16;
-                    }
+                    i=pxIndex(x,y+1);
+                    sD[i] += h_er*5/16;
+                    sD[i+1] += s_er*5/16;
+                    sD[i+2] += l_er*5/16;
+
+                    i=pxIndex(x+1,y+1);
+                    sD[i] += h_er/16;
+                    sD[i+1] += s_er/16;
+                    sD[i+2] += l_er/16;
                 }
-                ctxResult.putImageData(scaleD,0,0);
+            }
+        }
+
+        const HSLToRGB = (h, s, l) => {
+        s /= 100;
+        l /= 100;
+        const k = n => (n + h / 30) % 12;
+        const a = s * Math.min(l, 1 - l);
+        const f = n =>
+            l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
+        return [255 * f(0), 255 * f(8), 255 * f(4)];
+        };
+
+        const RGBToHSL = (r, g, b) => {
+        r /= 255;
+        g /= 255;
+        b /= 255;
+        const l = Math.max(r, g, b);
+        const s = l - Math.min(r, g, b);
+        const h = s
+            ? l === r
+            ? (g - b) / s
+            : l === g
+            ? 2 + (b - r) / s
+            : 4 + (r - g) / s
+            : 0;
+        return [
+            60 * h < 0 ? 60 * h + 360 : 60 * h,
+            100 * (s ? (l <= 0.5 ? s / (2 * l - s) : s / (2 - (2 * l - s))) : 0),
+            (100 * (2 * l - s)) / 2,
+        ];
+        };
+
+        function noDithering(sD, closest){
+            for (var i = 0; i < sD.length; i += 4) {
+                let c=closest(sD[i],sD[i+1],sD[i+2]);
+                sD[i]=rgb[c][0];
+                sD[i+1]=rgb[c][1];
+                sD[i+2]=rgb[c][2];
             }
         }
 

@@ -11,3 +11,10 @@
 1.1.1
 - preparation for MOSAIC pixel arts
 - fixed bug with blocks coords
+
+1.1.2
+- added quick start help
+- moved help tab into help page
+
+1.1.2.1
+- fixed Render refusing to work on touchable PC

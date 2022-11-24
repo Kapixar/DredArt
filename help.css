@@ -1,0 +1,69 @@
+html, body{
+    height: 100%;
+    font-size: 1em;
+}
+
+body{
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-flow: column;
+    background-image:url("render/img/bg_star.png"),radial-gradient(rgb(161, 161, 170),rgb(17, 15, 15)) ;
+    background-size: auto;
+    color: white;
+    height: 100vh;
+    width: 100vw;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,"Helvetica Neue",Arial,sans-serif;
+    overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+    width: 13px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0,0,0,.3);
+}
+
+::-webkit-scrollbar-corner{
+    background: rgba(0,0,0,.3);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgb(123, 123, 123);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(82, 82, 82);
+}
+
+
+body div{
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(25,35,45, .9);
+    padding: 30px;
+    width: 60vw;
+    border-radius: 10px;
+    position: relative;
+    margin-block: 5px;
+}
+
+body div:first-of-type{
+    background-color: rgb(193, 141, 67);
+    background: linear-gradient(rgb(210, 113, 22), rgb(193, 141, 67));
+    border-radius: 20px;
+    color: black;
+    text-align: center;
+    font-weight: 600;
+}
+
+body div:first-of-type span{
+    border-radius: 5px;
+    padding: 5px;
+}
+
+a{
+    color: rgb(177, 177, 177);
+}

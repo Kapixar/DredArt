@@ -31,104 +31,17 @@ function renderTool(){
     const tool = document.createElement("div");
     tool.id = "paint-tool";
     tool.innerHTML = `<div id='tool-nav'>
-    <button class='chosen'>Menu</button><button class='hidden'>Map</button><button class='hidden'>Holo</button><button>Help</button>
+    <button class='chosen'>Menu</button><button class='hidden'>Map</button><button class='hidden'>Holo</button><button id='help'>Help</button>
     </div><div id='tool-content'>
 
     <div id='tool-menu'>
         <div><h3>DredArt | Art Creator</h3></div>
         <input type='file' accept='.png' id='pImg'><label for='pImg'>Use pixel art</label><div><span>Select Pixel Map to paint it into the game.</span></div>
-        <label id='nImg'>Create pixel art</label><div><span>Open DredArt Render. Crop, scale and convernt pictures to game color pallete.</span></div>
+        <label id='nImg'>Create pixel art</label><div><span>Open DredArt Render. Crop, scale and convernt pictures to game color pallete. <a target='_blank' href='http://dredart.myartsonline.com/'>Also on web.</a></span></div>
         <label id='iMOSAIC'><a target='_blank' href='https://discord.gg/uNgD6vv67c'>Join MOSAIC server</a></label><div><span>Join the coolest Dredark event!</span></div>
-        <div><p>DredArt v1.1.1 by I am Shrek</p></div>
+        <div><p>DredArt v1.1.2 by I am Shrek</p></div>
     </div><div id='tool-map'></div>
-    <div id='tool-holo'></div>
-    <div id='tool-about'>
-
-<h1>How to use DredArt?</h1>
-<section>
-<ul>
-<li>DredArt | Render (aslo available <a href="http://dredart.myartsonline.com" target="_blank">on website</a>) Comes with build-in help.</li>
-<li>DredArt | Creator</li>
-</ul>
-</section>
-<hr>
-<section>
-<ol>
-<li><a href="#help-over">Overwiev</a></li>
-<li><a href="#help-map">Map</a></li>
-<li><a href="#help-holo">Holo</a></li>
-<li><a href="#help-trouble">Fix problems</a></li>
-</ol>
-</section>
-<hr>
-<section id="help-over">
-<h2>1. Overview</h2>
-<p>In this section we will focus on Creator.</p>
-<p>In top bar there are 3 new buttons:</p>
-<ul>
-<li>Pallete - open / close Creator</li>
-<li>Red Cross - remove Holo (removes textures)</li>
-<li>Refresh - Refreshes textures in case of their absence.</li>
-</ul>
-<p>In Creator menu you can go to Render or Paint</p>
-<p>To paint a pixel art follow these steps:</p>
-<ol start="0">
-<li>Prepare Freeport Anchor and 3 signs</li>
-<li>Upload Pixel Map created in Render</li>
-<li>Summary will show up. If your pixel art is not in ship's corner, enter correct coordinates.</li>
-<li>Click Generate!</li>
-<li>First time warning will show up. Read it!</li>
-<li>New tabs showed up:
-    <ul>
-        <li>Map - mini map of the pixel art. Hovering on pixels will show their coordinates.</li>
-        <li>Holo - Holo uses textures to display big stencils of the pixel art.</li>
-    </ul>
-</li>
-</ol>
-</section><hr>
-<section id="help-map">
-<h2>2. Map</h2>
-<p>Very simple tab that contains map of pixel art.</p>
-<p>To scroll horizontaly without clicking use SHIFT+SCROLL</p>
-</section><hr>
-<section id="help-holo">
-<h2>3. Holo</h2>
-<p>Overview of elements:</p>
-<ol>
-<li>Text instruction</li>
-<li>Coordinates for blocks you need to place to display hologram. They depend on coords you entered before.</li>
-<li><span>Floating panel</span>
-    <ul>
-        <li>Check - use to check for errors in placing paint. Correct pixels should turn into one shade of grey.</li>
-        <li>Color from coords - After enterring a coordinate returns Color. Usefull for correcting mistakes.</li>
-        <li>Sector Select - select ship sector you are currently inside. (exist due to limitations)</li>
-    </ul>
-</li>
-<li>Individual colors - clicking on them displays a stencil where to put color. Black - don't put / transparent - put. Each color has checkbox that you can tap if you finish paiting color.</li>
-</ol>
-<br>
-<p>Limitations</p>
-<ul>
-<li>Curently there is a size limit for texture, caused by cogg's fights with WebGLContext. For us that means that Holo won't always fit in. Solution is to use holo in empty ship, with max zoom.</li>
-<li>In any moment cogg can make this stop working <small>(pls no i worked on it for too long)</small></li>
-</ul>
-</section><hr>
-<section id="help-trouble">
-<h2>5. Troubleshooting</h2>
-<ul>
-<li><b>Grey screen</b>
-    Happens after combo of rendering approx. 80 stencils. Refresh site to fix.
-</li>
-<li><b>No visible holo after clicking on color</b>
-    Use holo in empty ship, with max zoom. If doesn't help, refresh site.
-</li>
-<li><b>There is a thing not described here</b>
-    Report it in MOSIAC Discord server.
-</li>
-</ul>
-</section>
-
-    </div></div>
+    <div id='tool-holo'></div></div>
     <div id='tool-message' class='hidden'>
         <button>Close</button><div></div>
     </div>`;
@@ -153,6 +66,7 @@ function renderTool(){
 
     //Create pixel art
     document.getElementById("nImg").onclick = function() {window.open(chrome.runtime.getURL('../render/index.html'));}
+    document.getElementById("help").onclick = function() {window.open(chrome.runtime.getURL('../help.html#main'));}
 
     //Pixelated PNG
     document.getElementById("pImg").onchange = function(){

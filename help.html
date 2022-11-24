@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DredArt Help</title>
+    <link rel="stylesheet" href="help.css">
+</head>
+
+<body>
+    <div>
+        <h2>Quick start</h2>
+        <p>Refresh drednot.io sites if you have any open.</p>
+        <p>In the game's top bar (with socials) there should appear 3 new buttons</p>
+        <p>Clicking <span style="background-color:yellow">yellow pallete</span> opens the popup in MOTD</p>
+        <p>Render - To generate pixel art (converter) click <span style="background-color:crimson">Create pixel art</span>. Render's help is build-in.</p>
+        <p>Creator - To use pixel art from Render click <span style="background-color:orange">Use pixel art</span>. Detailed help down below.</p>
+        <p>Extension Holo will erease some of your textures. There is detailed warning build into tool.</p>
+    </div>
+    <div id="main">
+        <h2>DredArt Help</h2>
+        <section>
+            <ul>
+                <li>DredArt | Render (aslo available <a href="http://dredart.myartsonline.com" target="_blank">on
+                        website</a>) Comes with build-in help.</li>
+                <li>DredArt | Creator</li>
+            </ul>
+        </section>
+        <hr>
+        <section>
+            <ol>
+                <li><a href="#help-over">Overwiev</a></li>
+                <li><a href="#help-map">Map</a></li>
+                <li><a href="#help-holo">Holo</a></li>
+                <li><a href="#help-trouble">Fix problems</a></li>
+            </ol>
+        </section>
+        <hr>
+        <section id="help-over">
+            <h2>1. Overview</h2>
+            <p>In this section we will focus on Creator.</p>
+            <p>In top bar there are 3 new buttons:</p>
+            <ul>
+                <li>Pallete - open / close Creator</li>
+                <li>Red Cross - remove Holo (removes textures)</li>
+                <li>Refresh - Refreshes textures in case of their absence.</li>
+            </ul>
+            <p>In Creator menu you can go to Render or Paint</p>
+            <p>To paint a pixel art follow these steps:</p>
+            <ol start="0">
+                <li>Prepare Freeport Anchor and 3 signs</li>
+                <li>Upload Pixel Map created in Render</li>
+                <li>Summary will show up. If your pixel art is not in ship's corner, enter correct coordinates.</li>
+                <li>Click Generate!</li>
+                <li>First time warning will show up. Read it!</li>
+                <li>New tabs showed up:
+                    <ul>
+                        <li>Map - mini map of the pixel art. Hovering on pixels will show their coordinates.</li>
+                        <li>Holo - Holo uses textures to display big stencils of the pixel art.</li>
+                    </ul>
+                </li>
+            </ol>
+        </section>
+        <hr>
+        <section id="help-map">
+            <h2>2. Map</h2>
+            <p>Very simple tab that contains map of pixel art.</p>
+            <p>To scroll horizontaly without clicking use SHIFT+SCROLL</p>
+        </section>
+        <hr>
+        <section id="help-holo">
+            <h2>3. Holo</h2>
+            <p>Overview of elements:</p>
+            <ol>
+                <li>Text instruction</li>
+                <li>Coordinates for blocks you need to place to display hologram. They depend on coords you entered
+                    before.
+                </li>
+                <li><span>Floating panel</span>
+                    <ul>
+                        <li>Check - use to check for errors in placing paint. Correct pixels should turn into one shade
+                            of
+                            grey.</li>
+                        <li>Color from coords - After enterring a coordinate returns Color. Usefull for correcting
+                            mistakes.
+                        </li>
+                        <li>Sector Select - select ship sector you are currently inside. (exist due to limitations)</li>
+                    </ul>
+                </li>
+                <li>Individual colors - clicking on them displays a stencil where to put color. Black - don't put /
+                    transparent - put. Each color has checkbox that you can tap if you finish paiting color.</li>
+            </ol>
+            <br>
+            <p>Limitations</p>
+            <ul>
+                <li>Curently there is a size limit for texture, caused by cogg's fights with WebGLContext. For us that
+                    means
+                    that Holo won't always fit in. Solution is to use holo in empty ship, with max zoom.</li>
+                <li>In any moment cogg can make this stop working <small>(pls no i worked on it for too long)</small>
+                </li>
+            </ul>
+        </section>
+        <hr>
+        <section id="help-trouble">
+            <h2>5. Troubleshooting</h2>
+            <ul>
+                <li><b>Grey screen</b>
+                    Happens after combo of rendering approx. 80 stencils. Refresh site to fix.
+                </li>
+                <li><b>No visible holo after clicking on color</b>
+                    Use holo in empty ship, with max zoom. If doesn't help, refresh site.
+                </li>
+                <li><b>There is a thing not described here</b>
+                    Report it in MOSIAC Discord server.
+                </li>
+            </ul>
+        </section>
+
+    </div>
+</body>
+
+</html>
