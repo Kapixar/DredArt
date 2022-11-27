@@ -18,7 +18,7 @@
         <p>Clicking <span style="background-color:yellow">yellow pallete</span> opens the popup in MOTD</p>
         <p>Render - To generate pixel art (converter) click <span style="background-color:crimson">Create pixel art</span>. Render's help is build-in.</p>
         <p>Creator - To use pixel art from Render click <span style="background-color:orange">Use pixel art</span>. Detailed help down below.</p>
-        <p>Extension Holo will erease some of your textures. There is detailed warning build into tool.</p>
+        <p>Extension Holo will erease some of your textures. There is a detailed warning build into tool.</p>
     </div>
     <div id="main">
         <h2>DredArt Help</h2>
@@ -68,29 +68,28 @@
         <section id="help-map">
             <h2>2. Map</h2>
             <p>Very simple tab that contains map of pixel art.</p>
+            <p>Scroll to move around</p>
             <p>To scroll horizontaly without clicking use SHIFT+SCROLL</p>
+            <p>Double click color to hide other colors. Double click again to show them.</p>
         </section>
         <hr>
         <section id="help-holo">
             <h2>3. Holo</h2>
             <p>Overview of elements:</p>
             <ol>
-                <li>Text instruction</li>
                 <li>Coordinates for blocks you need to place to display hologram. They depend on coords you entered
                     before.
                 </li>
                 <li><span>Floating panel</span>
                     <ul>
-                        <li>Check - use to check for errors in placing paint. Correct pixels should turn into one shade
-                            of
-                            grey.</li>
-                        <li>Color from coords - After enterring a coordinate returns Color. Usefull for correcting
-                            mistakes.
-                        </li>
-                        <li>Sector Select - select ship sector you are currently inside. (exist due to limitations)</li>
+                        <li>Show all - display map of colors as Holo. Correctly placed paint will not be displayed.</li>
+                        <li>Find errors - use to check for errors in placing paint. Correct pixels should turn into one shade of grey.</li>
+                        <li>Color from coords - After enterring a coordinate returns Color.</li>
+                        <li>Sector Selector - select ship sector in which you want to show Holo (exist due to limitations)</li>
+                        <li>Quick help button</li>
                     </ul>
                 </li>
-                <li>Individual colors - clicking on them displays a stencil where to put color. Black - don't put /
+                <li>Individual colors - clicking on them displays a stencil where to put paint. Black - don't put /
                     transparent - put. Each color has checkbox that you can tap if you finish paiting color.</li>
             </ol>
             <br>
@@ -109,6 +108,9 @@
             <ul>
                 <li><b>Grey screen</b>
                     Happens after combo of rendering approx. 80 stencils. Refresh site to fix.
+                </li>
+                <li><b>No visible holo after clicking on color</b>
+                    Use holo in empty ship, with max zoom. If doesn't help, refresh site.
                 </li>
                 <li><b>No visible holo after clicking on color</b>
                     Use holo in empty ship, with max zoom. If doesn't help, refresh site.

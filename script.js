@@ -36,10 +36,10 @@ function renderTool(){
 
     <div id='tool-menu'>
         <div><h3>DredArt | Art Creator</h3></div>
-        <input type='file' accept='.png' id='pImg'><label for='pImg'>Use pixel art</label><div><span>Select Pixel Map to paint it into the game.</span></div>
+        <input type='file' accept='.png' id='pImg'><label for='pImg'>Use pixel art</label><div><span>Select Pixel Map from Render to paint it into the game.</span></div>
         <label id='nImg'>Create pixel art</label><div><span>Open DredArt Render. Crop, scale and convernt pictures to game color pallete. <a target='_blank' href='http://dredart.myartsonline.com/'>Also on web.</a></span></div>
         <label id='iMOSAIC'><a target='_blank' href='https://discord.gg/uNgD6vv67c'>Join MOSAIC server</a></label><div><span>Join the coolest Dredark event!</span></div>
-        <div><p>DredArt v1.1.3 by I am Shrek</p></div>
+        <div><p>DredArt v1.2 by I am Shrek</p></div>
     </div><div id='tool-map'></div>
     <div id='tool-holo'></div></div>
     <div id='tool-message' class='hidden'>
@@ -163,12 +163,22 @@ function renderTool(){
             for(let i=0; i<navChildren.length; i++)
                 navChildren[i].classList.remove('hidden');
 
+            //image in 1:1 scale
             const can = document.createElement('canvas');
             can.width = source.width;
             can.height = source.height;
             const ctx = can.getContext('2d', {willReadFrequently: true, colorSpace: "srgb"});
             ctx.fillStyle = "rgb(187,187,187)";
             ctx.drawImage(source, 0, 0);
+            const data = ctx.getImageData(0, 0, can.width, can.height).data;
+
+            //current color mode selected
+            const currentCan = document.createElement('canvas');
+            currentCan.width = source.width * 40;
+            currentCan.height = source.height * 40;
+            const currentCtx = currentCan.getContext('2d', {willReadFrequently: true});
+            currentCtx.imageSmoothingEnabled = false;
+
 
             showSection(2);
             let corner=[1,0], corner1=document.querySelector('#corner1'),corner2=document.querySelector('#corner2');
@@ -181,13 +191,18 @@ function renderTool(){
             
             map.textContent = '';
             holo.textContent = '';
-    
+
+            const mapHelp = document.createElement('div');
+            mapHelp.classList.add("toolHelp");
+            mapHelp.onclick = function() {this.classList.toggle('rolled')}
+            mapHelp.textContent = 'Scroll to move. Double click to hide other colors. To quickly scroll horizontaly use SHIFT + SCROLL'
+            map.append(mapHelp);
+
             const table = document.createElement('table');
             const tbox = document.createElement('div');
             tbox.id="tbox";
 
             let imgColors = [];
-
             for(let i=0; i<can.height; i++){
                 let row = document.createElement('tr');
                 for(let o=0; o<can.width; o++){
@@ -209,8 +224,8 @@ function renderTool(){
 
             //creating holo
 
-            if(img.width<7 || img.height<7){
-                return info("Holo available only for images bigger than 7x7");
+            if(can.width<7 || can.height<7){
+                return info("Holo available only for images bigger than 7x7. Use map tab.");
             }
 
 
@@ -229,11 +244,8 @@ function renderTool(){
                 message.appendChild(parag2);
                 const parag3 = document.createElement("h3");
                 parag3.style["background-color"]="red";
-                parag3.textContent ="Note that after rendering colors around 80 times screen will become grey. This is due to broswers limitations. Refreshing page solves problem.";
+                parag3.textContent ="Note that after rendering colors around 80 times screen may become grey. This is due to broswers limitations. Refreshing page solves problem.";
                 message.appendChild(parag3);
-                const parag4 = document.createElement("p");
-                parag4.textContent = "At first your Holo propably won't work. Read the Help tab to fix your issues."
-                message.appendChild(parag4);
 
                 const dontShow = document.createElement("input");
                 dontShow.type = 'checkbox';
@@ -259,7 +271,7 @@ function renderTool(){
             ecan.width=10;
             ecan.height=10;
 
-            //dividing ship, specyfying coords
+            //dividing ship
             corner[0]--;
             var width1 = Math.ceil(can.width/2);
             var height1 = Math.ceil(can.height/2); 
@@ -269,12 +281,14 @@ function renderTool(){
             let y1 = can.height-Math.ceil(Math.floor(height1/2)+0.5)+corner[1]+1;
             let y2 = can.height-height1-Math.ceil(Math.floor(height2/2)+0.5)+corner[1]+1;
             let x2 = width1+Math.ceil(Math.floor(width2/2)+0.5)+corner[0];
-            const holoHelp = document.createElement("div");
-            holoHelp.classList.add('long');
-            holoHelp.textContent = `Use coordinates below to place blocks required to create hologram. Use panel below to display it.`;
-            holo.appendChild(holoHelp);
-            const coords = document.createElement("div");
-            coords.classList.add('long', 'coords');
+
+            // help number 1
+            const help1 = document.createElement("div");
+            help1.classList.add('long', 'coords');
+            const coordsHelp = document.createElement("p");
+            coordsHelp.textContent = `Place these blocks on given coordinates.`;
+            help1.appendChild(coordsHelp);
+
             const blocks = ['anchor', 'sign_hover', 'sign', 'sign_near'];
             const blocksXY = [`${x1},${y1}`,`${x2},${y1}`,`${x1},${y2}`,`${x2},${y2}`]
             for(let i=0; i<4; i++){
@@ -285,18 +299,17 @@ function renderTool(){
                 blockS.textContent = blocksXY[i];
                 block.append(blockI);
                 block.append(blockS);
-                coords.append(block);
+                help1.append(block);
             }
-            holo.appendChild(coords);
+            holo.appendChild(help1);
 
-
-            //rendering Check holo
-            const checkCan = document.createElement("canvas");
-            const chtx = checkCan.getContext('2d', settings);
-            checkCan.width = can.width;
-            checkCan.height = can.height;
+            //rendering blending holo
+            const blendCan = document.createElement("canvas");
+            const chtx = blendCan.getContext('2d', settings);
+            blendCan.width = can.width;
+            blendCan.height = can.height;
             chtx.drawImage(can, 0, 0);
-            const checkData = chtx.getImageData(0,0,checkCan.width,checkCan.height);
+            const checkData = chtx.getImageData(0,0,blendCan.width,blendCan.height);
             const cData = checkData.data;
             for (var i = 0; i < cData.length; i += 4) {
                 cData[i]=blend(cData[i]);
@@ -306,25 +319,104 @@ function renderTool(){
             }
             chtx.putImageData(checkData,0,0);
 
+            function blend(c) {return Math.floor(255 - c*2/3);}
+
+            //rendering check holo
+            const checkCan = document.createElement("canvas");
+            const checkCtx = checkCan.getContext('2d');
+            checkCan.width = can.width * 40;
+            checkCan.height = can.height * 40;
+            checkCtx.imageSmoothingEnabled = false;
+            checkCtx.fillStyle = 'rgb(153,153,153)';
+            checkCtx.fillRect(0,0, checkCan.width, checkCan.height);
+            checkCtx.font = "bold 25px monospace";
+            checkCtx.fillStyle = 'black';
+            checkCtx.imageSmoothingEnabled = false;
+            checkCtx.globalCompositeOperation = 'destination-out';
+            for(let y=0; y<can.height; y++){
+                for(let x=0; x<can.width; x++){
+                    let i = (x+y*can.width)*4;
+                    let t = findIndex([data[i],data[i+1],data[i+2]]).toString(16).padStart(2, '0').toUpperCase();
+                    checkCtx.fillText(t, x*40+5, y*40+27);
+                }
+            }
+            checkCtx.globalCompositeOperation = 'destination-over';
+            checkCtx.drawImage(blendCan, 0, 0, checkCan.width, checkCan.height);
+
+            //rendering holo with every color hex
+            const allCan = document.createElement("canvas");
+            const allCtx = allCan.getContext('2d');
+            allCan.width = can.width * 40;
+            allCan.height = can.height * 40;
+            allCtx.imageSmoothingEnabled = false;
+            allCtx.drawImage(blendCan, 0, 0, allCtx.width, allCtx.height);
+            allCtx.fillStyle = 'rgb(153,153,153)';
+            allCtx.font = "bold 25px monospace";
+            for(let y=0; y<can.height; y++){
+                for(let x=0; x<can.width; x++){
+                    let i = (x+y*can.width)*4;
+                    let t = findIndex([data[i],data[i+1],data[i+2]]).toString(16).padStart(2, '0').toUpperCase();
+                    allCtx.fillStyle = `rgb(${data[i]},${data[i+1]},${data[i+2]})`;
+                    allCtx.fillText(t, x*40+5, y*40+27);
+                }
+            }
+
+
             //sticky box
             const stickyBox = document.createElement("div");
             stickyBox.classList.add("sticky","long");
+            const stickyButtons = document.createElement("div");
 
+            // help number 2
+            const help2 = document.createElement("div");
+            help2.classList.add('toolHelp', 'rolled');
+            help2.onclick = function() {this.classList.toggle('rolled')}
+            const allHelp = document.createElement("p");
+            const checkHelp = document.createElement("p");
+            const coordHelp = document.createElement("p");
+            const cornerHelp = document.createElement("p");
+            const colorsHelp = document.createElement("p");
+            allHelp.textContent = `Show all - display unplaced paint as text / display map as Holo`;
+            checkHelp.textContent = `Find errors - spot mistakes easier. Correct tiles turns grey`;
+            coordHelp.textContent = `Get color - returns which color is on entered coordinates`;
+            cornerHelp.textContent = `Four-piece square - select in which part of ship display Holo`;
+            colorsHelp.textContent = `Particular color box - display Holo of it. Fill transparent holes with paint. Tap checkbox to mark color done`;
+            help2.appendChild(allHelp);
+            help2.appendChild(checkHelp);
+            help2.appendChild(coordHelp);
+            help2.appendChild(cornerHelp);
+            help2.appendChild(colorsHelp);
+            stickyBox.appendChild(help2);
+
+            //all colors button
+            const allColors = document.createElement("div");
+            allColors.textContent = 'Show all';
+            allColors.id = 'allButton';
+            allColors.setAttribute("title", "Display every color on Holo as text");
+            allColors.onclick = function() {
+                document.querySelectorAll("#tool-holo>div, #allButton, #checkButton").forEach(e => {
+                    e.classList.remove('selected');
+                });
+                if(!this.classList.contains('selected')) refreshCurrent(allCan);
+                this.classList.add('selected');
+            }
+            stickyButtons.appendChild(allColors);
 
             //check button
             const check = document.createElement("div");
-            check.textContent = 'Check';
+            check.textContent = 'Find errors';
             check.id = 'checkButton';
-            check.setAttribute("title", "Show where a mistake has been made. Correctly placed paint will create grey color.")
+            check.setAttribute("title", "Find mistakes easier. Only correct tiles turn grey.")
             check.onclick = function() {
-                choosePart(checkCan);
-                document.querySelectorAll("#tool-holo>div").forEach(e => {
+                document.querySelectorAll("#tool-holo>div, #allButton, #checkButton").forEach(e => {
                     e.classList.remove('selected');
                 });
+                if(!this.classList.contains('selected')) refreshCurrent(checkCan);
                 this.classList.add('selected');
-                uploadHolo(wcan, "bg_ship.png");
             }
-            stickyBox.appendChild(check);
+            stickyButtons.appendChild(check);
+
+            stickyBox.appendChild(stickyButtons);
 
             //color search
             const searchBox = document.createElement("div");
@@ -354,7 +446,7 @@ function renderTool(){
                 c=rgb[parseInt(c, 16)];
                 return searchBox.style['background']=`rgb(${c[0]},${c[1]},${c[2]})`;
             }
-            searchR.textContent = 'Color from coords';
+            searchR.textContent = 'Get color';
             searchBox.appendChild(search1);
             searchBox.appendChild(serachComma);
             searchBox.appendChild(search2);
@@ -371,7 +463,7 @@ function renderTool(){
             LTlabel.setAttribute('for', 'LTcorner');
             const LTcorner = document.createElement("input");
             LTcorner.onchange = function() {
-                if(lastColor) renderShadow(lastColor);
+                displayPart();
             }
             LTcorner.type = 'radio';
             LTcorner.name = 'corners';
@@ -385,7 +477,7 @@ function renderTool(){
             RTlabel.setAttribute('for', 'RTcorner');
             const RTcorner = document.createElement("input");
             RTcorner.onchange = function() {
-                if(lastColor) renderShadow(lastColor);
+                displayPart();
             }
             RTcorner.type = 'radio';
             RTcorner.name = 'corners';
@@ -398,7 +490,7 @@ function renderTool(){
             LDlabel.setAttribute('for', 'LDcorner');
             const LDcorner = document.createElement("input");
             LDcorner.onchange = function() {
-                if(lastColor) renderShadow(lastColor);
+                displayPart();
             }
             LDcorner.type = 'radio';
             LDcorner.name = 'corners';
@@ -411,7 +503,7 @@ function renderTool(){
             RDlabel.setAttribute('for', 'RDcorner');
             const RDcorner = document.createElement("input");
             RDcorner.onchange = function() {
-                if(lastColor) renderShadow(lastColor);
+                displayPart();
             }
             RDcorner.type = 'radio';
             RDcorner.name = 'corners';
@@ -436,36 +528,26 @@ function renderTool(){
 
                 const checkDone = document.createElement("input");
                 checkDone.type = 'checkbox';
+                checkDone.onclick = function(e){e.stopPropagation();}
                 const colorName = document.createElement("span");
                 colorName.textContent = c;
 
                 col.append(checkDone);
                 col.append(colorName);
-                c=rgb[parseInt(c, 16)];
+                c = rgb[parseInt(c, 16)];
                 col.onclick = function(){
-                    check.classList.remove('selected');
-                    document.querySelectorAll("#tool-holo>div").forEach(e => {
+                    document.querySelectorAll("#tool-holo>div, #allButton, #checkButton").forEach(e => {
                         e.classList.remove('selected');
                     });
-                    if(!this.classList.contains('selected')) renderShadow(c); 
+                    if(!this.classList.contains('selected')) refreshCurrent(renderShadow(c)); 
                     this.classList.add('selected');
                 }
                 col.style['background-color'] = col.style['accent-color'] = `rgb(${c[0]},${c[1]},${c[2]})`;
                 holo.appendChild(col);
             });
 
-            var lastColor;
-            const data = ctx.getImageData(0, 0, can.width, can.height).data;
             //rendering holo for each color (dynamically)
             function renderShadow(c) {
-                lastColor=c;
-                if(localStorage.getItem("tool-holo")!='t') {
-                    uploadHolo(wcan, "bg_ship.png");
-                    uploadHolo(ecan, "tiles_subworld.png");
-                    uploadHolo(ecan, "tiles_overworld.png");
-                    uploadHolo(ecan, "bg_gradient.png");
-                    localStorage.setItem("tool-holo", 't');
-                }
                 const shadowCan = document.createElement("canvas");
                 shadowCan.width = can.width;
                 shadowCan.height = can.height;
@@ -475,23 +557,31 @@ function renderTool(){
                 const holoData = shadowCtx.getImageData(0,0,shadowCan.width,shadowCan.height);
                 const hData = holoData.data;
                 for (var i = 0; i < data.length; i += 4) {
-                    if(data[i]==c[0] && data[i+1]==c[1] && data[i+2]==c[2]){
+                    if(data[i]==c[0] && data[i+1]==c[1] && data[i+2]==c[2])
                         hData[i+3]=0;
-                    }
                 }
                 shadowCtx.putImageData(holoData,0,0);
-                choosePart(shadowCan);
                 return shadowCan;
             }
-            function blend(c) {
-                return Math.floor(255 - c*2/3);
+
+            function refreshCurrent(canvas){
+                currentCtx.clearRect(0, 0, currentCan.width, currentCan.height);
+                currentCtx.drawImage(canvas, 0, 0, currentCan.width, currentCan.height);
+                displayPart();
             }
 
             var oldPart='4';
-            function choosePart(canvas) {
-                let part=document.querySelector('input[type=radio][name=corners]:checked').value
-                if(part!=oldPart){
-                    oldPart=part;
+            function displayPart() {
+                if(localStorage.getItem("tool-holo")!='t') {
+                    uploadHolo(wcan, "bg_ship.png");
+                    uploadHolo(ecan, "tiles_subworld.png");
+                    uploadHolo(ecan, "tiles_overworld.png");
+                    uploadHolo(ecan, "bg_gradient.png");
+                    localStorage.setItem("tool-holo", 't');
+                }
+                let part = document.querySelector('input[type=radio][name=corners]:checked').value;
+                if(part != oldPart){
+                    oldPart = part;
                     uploadHolo(wcan, "anchor.png");
                     uploadHolo(wcan, "sign_hover.png");
                     uploadHolo(wcan, "sign.png");
@@ -500,41 +590,48 @@ function renderTool(){
 
                 switch(document.querySelector('input[type=radio][name=corners]:checked').value) {
                     case '0':
-                        uploadHolo(renderHolo(canvas, false, false), "anchor.png");
+                        uploadHolo(divideShadow(false, false), "anchor.png");
                     break;
                     case '1':
-                        uploadHolo(renderHolo(canvas, true, false), "sign_hover.png");
+                        uploadHolo(divideShadow(true, false), "sign_hover.png");
                     break;
                     case '2': 
-                        uploadHolo(renderHolo(canvas, false, true), "sign.png");
+                        uploadHolo(divideShadow(false, true), "sign.png");
                     break;
                     case '3': 
-                        uploadHolo(renderHolo(canvas, true, true), "sign_near.png");
+                        uploadHolo(divideShadow(true, true), "sign_near.png");
                     break;
                 }
             }
 
-            //render texture for one specific part of ship (for 1 block)
-            function renderHolo(shadow, x=false, y=false) {
+            let holoWidth1 = Math.floor(width1/2)*80+40;
+            let holoWidth2 = Math.floor(width2/2)*80+40;
+            let holoHeight1 = Math.floor(height1/2)*80+40;
+            let holoHeight2 = Math.floor(height2/2)*80+40;
+            width1 *= 40;
+            width2 *= 40;
+            height1 *= 40;
+            height2 *= 40;
+            //divide current color texture
+            function divideShadow(x=false, y=false){
                 const sizeCan = document.createElement("canvas");
                 const sizeCtx = sizeCan.getContext("2d");
-                sizeCan.width = Math.floor((x ? width2 : width1)/2)*80+40;
-                sizeCan.height = Math.floor((y ? height2 : height1)/2)*80+40;
+                sizeCan.width = x ? holoWidth2 : holoWidth1;
+                sizeCan.height = y ? holoHeight2 : holoHeight1;
                 sizeCtx.imageSmoothingEnabled = false;
-                sizeCtx.scale(40,40);
-                sizeCtx.drawImage(shadow, x*width1, y*height1, x ? width2 : width1, y ? height2 : height1, 0, 0, x ? width2 : width1, y ? height2 : height1);
+                sizeCtx.drawImage(currentCan, x*width1, y*height1, x ? width2 : width1, y ? height2 : height1, 0, 0, x ? width2 : width1, y ? height2 : height1);
                 return sizeCan;
             }
+
             //upload one texture
             function uploadHolo(canvas, name) {
-                canvas.toBlob(function(blob) {
+                canvas.toBlob(blob => {
                     document.evaluate('//button[text()=" Settings"]', document.getElementById("team_menu"), null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click();
                     document.evaluate('//button[text()="Modify Assets"]', document.getElementById("team_menu"), null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click();
                     const dataTransfer = new DataTransfer();
                     dataTransfer.items.add(new File([blob], name));
                     document.querySelector(".file-pane").dispatchEvent(new DragEvent('drop', {dataTransfer}));
                     document.querySelector("#new-ui-left button").click();
-                    return canvas;
                 });
             }
 
@@ -627,5 +724,5 @@ function removeHolo() {
         })
     localStorage.removeItem("tool-holo");
     document.querySelector("#new-ui-left button").click();
-    document.querySelectorAll("#tool-holo div").forEach(e => {e.classList.remove('selected');});
+    document.querySelectorAll("#tool-holo div, #allButton, #checkButton").forEach(e => {e.classList.remove('selected');});
 }

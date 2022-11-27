@@ -1,6 +1,7 @@
 # DredArt - your paiting comrade
-Chrome extension for Dredark/Drednot/DSA
+Chrome and Firefox extension for Dredark/Drednot/DSA
 Consists of 2 parts: Render and Creator
+
   
 Created from the idea of **MOSAIC** project
 

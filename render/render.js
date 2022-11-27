@@ -6,7 +6,7 @@ const drop = document.querySelector("#drop-zone");
 const error = document.querySelector(".error");
 const urlInp = document.querySelector("#url");
 const help = document.querySelector("#help");
-const version = '1.1.3 version';
+const version = '1.2 version';
 document.getElementById("version").textContent = version;
 
 
@@ -1065,14 +1065,11 @@ function render(OGimg) {
 
         const thumbnail = document.querySelector("#download img")
         thumbnail.src = canResult.toDataURL()
+
+        const PXdimensions = document.querySelector("#dimensions")
+        PXdimensions.textContent = `${canResult.width} x ${canResult.height}`
         
         const nameBox = document.querySelector("#download input")
-
-        // const downloadRaw = document.querySelector("#download a")
-        // downloadRaw.onclick = function(){
-        //     this.href= canResult.toDataURL()
-        //     this.download = `${nameBox.value ? nameBox.value : names[Math.floor(Math.random()*9)]}.png`
-        // } 
 
         const downloaMap = document.querySelector("#download a")
         downloaMap.classList.add("disabled")
@@ -1097,9 +1094,10 @@ function render(OGimg) {
             canMap.height=canResult.height*scale+25
             ctxMap.imageSmoothingEnabled = false
             ctxMap.fillStyle = `white`
-            ctxMap.font = '13px Courier'
+            ctxMap.font = '13px monospace'
             ctxMap.shadowColor = 'black'
             ctxMap.shadowBlur = 3
+            
 
             ctxMap.scale(scale,scale)
             ctxMap.drawImage(canResult,0,0)
