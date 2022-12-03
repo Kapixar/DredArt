@@ -47,7 +47,7 @@ body > div:first-of-type{
     top: -10px;
     left: -10px;
     z-index: 100;
-    background-color:  rgba(255,255,255, .1);
+    background-color:  rgba(87, 87, 87, 0.1);
     border-bottom-right-radius: 50%;
     padding: 20px;
 }
@@ -151,13 +151,12 @@ input[type="file"]{
 button, #download div > a{
     box-sizing: border-box;
     border-radius: 5px;
-    background: linear-gradient(#666,#000 200%);
+    background: linear-gradient(#555,#000 200%);
     border: 2px black solid;
     padding: 5px;
     color: #fff;
     text-decoration: none;
     cursor: pointer;
-    vertical-align: middle;
     user-select: none;
 }
 
@@ -170,6 +169,8 @@ button:hover{
 }
 .btn-accent{
     background: linear-gradient(var(--accent),#000 200%);
+    color: var(--bg-accent);
+    font-weight: 500;
 }
 
 
@@ -395,7 +396,6 @@ label .slider{
     height: 1.5em;
     border-radius: 3px;
     margin: 3px;
-    vertical-align:middle;
     transition: filter .2s;
     box-shadow: 0 0 4px var(--accent);
 }
@@ -662,6 +662,7 @@ label input:checked+.slider::after{
     width: 50px;
     height: 50px;
     background-color: var(--accent);
+    color: var(--bg-accent);
     font-weight: 900;
     font-size: x-large;
     border-radius: 90px;

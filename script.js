@@ -39,7 +39,7 @@ function renderTool(){
         <input type='file' accept='.png' id='pImg'><label for='pImg'>Use pixel art</label><div><span>Select Pixel Map from Render to paint it into the game.</span></div>
         <label id='nImg'>Create pixel art</label><div><span>Open DredArt Render. Crop, scale and convernt pictures to game color pallete. <a target='_blank' href='http://dredart.myartsonline.com/'>Also on web.</a></span></div>
         <label id='iMOSAIC'><a target='_blank' href='https://discord.gg/uNgD6vv67c'>Join MOSAIC server</a></label><div><span>Join the coolest Dredark event!</span></div>
-        <div><p>DredArt v1.2 by I am Shrek</p></div>
+        <div><p>DredArt v1.2.1 by I am Shrek</p></div>
     </div><div id='tool-map'></div>
     <div id='tool-holo'></div></div>
     <div id='tool-message' class='hidden'>
@@ -193,7 +193,7 @@ function renderTool(){
             holo.textContent = '';
 
             const mapHelp = document.createElement('div');
-            mapHelp.classList.add("toolHelp");
+            mapHelp.classList.add("toolHelp", 'rolled');
             mapHelp.onclick = function() {this.classList.toggle('rolled')}
             mapHelp.textContent = 'Scroll to move. Double click to hide other colors. To quickly scroll horizontaly use SHIFT + SCROLL'
             map.append(mapHelp);
@@ -236,7 +236,7 @@ function renderTool(){
                 warnheader.style["background-color"]="red";
                 message.appendChild(warnheader);
                 const parag1 = document.createElement("h3");
-                parag1.textContent = "Hologram overwrites these textures: signs, anchor, bg_ship, tiles_subworld, tiles_overworld, bg_gradient.";
+                parag1.textContent = "Hologram overwrites these textures: signs, item_hatch_bg, item_hatch, bg_ship, tiles_subworld, tiles_overworld, bg_gradient.";
                 message.appendChild(parag1);
                 const parag2 = document.createElement("h3");
                 parag2.textContent = "To remove Hologram click X in top bar.";
@@ -289,12 +289,13 @@ function renderTool(){
             coordsHelp.textContent = `Place these blocks on given coordinates.`;
             help1.appendChild(coordsHelp);
 
-            const blocks = ['anchor', 'sign_hover', 'sign', 'sign_near'];
+            const blocks = [chrome.runtime.getURL('img/hatch.png'), './img/sign_hover.png', './img/sign.png', './img/sign_near.png'];
             const blocksXY = [`${x1},${y1}`,`${x2},${y1}`,`${x1},${y2}`,`${x2},${y2}`]
             for(let i=0; i<4; i++){
                 const block = document.createElement("div");
                 const blockI = document.createElement("img");
-                blockI.src = `./img/${blocks[i]}.png`;
+                blockI.src = blocks[i];
+                blockI.setAttribute("alt", blocks[i]);
                 const blockS = document.createElement("span");
                 blockS.textContent = blocksXY[i];
                 block.append(blockI);
@@ -321,28 +322,6 @@ function renderTool(){
 
             function blend(c) {return Math.floor(255 - c*2/3);}
 
-            //rendering check holo
-            const checkCan = document.createElement("canvas");
-            const checkCtx = checkCan.getContext('2d');
-            checkCan.width = can.width * 40;
-            checkCan.height = can.height * 40;
-            checkCtx.imageSmoothingEnabled = false;
-            checkCtx.fillStyle = 'rgb(153,153,153)';
-            checkCtx.fillRect(0,0, checkCan.width, checkCan.height);
-            checkCtx.font = "bold 25px monospace";
-            checkCtx.fillStyle = 'black';
-            checkCtx.imageSmoothingEnabled = false;
-            checkCtx.globalCompositeOperation = 'destination-out';
-            for(let y=0; y<can.height; y++){
-                for(let x=0; x<can.width; x++){
-                    let i = (x+y*can.width)*4;
-                    let t = findIndex([data[i],data[i+1],data[i+2]]).toString(16).padStart(2, '0').toUpperCase();
-                    checkCtx.fillText(t, x*40+5, y*40+27);
-                }
-            }
-            checkCtx.globalCompositeOperation = 'destination-over';
-            checkCtx.drawImage(blendCan, 0, 0, checkCan.width, checkCan.height);
-
             //rendering holo with every color hex
             const allCan = document.createElement("canvas");
             const allCtx = allCan.getContext('2d');
@@ -360,7 +339,6 @@ function renderTool(){
                     allCtx.fillText(t, x*40+5, y*40+27);
                 }
             }
-
 
             //sticky box
             const stickyBox = document.createElement("div");
@@ -394,10 +372,10 @@ function renderTool(){
             allColors.id = 'allButton';
             allColors.setAttribute("title", "Display every color on Holo as text");
             allColors.onclick = function() {
+                if(!this.classList.contains('selected')) refreshCurrent(allCan);
                 document.querySelectorAll("#tool-holo>div, #allButton, #checkButton").forEach(e => {
                     e.classList.remove('selected');
                 });
-                if(!this.classList.contains('selected')) refreshCurrent(allCan);
                 this.classList.add('selected');
             }
             stickyButtons.appendChild(allColors);
@@ -408,10 +386,10 @@ function renderTool(){
             check.id = 'checkButton';
             check.setAttribute("title", "Find mistakes easier. Only correct tiles turn grey.")
             check.onclick = function() {
+                if(!this.classList.contains('selected')) refreshCurrent(blendCan);
                 document.querySelectorAll("#tool-holo>div, #allButton, #checkButton").forEach(e => {
                     e.classList.remove('selected');
                 });
-                if(!this.classList.contains('selected')) refreshCurrent(checkCan);
                 this.classList.add('selected');
             }
             stickyButtons.appendChild(check);
@@ -536,10 +514,10 @@ function renderTool(){
                 col.append(colorName);
                 c = rgb[parseInt(c, 16)];
                 col.onclick = function(){
+                    if(!this.classList.contains('selected')) refreshCurrent(renderShadow(c)); 
                     document.querySelectorAll("#tool-holo>div, #allButton, #checkButton").forEach(e => {
                         e.classList.remove('selected');
                     });
-                    if(!this.classList.contains('selected')) refreshCurrent(renderShadow(c)); 
                     this.classList.add('selected');
                 }
                 col.style['background-color'] = col.style['accent-color'] = `rgb(${c[0]},${c[1]},${c[2]})`;
@@ -577,12 +555,13 @@ function renderTool(){
                     uploadHolo(ecan, "tiles_subworld.png");
                     uploadHolo(ecan, "tiles_overworld.png");
                     uploadHolo(ecan, "bg_gradient.png");
+                    uploadHolo(ecan, "item_hatch.png");
                     localStorage.setItem("tool-holo", 't');
                 }
                 let part = document.querySelector('input[type=radio][name=corners]:checked').value;
                 if(part != oldPart){
                     oldPart = part;
-                    uploadHolo(wcan, "anchor.png");
+                    uploadHolo(wcan, "item_hatch_bg.png");
                     uploadHolo(wcan, "sign_hover.png");
                     uploadHolo(wcan, "sign.png");
                     uploadHolo(wcan, "sign_near.png");
@@ -590,7 +569,7 @@ function renderTool(){
 
                 switch(document.querySelector('input[type=radio][name=corners]:checked').value) {
                     case '0':
-                        uploadHolo(divideShadow(false, false), "anchor.png");
+                        uploadHolo(divideShadow(false, false), "item_hatch_bg.png");
                     break;
                     case '1':
                         uploadHolo(divideShadow(true, false), "sign_hover.png");
@@ -719,7 +698,7 @@ function refreshTXT() {
 function removeHolo() {
     document.evaluate('//button[text()=" Settings"]', document.getElementById("team_menu"), null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click();
     document.evaluate('//button[text()="Modify Assets"]', document.getElementById("team_menu"), null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click();
-        new Array('sign','sign_hover','sign_near','anchor','bg_ship', 'tiles_subworld', 'tiles_overworld', 'bg_gradient').forEach(n =>{
+        new Array('sign','sign_hover','sign_near','item_hatch_bg','item_hatch','bg_ship', 'tiles_subworld', 'tiles_overworld', 'bg_gradient').forEach(n =>{
             if(document.evaluate('//td[text()="'+n+'.png"]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue!=null) document.evaluate('//td[text()="'+n+'.png"]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.parentElement.querySelector("td:nth-of-type(3) button").click();
         })
     localStorage.removeItem("tool-holo");
