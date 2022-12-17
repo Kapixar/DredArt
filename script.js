@@ -30,18 +30,37 @@ function renderTool(){
     const settings = { colorSpace: "srgb" };
     const tool = document.createElement("div");
     tool.id = "paint-tool";
-    tool.innerHTML = `<div id='tool-nav'>
-    <button class='chosen'>Menu</button><button class='hidden'>Map</button><button class='hidden'>Holo</button><button id='help'>Help</button>
-    </div><div id='tool-content'>
-
-    <div id='tool-menu'>
-        <div><h3>DredArt | Art Creator</h3></div>
-        <input type='file' accept='.png' id='pImg'><label for='pImg'>Use pixel art</label><div><span>Select Pixel Map from Render to paint it into the game.</span></div>
-        <label id='nImg'>Create pixel art</label><div><span>Open DredArt Render. Crop, scale and convernt pictures to game color pallete. <a target='_blank' href='http://dredart.myartsonline.com/'>Also on web.</a></span></div>
-        <label id='iMOSAIC'><a target='_blank' href='https://discord.gg/uNgD6vv67c'>Join MOSAIC server</a></label><div><span>Join the coolest Dredark event!</span></div>
-        <div><p>DredArt v1.2.1 by I am Shrek</p></div>
-    </div><div id='tool-map'></div>
-    <div id='tool-holo'></div></div>
+    tool.innerHTML = `
+    <div id='tool-nav'>
+        <button class='chosen'>Menu</button><button class='hidden'>Map</button><button class='hidden'>Holo</button><button class='hidden'>Settings</button><button id='help'>Help</button>
+    </div>
+    <div id='tool-content'>
+        <div id='tool-menu'>
+            <div><h3>DredArt | Creator</h3></div>
+            <input type='file' accept='.png' id='pImg'><label for='pImg'>Use pixel art</label><div><span>Select Pixel Map from Render to paint it into the game.</span></div>
+            <label id='nImg'>Create pixel art</label><div><span>Open DredArt Render. Crop, scale and convernt pictures to game color pallete. <a target='_blank' href='http://dredart.myartsonline.com/'>Also on web.</a></span></div>
+            <label id='iMOSAIC'><a target='_blank' href='https://discord.gg/uNgD6vv67c'>Join MOSAIC server</a></label><div><span>We are building the biggest pixel art ever! Join the coolest Dredark event!</span></div>
+            <div><p>DredArt v1.2.2 by I am Shrek</p></div>
+        </div>
+        <div id='tool-map'></div>
+        <div id='tool-holo'></div>
+        <div id='tool-settings'>
+            <button>Apply</button>
+            <div id='blockSetting'>
+                <p>Choose which blocks you want to use for Holo</p>
+                <div></div>
+            </div>
+            <div id='colorSetting'>
+                <p>Choose color of Holo (in one color mode)</p>
+                <label><input type='radio' name='settingColor' value='0' checked>Black</label>
+                <label><input type='radio' name='settingColor' value='1'>White</label>
+            </div>
+            <div>
+                <p><label><input type='checkbox' id='errorSetting'>Display HEX codes in Find errors?</label></p>
+                <p><label><input type='checkbox' id='showSetting'>Add text outline in Show all?</label></p>
+            </div>
+        </div>
+    </div>
     <div id='tool-message' class='hidden'>
         <button>Close</button><div></div>
     </div>`;
@@ -56,6 +75,7 @@ function renderTool(){
     const message = document.querySelector("#tool-message div");
     const map = document.getElementById("tool-map");
     const holo = document.getElementById("tool-holo");
+    // const sett = document.getElementById("tool-settings");
 
     showSection(0);
     for(let i=0; i<navChildren.length; i++){
@@ -92,7 +112,10 @@ function renderTool(){
         img.onload = function() {
             URL.revokeObjectURL(imgurl);
             if(this.width>1600 || this.height>1625){
-                return info('This image is not created with DredArt | Render!');
+                return info("Too big image! It's not created with DredArt | Render!");
+            }
+            if(this.width < 20 || this.height < 45){
+                return info("Too small image! It's not created with DredArt | Render!");
             }
             const source = document.createElement('canvas');
             source.width = this.width/20;
@@ -143,25 +166,90 @@ function renderTool(){
             message.appendChild(thumbnail);
 
             const settingD = document.createElement("div");
-            settingD.innerHTML = `<p>Coordinates for bottom-left corner of painting<br><input type='text' placeholder='1' id='corner1'> x <input type='text' placeholder='1' id='corner2'></p>`;
+            settingD.innerHTML = `<p>Coordinates for bottom-left corner of painting<br><input type='text' placeholder='1' id='cornerX'> x <input type='text' placeholder='1' id='cornerY'></p>`;
             message.appendChild(settingD);
-            const corner1=document.getElementById("corner1");
-            const corner2=document.getElementById("corner2");
-
+            const corner1 = document.getElementById("cornerX");
+            const corner2 = document.getElementById("cornerY");
+            
             setInputFilter(corner1,corner2);
 
             const rPix = document.createElement("button");
             rPix.textContent = "Generate!";
-            rPix.onclick = function(){renderPixelart(source)}
+            rPix.onclick = function(){renderPixelart(source, corner1.value, corner2.value)}
             message.appendChild(rPix);
         }
 
-        function renderPixelart(source){
+        function renderPixelart(source, c1, c2){
             nav.classList.remove('hidden');
             content.classList.remove('hidden');
             messageBox.classList.add('hidden');
             for(let i=0; i<navChildren.length; i++)
                 navChildren[i].classList.remove('hidden');
+
+            //settings setup
+            let settTXT = localStorage.getItem('holoInfo')
+            if(!settTXT || settTXT=='true') settTXT = '0324;0;0;0';
+            const settArr = settTXT.split(';');
+
+            const availableBlocksDesc = ['Cargo Hatch', 'Safety Anchor', 'Sign', 'Sign Hover', 'Sign Near']
+            const availableBlocksSrc = [chrome.runtime.getURL('img/hatch.png'), 'img/anchor.png', 'img/sign.png', 'img/sign_hover.png', 'img/sign_near.png' ]
+            const availableBlocksGame = ['item_hatch_bg.png', 'anchor.png', 'sign.png', 'sign_hover.png', 'sign_near.png' ]
+            let usedBlocksSrc = [];
+            let usedBlocksGame = [];
+            const sett = document.querySelector("#blockSetting > div");
+            sett.textContent = '';
+            const settingColor = document.querySelectorAll(`#tool-settings [name='settingColor']`)
+            const errorSetting = document.querySelector(`#tool-settings #errorSetting`)
+            const showSetting = document.querySelector(`#tool-settings #showSetting`)
+
+            for(let i=0; i<4; i++){
+                const blockSelect = document.createElement('select');
+                const defaultBlock = ~~settArr[0].slice(i,i+1);
+                for(let o=0; o<availableBlocksDesc.length; o++){
+                    const blockOption = document.createElement('option');
+                    blockOption.textContent = availableBlocksDesc[o];
+                    blockOption.value = o;
+                    if(defaultBlock==o) {
+                        blockOption.selected = true;
+                        blockSelect.setAttribute('last', o);
+                        usedBlocksSrc.push(availableBlocksSrc[o]);
+                        usedBlocksGame.push(availableBlocksGame[o]);
+                    }
+                    blockSelect.append(blockOption);
+                }
+                blockSelect.addEventListener('change', ()=>{
+                    const real = document.querySelectorAll(`#blockSetting select`)
+                    for(e of real){
+                        if(e==blockSelect || e.value != blockSelect.value) continue;
+                        e.value = blockSelect.getAttribute('last');
+                        e.setAttribute('last', blockSelect.getAttribute('last'));
+                    }
+                    blockSelect.setAttribute('last', blockSelect.value);
+                });
+                sett.append(blockSelect);
+            }
+            
+            settingColor[~~settArr[1]].checked = true
+            errorSetting.checked = ~~settArr[2]
+            showSetting.checked = ~~settArr[3]
+
+            document.querySelector(`#tool-settings button`).onclick = function(){
+                let cornerSetting = '';
+                for(e of document.querySelectorAll('#tool-settings select'))
+                    cornerSetting += e.value;
+                localStorage.setItem('holoInfo', `${cornerSetting};${document.querySelector('input[name="settingColor"]:checked').value};${errorSetting.checked ? 1:0};${showSetting.checked ? 1:0}`);
+                this.animate([
+                    {background: 'initial'},
+                    {background: "green"},
+                    {background: "initial"}
+                ], {
+                    duration: 600,
+                    direction: "alternate"
+                });
+                setTimeout(() => {
+                    renderPixelart(source, c1, c2);              
+                }, 700);
+            }
 
             //image in 1:1 scale
             const can = document.createElement('canvas');
@@ -181,12 +269,12 @@ function renderTool(){
 
 
             showSection(2);
-            let corner=[1,0], corner1=document.querySelector('#corner1'),corner2=document.querySelector('#corner2');
+            let corner=[1,0];
 
-            if(corner1.value!="")
-                corner[0] = parseInt(corner1.value);
-            if(corner2.value!="")
-                corner[1] = parseInt(corner2.value)-1;
+            if(c1!="" && c1 != "-")
+                corner[0] = parseInt(c1);
+            if(c2!="" && c2 != "-")
+                corner[1] = parseInt(c2)-1;
             document.querySelector("div button").click();
             
             map.textContent = '';
@@ -229,7 +317,7 @@ function renderTool(){
             }
 
 
-            if(localStorage.getItem("holoInfo")!='true'){
+            if(localStorage.getItem("holoInfo") === null || localStorage.getItem("holoInfo") == 'false'){
                 info();
                 const warnheader = document.createElement("h3");
                 warnheader.textContent =`Warning!`;
@@ -273,14 +361,18 @@ function renderTool(){
 
             //dividing ship
             corner[0]--;
-            var width1 = Math.ceil(can.width/2);
-            var height1 = Math.ceil(can.height/2); 
+            const blocksX =  can.width > 32 ? true : false;
+            const blocksY =  can.height > 32 ? true : false;
+
+            let width1 = blocksX ? Math.ceil(can.width/2) : can.width;
+            let height1 = blocksY ? Math.ceil(can.height/2) : can.height; 
+
             var width2 = can.width-width1;
             var height2 = can.height-height1;
-            let x1 = Math.ceil(Math.floor(width1/2)+0.5)+corner[0];
-            let y1 = can.height-Math.ceil(Math.floor(height1/2)+0.5)+corner[1]+1;
-            let y2 = can.height-height1-Math.ceil(Math.floor(height2/2)+0.5)+corner[1]+1;
-            let x2 = width1+Math.ceil(Math.floor(width2/2)+0.5)+corner[0];
+            const x1 = Math.ceil(Math.floor(width1/2)+0.5)+corner[0];
+            const y1 = can.height-Math.ceil(Math.floor(height1/2)+0.5)+corner[1]+1;
+            const y2 = can.height-height1-Math.ceil(Math.floor(height2/2)+0.5)+corner[1]+1;
+            const x2 = width1+Math.ceil(Math.floor(width2/2)+0.5)+corner[0];
 
             // help number 1
             const help1 = document.createElement("div");
@@ -289,9 +381,16 @@ function renderTool(){
             coordsHelp.textContent = `Place these blocks on given coordinates.`;
             help1.appendChild(coordsHelp);
 
-            const blocks = [chrome.runtime.getURL('img/hatch.png'), './img/sign_hover.png', './img/sign.png', './img/sign_near.png'];
+            const helpBlocks = document.createElement("div");
+
+            
+
+            const blocks = [usedBlocksSrc[0], blocksX ? usedBlocksSrc[1] : '', blocksY ? usedBlocksSrc[2] : '', blocksX&&blocksY ? usedBlocksSrc[3] : ''];
             const blocksXY = [`${x1},${y1}`,`${x2},${y1}`,`${x1},${y2}`,`${x2},${y2}`]
+            let blocksSum = 0;
             for(let i=0; i<4; i++){
+                if(blocks[i]=='') continue;
+                blocksSum += i;
                 const block = document.createElement("div");
                 const blockI = document.createElement("img");
                 blockI.src = blocks[i];
@@ -300,8 +399,10 @@ function renderTool(){
                 blockS.textContent = blocksXY[i];
                 block.append(blockI);
                 block.append(blockS);
-                help1.append(block);
+                helpBlocks.append(block);
             }
+            if(blocksSum==2) helpBlocks.classList.add('tower')
+            help1.appendChild(helpBlocks);
             holo.appendChild(help1);
 
             //rendering blending holo
@@ -322,7 +423,26 @@ function renderTool(){
 
             function blend(c) {return Math.floor(255 - c*2/3);}
 
-            //rendering holo with every color hex
+            //rendering errors holo
+            const errorCan = document.createElement("canvas");
+            const errorCtx = errorCan.getContext('2d');
+            errorCan.width = can.width * 40;
+            errorCan.height = can.height * 40;
+            errorCtx.imageSmoothingEnabled = false;
+            errorCtx.drawImage(blendCan, 0, 0, errorCan.width, errorCan.height);
+            if(~~settArr[2]){
+                errorCtx.fillStyle = 'black';
+                errorCtx.font = "13px monospace";
+                for(let y=0; y<can.height; y++){
+                    for(let x=0; x<can.width; x++){
+                        let i = (x+y*can.width)*4;
+                        let t = findIndex([data[i],data[i+1],data[i+2]]).toString(16).padStart(2, '0').toUpperCase();
+                        errorCtx.fillText(t, x*40+2, y*40+13);
+                    }
+                }
+            }   
+
+            //rendering show all holo
             const allCan = document.createElement("canvas");
             const allCtx = allCan.getContext('2d');
             allCan.width = can.width * 40;
@@ -331,6 +451,8 @@ function renderTool(){
             allCtx.drawImage(blendCan, 0, 0, allCtx.width, allCtx.height);
             allCtx.fillStyle = 'rgb(153,153,153)';
             allCtx.font = "bold 25px monospace";
+            allCtx.shadowColor = 'black'
+            if(~~settArr[3]) allCtx.shadowBlur = 2;
             for(let y=0; y<can.height; y++){
                 for(let x=0; x<can.width; x++){
                     let i = (x+y*can.width)*4;
@@ -386,7 +508,7 @@ function renderTool(){
             check.id = 'checkButton';
             check.setAttribute("title", "Find mistakes easier. Only correct tiles turn grey.")
             check.onclick = function() {
-                if(!this.classList.contains('selected')) refreshCurrent(blendCan);
+                if(!this.classList.contains('selected')) refreshCurrent(errorCan);
                 document.querySelectorAll("#tool-holo>div, #allButton, #checkButton").forEach(e => {
                     e.classList.remove('selected');
                 });
@@ -404,7 +526,7 @@ function renderTool(){
             search1.setAttribute("placeholder","1");
             search1.onkeyup = function(){searchForColor();}
             const serachComma = document.createElement("span");
-            serachComma.textContent = ",";
+            serachComma.textContent = " , ";
             const search2 = document.createElement("input");
             search2.setAttribute("placeholder","1");
             search2.onkeyup = function(){searchForColor();}
@@ -437,62 +559,28 @@ function renderTool(){
             const cornerBox = document.createElement("div");
             cornerBox.classList.add('cornerBox');
 
-            const LTlabel = document.createElement("label");
-            LTlabel.setAttribute('for', 'LTcorner');
-            const LTcorner = document.createElement("input");
-            LTcorner.onchange = function() {
-                displayPart();
+            blocksSum = 0;
+            for(let i=0; i<4; i++){
+                if(blocks[i]=='') continue;
+                blocksSum += i;
+                const cornerLabel = document.createElement("label");
+                cornerLabel.setAttribute('for', `corner${i}`);
+                const cornerInput = document.createElement("input");
+                if(i==0) cornerInput.checked = true;
+                cornerInput.onchange = function() {displayPart();}
+                cornerInput.type = 'radio';
+                cornerInput.name = 'corners';
+                cornerInput.id = `corner${i}`;
+                cornerInput.value = i;
+                cornerBox.appendChild(cornerInput);
+                cornerBox.appendChild(cornerLabel);
             }
-            LTcorner.type = 'radio';
-            LTcorner.name = 'corners';
-            LTcorner.id = 'LTcorner';
-            LTcorner.value = '0';
-            LTcorner.checked = true;
-            cornerBox.appendChild(LTcorner);
-            cornerBox.appendChild(LTlabel);
-
-            const RTlabel = document.createElement("label");
-            RTlabel.setAttribute('for', 'RTcorner');
-            const RTcorner = document.createElement("input");
-            RTcorner.onchange = function() {
-                displayPart();
-            }
-            RTcorner.type = 'radio';
-            RTcorner.name = 'corners';
-            RTcorner.id = 'RTcorner';
-            RTcorner.value = '1';
-            cornerBox.appendChild(RTcorner);
-            cornerBox.appendChild(RTlabel);
-
-            const LDlabel = document.createElement("label");
-            LDlabel.setAttribute('for', 'LDcorner');
-            const LDcorner = document.createElement("input");
-            LDcorner.onchange = function() {
-                displayPart();
-            }
-            LDcorner.type = 'radio';
-            LDcorner.name = 'corners';
-            LDcorner.id = 'LDcorner';
-            LDcorner.value = '2';
-            cornerBox.appendChild(LDcorner);
-            cornerBox.appendChild(LDlabel);
-
-            const RDlabel = document.createElement("label");
-            RDlabel.setAttribute('for', 'RDcorner');
-            const RDcorner = document.createElement("input");
-            RDcorner.onchange = function() {
-                displayPart();
-            }
-            RDcorner.type = 'radio';
-            RDcorner.name = 'corners';
-            RDcorner.id = 'RDcorner';
-            RDcorner.value = '3';
-            cornerBox.appendChild(RDcorner);
-            cornerBox.appendChild(RDlabel);
-
-            stickyBox.appendChild(cornerBox);
+            if(blocksSum==2) cornerBox.classList.add('tower');
+            if(blocksSum==0) stickyBox.classList.add('simple');
+            else stickyBox.appendChild(cornerBox);
             holo.appendChild(stickyBox);
             
+            //floating block
             const stickyObserver = new IntersectionObserver(
                 ([e]) => e.target.classList.toggle('pinned', e.intersectionRatio < 1)
             , {threshold: [1]});
@@ -525,12 +613,13 @@ function renderTool(){
             });
 
             //rendering holo for each color (dynamically)
+            const holoColor = ~~settArr[1] ? 'white' : 'black'; 
             function renderShadow(c) {
                 const shadowCan = document.createElement("canvas");
                 shadowCan.width = can.width;
                 shadowCan.height = can.height;
                 const shadowCtx = shadowCan.getContext("2d");
-                shadowCtx.fillStyle = 'rgb(0,0,0)';
+                shadowCtx.fillStyle = holoColor;
                 shadowCtx.fillRect(0,0,shadowCan.width,shadowCan.height);
                 const holoData = shadowCtx.getImageData(0,0,shadowCan.width,shadowCan.height);
                 const hData = holoData.data;
@@ -548,7 +637,7 @@ function renderTool(){
                 displayPart();
             }
 
-            var oldPart='4';
+            var oldPart = 4;
             function displayPart() {
                 if(localStorage.getItem("tool-holo")!='t') {
                     uploadHolo(wcan, "bg_ship.png");
@@ -558,29 +647,15 @@ function renderTool(){
                     uploadHolo(ecan, "item_hatch.png");
                     localStorage.setItem("tool-holo", 't');
                 }
-                let part = document.querySelector('input[type=radio][name=corners]:checked').value;
+                let part = document.querySelector('input[type=radio][name=corners]:checked');
+                part = part ? ~~part.value : 0;
                 if(part != oldPart){
                     oldPart = part;
-                    uploadHolo(wcan, "item_hatch_bg.png");
-                    uploadHolo(wcan, "sign_hover.png");
-                    uploadHolo(wcan, "sign.png");
-                    uploadHolo(wcan, "sign_near.png");
+                    for(let i=0; i<4; i++)
+                        uploadHolo(wcan, usedBlocksGame[i]);
                 }
 
-                switch(document.querySelector('input[type=radio][name=corners]:checked').value) {
-                    case '0':
-                        uploadHolo(divideShadow(false, false), "item_hatch_bg.png");
-                    break;
-                    case '1':
-                        uploadHolo(divideShadow(true, false), "sign_hover.png");
-                    break;
-                    case '2': 
-                        uploadHolo(divideShadow(false, true), "sign.png");
-                    break;
-                    case '3': 
-                        uploadHolo(divideShadow(true, true), "sign_near.png");
-                    break;
-                }
+                uploadHolo(divideShadow(part==1||part==3, part==2||part==3), usedBlocksGame[part]);
             }
 
             let holoWidth1 = Math.floor(width1/2)*80+40;
@@ -595,10 +670,12 @@ function renderTool(){
             function divideShadow(x=false, y=false){
                 const sizeCan = document.createElement("canvas");
                 const sizeCtx = sizeCan.getContext("2d");
+                sizeCtx.lineWidth = 4;
                 sizeCan.width = x ? holoWidth2 : holoWidth1;
                 sizeCan.height = y ? holoHeight2 : holoHeight1;
                 sizeCtx.imageSmoothingEnabled = false;
                 sizeCtx.drawImage(currentCan, x*width1, y*height1, x ? width2 : width1, y ? height2 : height1, 0, 0, x ? width2 : width1, y ? height2 : height1);
+                sizeCtx.strokeRect(2, 2, (x ? width2 : width1)-2, (y ? height2 : height1)-2);
                 return sizeCan;
             }
 
@@ -640,14 +717,14 @@ function renderTool(){
         function setInputFilter(i1,i2) {
             i1.oldValue='';
             i2.oldValue='';
-            [i1,i2].forEach(function(tbox) {
+            [i1,i2].forEach((tbox) => {
                 tbox.addEventListener("input", function() {
-                    if(/^(?!0)\d{0,2}$/.test(this.value)) {
+                    if(/^-?(?!0)\d{0,2}$|^0$/.test(this.value)) {
                         this.oldValue = this.value;
                         this.oldSelectionStart = this.selectionStart;
                         this.oldSelectionEnd = this.selectionEnd;
-                        if(this.value.length>=2 && this==i1) i2.focus();
-                        else if(this.value.length==0 && this==i2) i1.focus();
+                        if(this==i1 && this.value.length>=(this.value.indexOf("-")==-1 ? 2 : 3)) i2.focus();
+                        else if(this==i2 && this.value.length==0) i1.focus();
                     } else {
                         this.value = this.oldValue;
                         this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
@@ -698,7 +775,7 @@ function refreshTXT() {
 function removeHolo() {
     document.evaluate('//button[text()=" Settings"]', document.getElementById("team_menu"), null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click();
     document.evaluate('//button[text()="Modify Assets"]', document.getElementById("team_menu"), null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click();
-        new Array('sign','sign_hover','sign_near','item_hatch_bg','item_hatch','bg_ship', 'tiles_subworld', 'tiles_overworld', 'bg_gradient').forEach(n =>{
+        new Array('anchor','sign','sign_hover','sign_near','item_hatch_bg','item_hatch','bg_ship', 'tiles_subworld', 'tiles_overworld', 'bg_gradient').forEach(n =>{
             if(document.evaluate('//td[text()="'+n+'.png"]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue!=null) document.evaluate('//td[text()="'+n+'.png"]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.parentElement.querySelector("td:nth-of-type(3) button").click();
         })
     localStorage.removeItem("tool-holo");

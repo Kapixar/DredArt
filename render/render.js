@@ -6,7 +6,7 @@ const drop = document.querySelector("#drop-zone");
 const error = document.querySelector(".error");
 const urlInp = document.querySelector("#url");
 const help = document.querySelector("#help");
-const version = '1.2.1 version';
+const version = '1.2.2 version';
 document.getElementById("version").textContent = version;
 
 
@@ -1094,9 +1094,11 @@ function render(OGimg) {
             canMap.height=canResult.height*scale+25
             ctxMap.imageSmoothingEnabled = false
             ctxMap.fillStyle = `white`
-            ctxMap.font = '13px monospace'
+            ctxMap.font = '13px Consolas, monospace, monospace'
             ctxMap.shadowColor = 'black'
-            ctxMap.shadowBlur = 3
+            ctxMap.shadowBlur = 0
+            ctxMap.shadowOffsetX = 1
+            ctxMap.shadowOffsetY = 1
             
 
             ctxMap.scale(scale,scale)
@@ -1112,9 +1114,9 @@ function render(OGimg) {
                 }
             }
             ctxMap.fillRect(0, canMap.height-25, canMap.width, 25)
-            ctxMap.shadowBlur = 5
             ctxMap.fillStyle = `black`
-            ctxMap.fillText(`DredArt ${version} by I am Shrek`, 10, canMap.height-10, canMap.width-20)
+            ctxMap.shadowBlur = 5
+            ctxMap.fillText(`DredArt ${version} by I am Shrek`, 10, canMap.height-8, canMap.width-20)
             resolve(canMap)
         })
     }
