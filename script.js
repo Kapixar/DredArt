@@ -37,10 +37,10 @@ function renderTool(){
     <div id='tool-content'>
         <div id='tool-menu'>
             <div><h3>DredArt | Creator</h3></div>
-            <input type='file' accept='.png' id='pImg'><label for='pImg'>Use pixel art</label><div><span>Select Pixel Map from Render to paint it into the game.</span></div>
-            <label id='nImg'>Create pixel art</label><div><span>Open DredArt Render. Crop, scale and convernt pictures to game color pallete. <a target='_blank' href='http://dredart.myartsonline.com/'>Also on web.</a></span></div>
+            <input type='file' accept='.png' id='pImg'><label for='pImg'>Use pixel art</label><div><span>Drag & Drop / Select Pixel Map from Render to paint it into the game.</span></div>
+            <label id='nImg'>Create pixel art</label><div><span>Open DredArt Render. Scale and convernt pictures to game color pallete. <a target='_blank' href='http://dredart.myartsonline.com/'>Also on web.</a></span></div>
             <label id='iMOSAIC'><a target='_blank' href='https://discord.gg/uNgD6vv67c'>Join MOSAIC server</a></label><div><span>We are building the biggest pixel art ever! Join the coolest Dredark event!</span></div>
-            <div><p>DredArt v1.2.2 by I am Shrek</p></div>
+            <div><p>DredArt v1.3 by I am Shrek</p></div>
         </div>
         <div id='tool-map'></div>
         <div id='tool-holo'></div>
@@ -59,6 +59,16 @@ function renderTool(){
                 <p><label><input type='checkbox' id='errorSetting'>Display HEX codes in Find errors?</label></p>
                 <p><label><input type='checkbox' id='showSetting'>Add text outline in Show all?</label></p>
             </div>
+            <div>
+                <p><label><input type='checkbox' id='labelSetting'>Hide colors that are not in chosen part?</label></p>
+            </div>
+            <div>
+                <p>Set size threshold when Holo splits to parts (Holo doesn't split, unless dimensions went above threshold)</p>
+                width: <input type='number' id='thresholdX' value='32'>
+                height: <input type='number' id='thresholdY' value='32'>
+                <p></p>
+            </div>
+            <button>Restore to default</button>
         </div>
     </div>
     <div id='tool-message' class='hidden'>
@@ -86,25 +96,45 @@ function renderTool(){
 
     //Create pixel art
     document.getElementById("nImg").onclick = function() {window.open(chrome.runtime.getURL('../render/index.html'));}
+    
+    //Help page
     document.getElementById("help").onclick = function() {window.open(chrome.runtime.getURL('../help.html#main'));}
 
-    //Pixelated PNG
+    //Button input
     document.getElementById("pImg").onchange = function(){
-        localStorage.removeItem("tool-holo");
-        //image validation
-        if(this.files[0] == null){
+        if(this.files[0] == null)
             return info('Error. Chose file again.');
-        }
-    
-        const file = this.files[0];
+        validateImage(this.files[0])
         this.value = null;
+    }
+
+    //Drop input
+    tool.ondrop = function(e) {									                //drop handlers
+        e.preventDefault();
+        tool.classList.remove("highlight");
+        
+        if(e.dataTransfer.files) {
+            if(e.dataTransfer.files.length==1 && e.dataTransfer.files[0].type.includes('image'))
+            validateImage(e.dataTransfer.files[0]);
+        }
+    }	   
+    tool.ondragleave = function(e) {
+        e.preventDefault()
+        tool.classList.remove("highlight");
+    }
+    tool.ondragover = function(e) {
+        e.preventDefault()
+        tool.classList.add("highlight");
+    }
+
+
+    function validateImage(file){    
+        localStorage.removeItem("tool-holo");
     
-        if(file.length === null) { 
-            return info('Error. Propably file is empty.');
-        }
-        if(file.type!="image/png"){
-            return info('Error. File is not PNG. (Use DredArt-render for making pixel arts)');
-        }
+        if(file.length === null) return info('Error. Propably file is empty.');
+        
+        if(file.type!="image/png") return info('Error. File is not PNG. (Use DredArt-render for making pixel arts)');
+
     
         const img = new Image();
         let imgurl=URL.createObjectURL(file);
@@ -134,9 +164,8 @@ function renderTool(){
             for(var y = 0; y < scanner.height; y+=20){
                 for(var x = 0; x < scanner.width; x+=20){
                     let i = pxIndex(x,y, scanner.width);
-                    if(findIndex([sD[i],sD[i+1],sD[i+2]])==256){
+                    if(findIndex([sD[i],sD[i+1],sD[i+2]])==256)
                         return info("Image contains color that dont exist in Dredark color pallete. (Use DredArt | render for making pixel arts)");
-                    }
                     if(sD[i+3]!=255)
                         return info('Image contains transparency. No transparency is allowed. (Use DredArt | render for making pixel arts)');
                     let j = pxIndex(x/20,y/20, source.width);
@@ -187,9 +216,31 @@ function renderTool(){
                 navChildren[i].classList.remove('hidden');
 
             //settings setup
-            let settTXT = localStorage.getItem('holoInfo')
-            if(!settTXT || settTXT=='true') settTXT = '0324;0;0;0';
-            const settArr = settTXT.split(';');
+            let settObj;
+            try{
+                settObj = JSON.parse(localStorage.getItem('holoInfo'))
+                if(Object.keys(settObj).length != 7) {
+                    settObj = {
+                        blocks: '0324',
+                        holoColor: 0,
+                        error: 0,
+                        showAll: 0,
+                        label: 1,
+                        thrX: 32,
+                        thrY: 32
+                    }
+                }
+            } catch {
+                settObj = {
+                    blocks: '0324',
+                    holoColor: 0,
+                    error: 0,
+                    showAll: 0,
+                    label: 1,
+                    thrX: 32,
+                    thrY: 32
+                }
+            }
 
             const availableBlocksDesc = ['Cargo Hatch', 'Safety Anchor', 'Sign', 'Sign Hover', 'Sign Near']
             const availableBlocksSrc = [chrome.runtime.getURL('img/hatch.png'), 'img/anchor.png', 'img/sign.png', 'img/sign_hover.png', 'img/sign_near.png' ]
@@ -201,10 +252,13 @@ function renderTool(){
             const settingColor = document.querySelectorAll(`#tool-settings [name='settingColor']`)
             const errorSetting = document.querySelector(`#tool-settings #errorSetting`)
             const showSetting = document.querySelector(`#tool-settings #showSetting`)
+            const labelSetting = document.querySelector(`#tool-settings #labelSetting`)
+            const thresholdSettingX = document.querySelector(`#tool-settings #thresholdX`)
+            const thresholdSettingY = document.querySelector(`#tool-settings #thresholdY`)
 
             for(let i=0; i<4; i++){
                 const blockSelect = document.createElement('select');
-                const defaultBlock = ~~settArr[0].slice(i,i+1);
+                const defaultBlock = ~~settObj['blocks'].slice(i,i+1);
                 for(let o=0; o<availableBlocksDesc.length; o++){
                     const blockOption = document.createElement('option');
                     blockOption.textContent = availableBlocksDesc[o];
@@ -229,15 +283,30 @@ function renderTool(){
                 sett.append(blockSelect);
             }
             
-            settingColor[~~settArr[1]].checked = true
-            errorSetting.checked = ~~settArr[2]
-            showSetting.checked = ~~settArr[3]
+            settingColor[settObj['holoColor']].checked = true;
+            errorSetting.checked = settObj['error'];
+            showSetting.checked = settObj['showAll'];
+            labelSetting.checked = settObj['label'];
+            thresholdSettingX.value = settObj['thrX'];
+            thresholdSettingY.value = settObj['thrY'];
+
+            if(labelSetting.checked) holo.classList.add('hideLabels');
+            else holo.classList.remove('hideLabels');
 
             document.querySelector(`#tool-settings button`).onclick = function(){
                 let cornerSetting = '';
                 for(e of document.querySelectorAll('#tool-settings select'))
                     cornerSetting += e.value;
-                localStorage.setItem('holoInfo', `${cornerSetting};${document.querySelector('input[name="settingColor"]:checked').value};${errorSetting.checked ? 1:0};${showSetting.checked ? 1:0}`);
+                let actualObj = {
+                    blocks: cornerSetting,
+                    holoColor: document.querySelector('input[name="settingColor"]:checked').value,
+                    error: errorSetting.checked ? 1:0,
+                    showAll: showSetting.checked ? 1:0,
+                    label: labelSetting.checked ? 1:0,
+                    thrX: thresholdSettingX.value ? thresholdSettingX.value : 32,
+                    thrY: thresholdSettingY.value ? thresholdSettingY.value : 32,
+                }
+                localStorage.setItem('holoInfo', JSON.stringify(actualObj));
                 this.animate([
                     {background: 'initial'},
                     {background: "green"},
@@ -249,6 +318,10 @@ function renderTool(){
                 setTimeout(() => {
                     renderPixelart(source, c1, c2);              
                 }, 700);
+            }
+            document.querySelector(`#tool-settings button:last-of-type`).onclick = function(){
+                localStorage.setItem("holoInfo", 'true');
+                renderPixelart(source, c1, c2);   
             }
 
             //image in 1:1 scale
@@ -267,6 +340,7 @@ function renderTool(){
             const currentCtx = currentCan.getContext('2d', {willReadFrequently: true});
             currentCtx.imageSmoothingEnabled = false;
 
+            //map creation
 
             showSection(2);
             let corner=[1,0];
@@ -290,17 +364,30 @@ function renderTool(){
             const tbox = document.createElement('div');
             tbox.id="tbox";
 
-            let imgColors = [];
-            for(let i=0; i<can.height; i++){
+            const borderX = settObj['thrX'] < can.width ? Math.ceil(can.width/2) : can.width;
+            const borderY = settObj['thrY'] < can.height ? Math.ceil(can.height/2) : can.height;
+
+
+            let imgColors = {};
+            for(let i=0; i<255; i++){
+                let gc = i.toString(16).padStart(2, '0').toUpperCase();
+                imgColors[gc] = {0: 0, 1: 0, 2: 0, 3: 0, sum: 0}
+            }
+            for(let i=0; i<can.height; i++) {
                 let row = document.createElement('tr');
-                for(let o=0; o<can.width; o++){
+                for(let o=0; o<can.width; o++) {
                     let c=ctx.getImageData(o, i, 1, 1).data;
                     let td = document.createElement('td');
                     td.style["background-color"] = `rgb(${c[0]},${c[1]},${c[2]})`;
                     td.setAttribute("data-xy", `${(corner[0]+o)},${(can.height-i+corner[1])}`);
-                    let gc = findIndex([c[0],c[1],c[2]]).toString(16).padStart(2, '0').toUpperCase();
+                    let gc = findIndex([c[0], c[1], c[2]]).toString(16).padStart(2, '0').toUpperCase();
                     td.textContent = gc;
-                    if(!imgColors.includes(gc)) imgColors.push(gc);
+
+                    let radarPart = (o < borderX ? 0 : 1) + (i < borderY ? 0 : 2)
+
+                    imgColors[gc][radarPart]++;
+                    imgColors[gc].sum++;
+
                     td.ondblclick = function(){showOnly(gc)}
                     row.appendChild(td);
                 }
@@ -309,7 +396,6 @@ function renderTool(){
             tbox.appendChild(table);
             map.appendChild(tbox);
 
-
             //creating holo
 
             if(can.width<7 || can.height<7){
@@ -317,7 +403,7 @@ function renderTool(){
             }
 
 
-            if(localStorage.getItem("holoInfo") === null || localStorage.getItem("holoInfo") == 'false'){
+            if(localStorage.getItem("holoInfo") === null){
                 info();
                 const warnheader = document.createElement("h3");
                 warnheader.textContent =`Warning!`;
@@ -361,8 +447,8 @@ function renderTool(){
 
             //dividing ship
             corner[0]--;
-            const blocksX =  can.width > 32 ? true : false;
-            const blocksY =  can.height > 32 ? true : false;
+            const blocksX =  can.width > settObj['thrX'] ? true : false;
+            const blocksY =  can.height > settObj['thrY'] ? true : false;
 
             let width1 = blocksX ? Math.ceil(can.width/2) : can.width;
             let height1 = blocksY ? Math.ceil(can.height/2) : can.height; 
@@ -430,7 +516,7 @@ function renderTool(){
             errorCan.height = can.height * 40;
             errorCtx.imageSmoothingEnabled = false;
             errorCtx.drawImage(blendCan, 0, 0, errorCan.width, errorCan.height);
-            if(~~settArr[2]){
+            if(settObj['error']){
                 errorCtx.fillStyle = 'black';
                 errorCtx.font = "13px monospace";
                 for(let y=0; y<can.height; y++){
@@ -452,7 +538,7 @@ function renderTool(){
             allCtx.fillStyle = 'rgb(153,153,153)';
             allCtx.font = "bold 25px monospace";
             allCtx.shadowColor = 'black'
-            if(~~settArr[3]) allCtx.shadowBlur = 2;
+            if(settObj['showAll']) allCtx.shadowBlur = 2;
             for(let y=0; y<can.height; y++){
                 for(let x=0; x<can.width; x++){
                     let i = (x+y*can.width)*4;
@@ -464,7 +550,7 @@ function renderTool(){
 
             //sticky box
             const stickyBox = document.createElement("div");
-            stickyBox.classList.add("sticky","long");
+            stickyBox.classList.add("sticky", "long");
             const stickyButtons = document.createElement("div");
 
             // help number 2
@@ -476,11 +562,11 @@ function renderTool(){
             const coordHelp = document.createElement("p");
             const cornerHelp = document.createElement("p");
             const colorsHelp = document.createElement("p");
-            allHelp.textContent = `Show all - display unplaced paint as text / display map as Holo`;
+            allHelp.textContent = `Show all - display unplaced paint as text AKA display map as Holo`;
             checkHelp.textContent = `Find errors - spot mistakes easier. Correct tiles turns grey`;
             coordHelp.textContent = `Get color - returns which color is on entered coordinates`;
-            cornerHelp.textContent = `Four-piece square - select in which part of ship display Holo`;
-            colorsHelp.textContent = `Particular color box - display Holo of it. Fill transparent holes with paint. Tap checkbox to mark color done`;
+            cornerHelp.textContent = `Corner Selector - select in which part of ship display Holo`;
+            colorsHelp.textContent = `Particular color box - display Holo of it. Fill transparent holes with paint. Number in corners means its amount in chosen part.`;
             help2.appendChild(allHelp);
             help2.appendChild(checkHelp);
             help2.appendChild(coordHelp);
@@ -526,7 +612,7 @@ function renderTool(){
             search1.setAttribute("placeholder","1");
             search1.onkeyup = function(){searchForColor();}
             const serachComma = document.createElement("span");
-            serachComma.textContent = " , ";
+            serachComma.textContent = ",";
             const search2 = document.createElement("input");
             search2.setAttribute("placeholder","1");
             search2.onkeyup = function(){searchForColor();}
@@ -567,7 +653,7 @@ function renderTool(){
                 cornerLabel.setAttribute('for', `corner${i}`);
                 const cornerInput = document.createElement("input");
                 if(i==0) cornerInput.checked = true;
-                cornerInput.onchange = function() {displayPart();}
+                cornerInput.onchange = function() {selectPart();}
                 cornerInput.type = 'radio';
                 cornerInput.name = 'corners';
                 cornerInput.id = `corner${i}`;
@@ -580,40 +666,68 @@ function renderTool(){
             else stickyBox.appendChild(cornerBox);
             holo.appendChild(stickyBox);
             
-            //floating block
+            //make stickyBox float
             const stickyObserver = new IntersectionObserver(
                 ([e]) => e.target.classList.toggle('pinned', e.intersectionRatio < 1)
             , {threshold: [1]});
             stickyObserver.observe(stickyBox);
+
+            const sortBox = document.createElement('div');
+            sortBox.classList.add("long", "sort");
+            const sortLabel = document.createElement("span");
+            sortLabel.textContent = 'Sort by: ';
+            sortBox.append(sortLabel);
+
+            const sortNameInput = document.createElement("input");
+            sortNameInput.type = 'radio';
+            sortNameInput.value = '0';
+            sortNameInput.name = 'sortby';
+            sortNameInput.id = 'sortbyname';
+            sortNameInput.checked = true;
+            sortNameInput.onclick = function(){sortBy();}
+            const sortNameLabel = document.createElement("label");
+            sortNameLabel.textContent = 'Name';
+            sortNameLabel.setAttribute('for', 'sortbyname');
+            sortBox.append(sortNameInput);
+            sortBox.append(sortNameLabel);
+
+            const sortAmountInput = document.createElement("input");
+            sortAmountInput.type = 'radio';
+            sortAmountInput.value = '1';
+            sortAmountInput.name = 'sortby';
+            sortAmountInput.id = 'sortbyamount';
+            sortAmountInput.onclick = function(){sortBy();}
+            const sortAmountLabel = document.createElement("label");
+            sortAmountLabel.textContent = 'Amount';
+            sortAmountLabel.setAttribute('for', 'sortbyamount');
+            sortBox.append(sortAmountInput);
+            sortBox.append(sortAmountLabel);
+
+            holo.append(sortBox)
             
             //rendering button for each color
-            imgColors.sort();
-            imgColors.forEach(c => {
+            for(c in imgColors){
+                if(imgColors[c].sum==0) continue;
                 const col = document.createElement("div");
                 col.classList.add('colorLabel');
 
-                const checkDone = document.createElement("input");
-                checkDone.type = 'checkbox';
-                checkDone.onclick = function(e){e.stopPropagation();}
-                const colorName = document.createElement("span");
-                colorName.textContent = c;
+                col.textContent = c;
+                col.setAttribute('amount', imgColors[c][0]);
 
-                col.append(checkDone);
-                col.append(colorName);
-                c = rgb[parseInt(c, 16)];
+                let cRGB = rgb[parseInt(c, 16)];
                 col.onclick = function(){
-                    if(!this.classList.contains('selected')) refreshCurrent(renderShadow(c)); 
+                    if(!this.classList.contains('selected')) refreshCurrent(renderShadow(cRGB)); 
                     document.querySelectorAll("#tool-holo>div, #allButton, #checkButton").forEach(e => {
                         e.classList.remove('selected');
                     });
                     this.classList.add('selected');
                 }
-                col.style['background-color'] = col.style['accent-color'] = `rgb(${c[0]},${c[1]},${c[2]})`;
+                col.style['background-color'] = col.style['accent-color'] = `rgb(${cRGB[0]},${cRGB[1]},${cRGB[2]})`;
                 holo.appendChild(col);
-            });
+            };
 
             //rendering holo for each color (dynamically)
-            const holoColor = ~~settArr[1] ? 'white' : 'black'; 
+            const holoColor = settObj['holoColor'] ? 'white' : 'black'; 
             function renderShadow(c) {
                 const shadowCan = document.createElement("canvas");
                 shadowCan.width = can.width;
@@ -631,13 +745,34 @@ function renderTool(){
                 return shadowCan;
             }
 
+            // draw on canvas and display it
             function refreshCurrent(canvas){
                 currentCtx.clearRect(0, 0, currentCan.width, currentCan.height);
                 currentCtx.drawImage(canvas, 0, 0, currentCan.width, currentCan.height);
                 displayPart();
             }
 
+
+
+            var colorLabels = document.querySelectorAll('.colorLabel');
             var oldPart = 4;
+            var currentPart = 4;
+            function selectPart(){
+                let cornerSelector = document.querySelector('input[type=radio][name=corners]:checked');
+                currentPart = cornerSelector ? ~~cornerSelector.value : 0;
+                if(currentPart == oldPart) return;
+
+                oldPart = currentPart;
+                for(let i=0; i<4; i++) if(currentPart!=i) uploadHolo(wcan, usedBlocksGame[i]);
+                displayPart();
+                refreshTXT();
+                for(let colorLabel of colorLabels)
+                    colorLabel.setAttribute('amount', imgColors[colorLabel.textContent][currentPart])
+                sortBy();
+            }
+
+
+            // display the part of Holo
             function displayPart() {
                 if(localStorage.getItem("tool-holo")!='t') {
                     uploadHolo(wcan, "bg_ship.png");
@@ -647,15 +782,8 @@ function renderTool(){
                     uploadHolo(ecan, "item_hatch.png");
                     localStorage.setItem("tool-holo", 't');
                 }
-                let part = document.querySelector('input[type=radio][name=corners]:checked');
-                part = part ? ~~part.value : 0;
-                if(part != oldPart){
-                    oldPart = part;
-                    for(let i=0; i<4; i++)
-                        uploadHolo(wcan, usedBlocksGame[i]);
-                }
 
-                uploadHolo(divideShadow(part==1||part==3, part==2||part==3), usedBlocksGame[part]);
+                uploadHolo(divideShadow(currentPart==1||currentPart==3, currentPart==2||currentPart==3), usedBlocksGame[currentPart]);
             }
 
             let holoWidth1 = Math.floor(width1/2)*80+40;
@@ -675,7 +803,7 @@ function renderTool(){
                 sizeCan.height = y ? holoHeight2 : holoHeight1;
                 sizeCtx.imageSmoothingEnabled = false;
                 sizeCtx.drawImage(currentCan, x*width1, y*height1, x ? width2 : width1, y ? height2 : height1, 0, 0, x ? width2 : width1, y ? height2 : height1);
-                sizeCtx.strokeRect(2, 2, (x ? width2 : width1)-2, (y ? height2 : height1)-2);
+                sizeCtx.strokeRect(1, 1, (x ? width2 : width1)-1, (y ? height2 : height1)-1);
                 return sizeCan;
             }
 
@@ -690,6 +818,23 @@ function renderTool(){
                     document.querySelector("#new-ui-left button").click();
                 });
             }
+
+            // sorting color Labels      
+            function sortBy(){
+                let sortMode = document.querySelector('[name=sortby]:checked').value;
+                if(sortMode=='1'){
+                    [...colorLabels]
+                    .sort((a, b) => parseInt(a.getAttribute('amount')) > parseInt(b.getAttribute('amount')) ? -1 : 1)
+                    .forEach(n => holo.appendChild(n))    
+                }else{
+                    [...colorLabels]
+                    .sort((a, b) => a.textContent > b.textContent ?1 : -1)
+                    .forEach(n => holo.appendChild(n)) 
+                }
+            }
+
+            //initial selection
+            selectPart();
 
             let showedColor='';
             function showOnly(color) {
@@ -709,8 +854,7 @@ function renderTool(){
         }
         function findIndex(a) {
             for(let s=0; s<255; s++)
-                if(a[0]==rgb[s][0]&&a[1]==rgb[s][1]&&a[2]==rgb[s][2]) return s;
-            if(a[0]==0&&a[1]==0&&a[0]==0) return 251;
+                if(Math.abs(a[0]-rgb[s][0])<=1 && Math.abs(a[1]-rgb[s][1])<=1 && Math.abs(a[2]-rgb[s][2])<=1) return s;
             return 256;
         }
 

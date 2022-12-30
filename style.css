@@ -64,6 +64,11 @@
     visibility: hidden;
 }
 
+#paint-tool.highlight{
+    box-shadow: inset 0 0 10px 20px orange;
+    transition: box-shadow .5s;
+}
+
 #tool-content.hidden, #tool-content > div.hidden, #tool-nav.hidden, #tool-message.hidden{
     display: none;
 }
@@ -362,10 +367,13 @@ input[type='file']{
 #tool-holo .sticky{
     display: grid;
     position: sticky;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-flow: column;
     top: -1px;
-    grid-template-columns: 1fr 1fr 1fr;
     transition: .3s;
     padding-right: 15px;
+    z-index: 100;
+    justify-items: center;
 }
 
 #tool-holo .sticky.simple{
@@ -401,21 +409,69 @@ input[type='file']{
     background-color: rgb(180, 102, 0);
 }
 
+#tool-holo .sort label{
+    border-radius: 10px;
+    padding: 2px;
+    margin: 5px;
+    border: 5px transparent dashed;
+    background-color: rgb(11, 164, 178);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    transition: .2s;
+}
+
+#tool-holo .sort input{
+    display: none;
+}
+
+#tool-holo .sort input:checked+label{
+    border-color: green;
+    pointer-events: none;
+}
+
+
+
 #tool-holo > div.colorLabel{
     display: flex;
     flex-direction: row;
+    justify-content: space-evenly;
+    position: relative;
+    height: 35px;
+    text-shadow: 0 0 10px black;
+    transform-origin: center;
+    animation: popIn .5s;
 }
 
-#tool-holo > div.colorLabel input{
-    border: none;
+@keyframes popIn {
+    from{transform:scale(0.5); opacity: 0;}
+}
+
+#tool-holo.hideLabels > div.colorLabel[amount='0']{
+    display: none;
+    pointer-events: none;
+    filter: brightness(20%);
 }
 
 #tool-holo > div.colorLabel:not(.selected):hover{
     border-color: rgba(25,35,45, .3);
 }
 
+#tool-holo > div.colorLabel:after{
+    content: attr(amount);
+    display: block;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    text-shadow: 1px 1px black;
+    font-size: smaller;
+}
+
+
 #tool-holo > div.selected, #checkButton.selected, #allButton.selected{
-    border-color: green;
+    border-color: rgb(0, 107, 0);
     border-radius: 15px;
 }
 
@@ -505,7 +561,7 @@ input[type='file']{
 
 #tool-settings input{
     accent-color: darkgrey;
-    width: 24px;
+    width: 40px;
     height: 24px;
     vertical-align: middle;
     background: rgba(0,0,0,.2);

@@ -82,19 +82,19 @@
                         <li>Show all - display map of colors as Holo. Correctly placed paint will not be displayed.</li>
                         <li>Find errors - use to check for errors in placing paint. Correct pixels should turn into one shade of grey.</li>
                         <li>Color from coords - After enterring a coordinate returns Color.</li>
-                        <li>Sector Selector - select ship sector in which you want to show Holo (exist due to limitations)</li>
+                        <li>Corner Selector - select ship sector in which you want to show Holo (exist due to limitations)</li>
                         <li>Quick help button</li>
                     </ul>
                 </li>
                 <li>Individual colors - clicking on them displays a stencil where to put paint. Black - don't put /
-                    transparent - put. Each color has checkbox that you can tap if you finish paiting color.</li>
+                    transparent - put. Values in corners represent the amount of this color in chosen part of the ship.</li>
             </ol>
             <br>
             <p>Limitations</p>
             <ul>
                 <li>Curently there is a size limit for texture, caused by cogg's fights with WebGLContext. For us that
                     means
-                    that Holo won't always fit in. Solution is to use holo in empty ship, with max zoom.</li>
+                    that Holo won't always fit into the Texture Atlas. That's the reason Holo have to be splited. Solution is to use holo in empty ship, with max zoom.</li>
                 <li>In any moment cogg can make this stop working <small>(pls no i worked on it for too long)</small>
                 </li>
             </ul>
@@ -108,8 +108,8 @@
                 <li><b>No visible holo after clicking on color</b>
                     Use holo in empty ship, with max zoom. If doesn't help, refresh site.
                 </li>
-                <li><b>No visible holo after clicking on color</b>
-                    Use holo in empty ship, with max zoom. If doesn't help, refresh site.
+                <li><b>Holo is wrong with what Map says</b>
+                    Make sure you entered correct image. Too many people do that.
                 </li>
                 <li><b>There is a thing not described here</b>
                     Report it in MOSIAC Discord server.
