@@ -299,7 +299,7 @@ function renderTool(){
                     cornerSetting += e.value;
                 let actualObj = {
                     blocks: cornerSetting,
-                    holoColor: document.querySelector('input[name="settingColor"]:checked').value,
+                    holoColor: parseInt(document.querySelector('input[name="settingColor"]:checked').value),
                     error: errorSetting.checked ? 1:0,
                     showAll: showSetting.checked ? 1:0,
                     label: labelSetting.checked ? 1:0,
