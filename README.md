@@ -1,4 +1,4 @@
-# DredArt - your paiting comrade
+# DredArt - your painting comrade
 Chrome and Firefox extension for Dredark/Drednot/DSA
 Consists of 2 parts: Render and Creator
 
