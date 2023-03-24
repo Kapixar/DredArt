@@ -9,7 +9,11 @@ body{
     align-items: center;
     flex-flow: column;
     background-image:url("render/img/bg_star.png"),radial-gradient(rgb(161, 161, 170),rgb(17, 15, 15)) ;
-    background-size: auto;
+    /* background-size: auto; */
+    /* background-position: left; */
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
     color: white;
     height: 100vh;
     width: 100vw;
@@ -42,9 +46,10 @@ body{
 body div{
     display: flex;
     flex-direction: column;
+    gap: 20px;
     background-color: rgba(25,35,45, .9);
     padding: 30px;
-    width: 60vw;
+    width: 70vw;
     border-radius: 10px;
     position: relative;
     margin-block: 5px;
@@ -54,6 +59,7 @@ body div:first-of-type{
     background-color: rgb(193, 141, 67);
     background: linear-gradient(rgb(210, 113, 22), rgb(193, 141, 67));
     border-radius: 20px;
+    gap: 0;
     color: black;
     text-align: center;
     font-weight: 600;
@@ -71,4 +77,37 @@ a{
 
 iframe{
     margin: auto;
+}
+
+section > h2{
+    background-color: rgb(178, 178, 178);
+    color: black;
+    border-radius: 10px;
+    margin-top: 0;
+    text-align: center;
+    cursor: pointer;
+    height: 40px;
+    user-select: none;
+}
+
+h1{
+    text-align: center;
+}
+
+h3{
+    background-color: rgb(122, 129, 146);
+    color: black;
+    border-radius: 10px;
+    text-align: center;
+}
+
+
+div > section{
+    overflow: hidden;
+    transition: .5s;
+    max-height: 40px;
+}
+
+div > section.show{
+    max-height: 10000px;
 }

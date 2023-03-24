@@ -2,6 +2,7 @@
 Chrome and Firefox extension for Dredark/Drednot/DSA
 Consists of 2 parts: Render and Creator
 
+![Promo picture promoting creations](img/promo.png "Promo")
   
 Created from the idea of **MOSAIC** project
 
@@ -21,9 +22,8 @@ https://chrome.google.com/webstore/detail/ocgomfneelmigjgpgnapekmedbmimamm
 ## Usage
 In top bar (where socials are) there should be yellow pallete you can click.
 
-
 ### DredArt | Render
-Part of the tool is available on this website: http://dredart.myartsonline.com
+Part of the tool is available on this website: https://kapixar.github.io/DredArt/
 Render generates pixel arts from images.
 
 ### Discord server with more details

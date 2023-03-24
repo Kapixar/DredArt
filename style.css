@@ -19,6 +19,9 @@
     background: rgb(82, 82, 82);
 }
 
+/* Basic stuff */
+
+
 #top-bar span a:hover{
     cursor: pointer;
 }
@@ -32,36 +35,52 @@
 }
 
 #top-bar span a:last-child{
+    display: inline-block;
     color:rgb(128, 128, 128);
+    transition: .5s;
 }
+
+#top-bar span a:last-child.expanded{
+    width: 80px;
+    background-color: rgb(80, 80, 80);
+    border-radius: 10px;
+    text-align: center;
+}
+
 
 #paint-tool{
     position: absolute;
-    top: 0px;
-    right: 0px;
-    width: 407px;
-    height: 407px;
+    top: 29px;
+    right: 0;
+    width: 420px;
+    height: 420px;
     padding: 7px;
     border: 1px solid black;
-    background-color: rgb(25,35,45);
-    border-bottom-left-radius: 10px;
-    visibility: visible; 
-    opacity: 1; 
-    overflow: hidden;
+    background-color: rgb(25,35,45)!important;
+    border-bottom-left-radius: 10px!important;
     text-align: center;
-    transition: visibility 0.2s linear, opacity 0.2s linear;
+    overflow: hidden;
+    z-index: 6;
+    opacity: 1; 
+    transition: opacity 200ms linear, transform 400ms;
     animation-name: show;
-    animation: show 0.2s linear;
+    animation: show 200ms linear;
+    transform: translateX(0%);
+}
+
+#paint-tool.disabled{
+    display: none;
+    pointer-events: none;
 }
 
 @keyframes show {
-    0%{opacity: 0;}
-    100%{opacity: 2;}
+    from{opacity: 0;}
+    to{opacity: 1;}
 }
 
 #paint-tool.hidden{
+    transform: translateX(100%);
     opacity: 0; 
-    visibility: hidden;
 }
 
 #paint-tool.highlight{
@@ -73,75 +92,7 @@
     display: none;
 }
 
-
-
-#tool-menu{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    row-gap: 10px;
-}
-input[type='file']{
-    display: none;
-}
-#tool-menu label{
-    color: white;
-    display: flex;
-    height: 30px;
-    cursor: pointer;
-    border: 1px solid #000;
-    border-radius: 5px;
-    background: linear-gradient(#666,#000 200%);
-    padding: 5px;
-    margin: 5px;
-    align-items: center;
-    justify-content: center;
-    user-select: none;
-    width: 110px;
-    height: 45px;
-}
-
-#tool-menu label a{
-    color: white;
-    text-decoration: none;
-}
-
-#tool-menu label:nth-of-type(1){background: linear-gradient(#bb6707,#000 200%)}
-#tool-menu label:nth-of-type(2){background: linear-gradient(#ac310b,#000 200%)}
-#tool-menu label:nth-of-type(3){background: linear-gradient(#4cb904,#000 200%)}
-
-#tool-menu label + div{
-    width: 280px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-#tool-menu div:first-child, #tool-menu div:last-child{
-    grid-column: 1 / 3;
-    text-align: center;
-    margin: 10px;
-}
-
-#tool-nav{
-    display: flex;
-}
-#tool-nav button{
-    flex-grow: 1;
-    cursor: pointer;
-    transition: .2s;
-}
-#tool-nav button.chosen{
-    border-radius: 15px;
-}
-#tool-nav button.hidden{
-    display: none;
-}
-#tool-nav :nth-child(1){background: linear-gradient(rgb(159, 23, 23),#000 200%)!important;}
-#tool-nav :nth-child(2){background: linear-gradient(#DE9151,#000 200%)!important;}
-#tool-nav :nth-child(3){background: linear-gradient(#06630e,#000 200%)!important;}
-#tool-nav :nth-child(4){background: linear-gradient(#6c690b,#000 200%)!important;}
-#tool-nav :nth-child(5){background: linear-gradient(#0B4F6C,#000 200%)!important;}
-
-
+/* Message alert */
 
 #tool-message{
     display: flex;
@@ -151,7 +102,8 @@ input[type='file']{
     padding-top: 15px;
     height: 90%;
 }
-#tool-message p.error{
+
+.error{
     font-weight: 500;
     color: red;
     font-size: x-large;
@@ -180,6 +132,97 @@ input[type='file']{
 #tool-message p{
     line-height: 2em;
 }
+
+/* Navigation stuff */
+
+#tool-nav{
+    display: flex;
+}
+#tool-nav button{
+    flex-grow: 1;
+    cursor: pointer;
+    transition: .2s;
+}
+#tool-nav button.chosen{
+    border-radius: 15px;
+}
+#tool-nav button.hidden{
+    display: none;
+}
+#tool-nav :nth-child(1){background: linear-gradient(rgb(159, 23, 23),#000 200%)!important;}
+#tool-nav :nth-child(2){background: linear-gradient(#DE9151,#000 200%)!important;}
+#tool-nav :nth-child(3){background: linear-gradient(#06630e,#000 200%)!important;}
+#tool-nav :nth-child(4){background: linear-gradient(#6c690b,#000 200%)!important;}
+#tool-nav :nth-child(5){background: linear-gradient(#0B4F6C,#000 200%)!important;}
+
+
+/* Menu tab */
+
+#tool-menu{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 20px;
+}
+input[type='file']{
+    display: none;
+}
+#tool-menu label{
+    color: white;
+    display: flex;
+    height: 30px;
+    cursor: pointer;
+    border: 1px solid #000;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    width: 110px;
+    height: 45px;
+}
+
+#tool-menu #iMOSAIC{
+    background: linear-gradient(-45deg, rgb(0,77,77), rgb(0,77,77), rgb(197,108,30), rgb(0,77,77), rgb(0,77,77));
+    background-size: 400% 400%;
+	animation: gradient 3s infinite ease forwards;
+    box-shadow: inset 0 0 6px black;
+}
+
+#iMOSAIC a{
+    color: white;
+    text-decoration: none;
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+    70% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+#tool-menu label:nth-of-type(1){background: linear-gradient(#bb3107,#000 200%)}
+#tool-menu label:nth-of-type(2){background: linear-gradient(#07871f,#000 200%)}
+
+
+#tool-menu label + div{
+    width: 280px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#tool-menu div:first-child, #tool-menu div:last-child{
+    grid-column: 1 / 3;
+    text-align: center;
+}
+
+/* Help boxes stuff */
+
 .pixelart{
     box-sizing: border-box;
     image-rendering: pixelated;
@@ -234,6 +277,7 @@ input[type='file']{
     content: '?';
 }
 
+/* Map tab */
 
 #tool-map{
     position: relative;
@@ -244,6 +288,7 @@ input[type='file']{
     overflow: auto;
 }
 #tbox table{
+    table-layout: fixed;
     font-size: 20px;
     border-collapse: collapse;
     transform-origin: top left;
@@ -274,21 +319,17 @@ input[type='file']{
     color: pink;
 }
 
-.error{
-    font-weight: 500;
-    color: red;
-    font-size: xx-large;
-}
 #tbox .transparent{
     color: transparent;
     text-shadow: none;
 }
 
+/* Holo tab */
 
 #tool-holo{
     display: grid;
     overflow-y: auto;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     height: 365px;
     position: relative;
 
@@ -344,7 +385,7 @@ input[type='file']{
 }
 
 #tool-holo .long{
-    grid-column: 1 / 4;
+    grid-column: 1 / 5;
     cursor: initial;
     background-color: rgb(114, 114, 114);
 }
@@ -430,6 +471,7 @@ input[type='file']{
 #tool-holo .sort input:checked+label{
     border-color: green;
     pointer-events: none;
+    cursor: default;
 }
 
 
@@ -473,6 +515,7 @@ input[type='file']{
 #tool-holo > div.selected, #checkButton.selected, #allButton.selected{
     border-color: rgb(0, 107, 0);
     border-radius: 15px;
+    cursor: default;
 }
 
 #tool-holo .cornerBox{
@@ -514,7 +557,10 @@ input[type='file']{
 
 #tool-holo img{
     height: 30px;
+    user-select: none;
 }
+
+/* Settings tab */
 
 #tool-settings{
     display: flex;
