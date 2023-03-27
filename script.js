@@ -238,9 +238,9 @@ function renderTool() {
                 };
             }
 
-            const availableBlocksDesc = ['Cargo Hatch', 'Safety Anchor', 'Sign', 'Sign Hover', 'Sign Near', 'Tank'];
-            const availableBlocksSrc = [chrome.runtime.getURL('img/hatch.png'), 'img/anchor.png', 'img/sign.png', 'img/sign_hover.png', 'img/sign_near.png', 'img/tank.png'];
-            const availableBlocksGame = ['item_hatch_bg.png', 'anchor.png', 'sign.png', 'sign_hover.png', 'sign_near.png', 'tank.png'];
+            const availableBlocksDesc = ['Cargo Hatch', 'Safety Anchor', 'Sign', 'Sign Hover', 'Sign Near'];
+            const availableBlocksSrc = [chrome.runtime.getURL('img/hatch.png'), 'img/anchor.png', 'img/sign.png', 'img/sign_hover.png', 'img/sign_near.png'];
+            const availableBlocksGame = ['item_hatch_bg.png', 'anchor.png', 'sign.png', 'sign_hover.png', 'sign_near.png'];
             const usedBlocksSrc = [];
             const usedBlocksGame = [];
             const sett = document.querySelector('#blockSetting > div');
@@ -1074,7 +1074,8 @@ function retrieveFile(fileName) {
         };
 
         request.onsuccess = (event) => {
-            resolve(event.target.result.file);
+            if (event.target.result) resolve(event.target.result.file);
+            else resolve(false);
         };
     });
 }

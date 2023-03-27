@@ -1,7 +1,7 @@
 {
     "name": "DredArt",
     "description": "Dredark extension for pixel arts. Use any PNG and paint it using Holo!",
-    "version": "1.4",
+    "version": "1.4.1",
     "author": "I am Shrek, Kapi73#3815",
     "manifest_version": 3,
     "content_scripts": [
