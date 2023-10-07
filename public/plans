@@ -1,0 +1,77 @@
+
+# set size and choose area
+    - better autofill (to 80)
+    - more intuitive keep aspect ratio
+    - more than 1 ship (gives few maps)
+
+    - everything is on zoomable canvas
+    - display pixel art on this canvas
+    - modes
+        - free move, drag to move around (hold space)
+        - area choose or resize
+            - grab edges of area to enlarge - after change reset size to max 78 etc, unless checkbox checked
+            - clip to edges of image
+        - checkbox: preverse aspect ratio (for both resizing and inputing)
+        - checkbox: distort pixel art
+        - new input for area ar shows up if checked
+        - preserve aspect ratio from:
+            area - none - input
+# color pallete
+    - DSA
+    * w&b
+    * rgb, w&b
+    * green from old games
+    * custom option
+    - import / export
+
+# scalig mode:
+    - poor / dumb 
+    - current (default) 
+    - need to check 
+
+# color spaces (closest):
+    * cie76
+    * cie94
+    * rgb
+
+# dithering type: 
+    - none
+    - sierra
+    - floyd
+    - ordered (customizable size auto generated) (+ additional multiplier)
+    - blue noise dither?
+    - error diffusion custom (custom map)
+
+# advanced:
+    * background color (default none)
+    * display ship on preview
+    * blueprint mode
+    * kuwahara filter
+    * edge detection (could be usefull for text??? and making stuff sharp)
+    * paint saving feature - tries to make as much FA 
+
+# filters:
+    - hue
+    - brightness
+    - contrast
+    - grayscale
+    - gamma correction
+    - blur
+    - sharpen
+    - Levels 
+    - Curves   
+    - Sepia  
+    - Color balance (including white balance)   
+    - Vibrance   
+    - Exposure   
+
+** download map or edit pixels on the end page
+
+
+# HOLD spacebar to move around (zoom always)
+
+# mosaic:
+    * ad banner
+    * timed ad on map download
+
+# pixel art in text file format name.txt

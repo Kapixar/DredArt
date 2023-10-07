@@ -1,0 +1,618 @@
+::-webkit-scrollbar {
+    width: 13px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0,0,0,.3);
+}
+
+::-webkit-scrollbar-corner{
+    background: rgba(0,0,0,.3);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgb(123, 123, 123);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(82, 82, 82);
+}
+
+/* Basic stuff */
+
+
+#top-bar span a:hover{
+    cursor: pointer;
+}
+
+#top-bar span a:nth-last-child(3){
+    color: rgb(0 114 255);
+}
+
+#top-bar span a:nth-last-child(2){
+    color:firebrick;
+}
+
+#top-bar span a:last-child{
+    display: inline-block;
+    color:rgb(128, 128, 128);
+    transition: .5s;
+}
+
+#top-bar span a:last-child.expanded{
+    width: 80px;
+    background-color: rgb(80, 80, 80);
+    border-radius: 10px;
+    text-align: center;
+}
+
+
+#paint-tool{
+    position: absolute;
+    top: 29px;
+    right: 0;
+    width: 420px;
+    height: 420px;
+    padding: 7px;
+    border: 1px solid black;
+    background-color: rgb(25,35,45)!important;
+    border-bottom-left-radius: 10px!important;
+    text-align: center;
+    overflow: hidden;
+    z-index: 6;
+    opacity: 1; 
+    transition: opacity 200ms linear, transform 400ms;
+    animation-name: show;
+    animation: show 200ms linear;
+    transform: translateX(0%);
+}
+
+#paint-tool.disabled{
+    display: none;
+    pointer-events: none;
+}
+
+@keyframes show {
+    from{opacity: 0;}
+    to{opacity: 1;}
+}
+
+#paint-tool.hidden{
+    transform: translateX(100%);
+    opacity: 0; 
+}
+
+#paint-tool.highlight{
+    box-shadow: inset 0 0 10px 20px orange;
+    transition: box-shadow .5s;
+}
+
+#tool-content.hidden, #tool-content > div.hidden, #tool-nav.hidden, #tool-message.hidden{
+    display: none;
+}
+
+/* Message alert */
+
+#tool-message{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 15px;
+    height: 90%;
+}
+
+.error{
+    font-weight: 500;
+    color: red;
+    font-size: x-large;
+    margin: 10px;
+}
+
+#tool-message button:first-child{
+    background: linear-gradient(#a44,#000 200%);
+    position: absolute;
+    top: 3px;
+    right: 3px;
+}
+#tool-message p.desc span{
+    display: inline-block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 180px;
+    vertical-align: top;
+}
+#tool-message input[type='text']{
+    border-radius: 10px;
+    width: 60px;
+    text-align: center;
+}
+#tool-message p{
+    line-height: 2em;
+}
+
+/* Navigation stuff */
+
+#tool-nav{
+    display: flex;
+}
+#tool-nav button{
+    flex-grow: 1;
+    cursor: pointer;
+    transition: .2s;
+}
+#tool-nav button.chosen{
+    border-radius: 15px;
+}
+#tool-nav button.hidden{
+    display: none;
+}
+#tool-nav :nth-child(1){background: linear-gradient(rgb(159, 23, 23),#000 200%)!important;}
+#tool-nav :nth-child(2){background: linear-gradient(#DE9151,#000 200%)!important;}
+#tool-nav :nth-child(3){background: linear-gradient(#06630e,#000 200%)!important;}
+#tool-nav :nth-child(4){background: linear-gradient(#6c690b,#000 200%)!important;}
+#tool-nav :nth-child(5){background: linear-gradient(#0B4F6C,#000 200%)!important;}
+
+
+/* Menu tab */
+
+#tool-menu{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 20px;
+}
+input[type='file']{
+    display: none;
+}
+#tool-menu label{
+    color: white;
+    display: flex;
+    height: 30px;
+    cursor: pointer;
+    border: 1px solid #000;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    width: 110px;
+    height: 45px;
+}
+
+#tool-menu #iMOSAIC{
+    background: linear-gradient(-45deg, rgb(0,77,77), rgb(0,77,77), rgb(197,108,30), rgb(0,77,77), rgb(0,77,77));
+    background-size: 400% 400%;
+	animation: gradient 3s infinite ease forwards;
+    box-shadow: inset 0 0 6px black;
+}
+
+#iMOSAIC a{
+    color: white;
+    text-decoration: none;
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+    70% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+#tool-menu label:nth-of-type(1){background: linear-gradient(#bb3107,#000 200%)}
+#tool-menu label:nth-of-type(2){background: linear-gradient(#07871f,#000 200%)}
+
+
+#tool-menu label + div{
+    width: 280px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#tool-menu div:first-child, #tool-menu div:last-child{
+    grid-column: 1 / 3;
+    text-align: center;
+}
+
+/* Help boxes stuff */
+
+.pixelart{
+    box-sizing: border-box;
+    image-rendering: pixelated;
+    width: 100%;
+    height: 160px;
+    object-fit: contain;
+}
+
+.toolHelp{
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    max-width: 90%;
+    max-height: 350px;
+    height: min-content;
+    padding: 15px;
+    background-color: #666;
+    box-shadow: inset 0 0 10px black;
+    color: white;
+    border-radius: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 900;
+    transition: .5s;
+    row-gap: 15px;
+    overflow: hidden;
+}
+
+#tool-map .toolHelp{
+    right: 25px;
+    top: 10px;
+}
+
+.toolHelp p{
+    margin: 0;
+}
+
+.toolHelp.rolled{
+    justify-content: flex-start;
+    max-width: 35px;
+    max-height: 35px;
+    padding: 0;
+    line-height: 35px;
+    color: transparent;
+}
+
+.toolHelp.rolled::before{
+    color: white;
+    content: '?';
+}
+
+/* Map tab */
+
+#tool-map{
+    position: relative;
+}
+#tbox{
+    width: 407px;
+    height: 365px;
+    overflow: auto;
+}
+#tbox table{
+    table-layout: fixed;
+    font-size: 20px;
+    border-collapse: collapse;
+    transform-origin: top left;
+    text-shadow: 1px 1px black;
+    color: white;
+    font-family: monospace;
+    cursor: crosshair;
+    user-select: none;
+}
+#tbox td{
+    border: 2px black solid;
+    padding: 1px 2px 1px 1px;
+}
+#tbox td:hover::after{
+    content: attr(data-xy);
+    position: absolute;
+    left: 15px;
+    top: 15px;
+    background-color: rgb(25,35,45);
+    border: 1px white solid;
+    padding: 2px;
+    user-select: none;
+    color: white!important;
+    pointer-events: none;
+
+}
+#tbox td:hover::after:hover{
+    color: pink;
+}
+
+#tbox .transparent{
+    color: transparent;
+    text-shadow: none;
+}
+
+/* Holo tab */
+
+#tool-holo{
+    display: grid;
+    overflow-y: auto;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    height: 365px;
+    position: relative;
+
+}
+
+#tool-holo > div{
+    border-radius: 7px;
+    padding: 3px;
+    border: 7px dashed transparent;
+    text-shadow: 1px 1px black;
+    color: white;
+    cursor: pointer;
+    margin: 5px;
+    align-items: center;
+    justify-items: center;
+    user-select: none;
+    transition: .2s;
+}
+
+#tool-holo .coords{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    background-color: rgb(114, 114, 114);
+}
+
+#tool-holo .coords > :first-child{
+    grid-row: 1 / 3;
+    margin-block: 5px;
+}
+
+#tool-holo .coords > :last-child{
+    grid-row: 1 / 3;
+    grid-column: 2 / 4;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+#tool-holo .coords :last-child.tower{
+    grid-template-columns: 1fr;
+}
+
+
+#tool-holo .coords :last-child div{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+#tool-holo .long{
+    grid-column: 1 / 5;
+    cursor: initial;
+    background-color: rgb(114, 114, 114);
+}
+
+#tool-holo .search{
+    cursor: initial;
+    grid-template-columns: 5fr 1fr 5fr 5fr;
+    border-radius: 10px;
+    padding: 8px;
+    transition: .2s;
+}
+
+#tool-holo input{
+    border-radius: 10px;
+    width: 30px;
+    text-align: center;
+}
+
+
+#tool-holo .sticky{
+    display: grid;
+    position: sticky;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-flow: column;
+    top: -1px;
+    transition: .3s;
+    padding-right: 15px;
+    z-index: 100;
+    justify-items: center;
+}
+
+#tool-holo .sticky.simple{
+    grid-template-columns: 1fr 1fr;
+}
+
+#tool-holo .sticky.pinned{
+    border-radius: 0 0 10px 10px;
+    background-color: rgba(25,35,45, .95);
+}
+
+#checkButton, #allButton{
+    border-radius: 10px;
+    padding: 2px;
+    text-shadow: 1px 1px black;
+    border: 5px transparent dashed;
+    background-color: rgb(0,180,20);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    transition: .2s;
+}
+
+#checkButton:not(.selected):hover, #allButton:not(.selected)s:hover{
+    border-color: rgba(25,35,45, .3);
+}
+
+#tool-holo #allButton{
+    margin-bottom: 5px;
+    background-color: rgb(180, 102, 0);
+}
+
+#tool-holo .sort label{
+    border-radius: 10px;
+    padding: 2px;
+    margin: 5px;
+    border: 5px transparent dashed;
+    background-color: rgb(11, 164, 178);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    transition: .2s;
+}
+
+#tool-holo .sort input{
+    display: none;
+}
+
+#tool-holo .sort input:checked+label{
+    border-color: green;
+    pointer-events: none;
+    cursor: default;
+}
+
+
+
+#tool-holo > div.colorLabel{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    position: relative;
+    height: 35px;
+    text-shadow: 0 0 10px black;
+    transform-origin: center;
+    animation: popIn .5s;
+}
+
+@keyframes popIn {
+    from{transform:scale(0.5); opacity: 0;}
+}
+
+#tool-holo.hideLabels > div.colorLabel[amount='0']{
+    display: none;
+    pointer-events: none;
+    filter: brightness(20%);
+}
+
+#tool-holo > div.colorLabel:not(.selected):hover{
+    border-color: rgba(25,35,45, .3);
+}
+
+#tool-holo > div.colorLabel:after{
+    content: attr(amount);
+    display: block;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    text-shadow: 1px 1px black;
+    font-size: smaller;
+}
+
+
+#tool-holo > div.selected, #checkButton.selected, #allButton.selected{
+    border-color: rgb(0, 107, 0);
+    border-radius: 15px;
+    cursor: default;
+}
+
+#tool-holo .cornerBox{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+}
+
+#tool-holo .cornerBox.tower{
+    grid-template-columns: 1fr;
+}
+
+#tool-holo .cornerBox label{
+    background-color: #bcbcbc;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    border-radius: 2px;
+    transition: .2s;
+}
+
+#tool-holo .cornerBox .blank{
+    display: none;
+}
+
+#tool-holo .cornerBox:has(.blank:nth-last-of-type(3)){
+    width: 30px;
+    flex-wrap: wrap;
+}
+
+#tool-holo .cornerBox input:checked+label{
+    background-color: rgb(0,180,20);
+    border-radius: 6px;
+}
+
+#tool-holo .cornerBox input{
+    display: none;
+}
+
+#tool-holo img{
+    height: 30px;
+    user-select: none;
+}
+
+/* Settings tab */
+
+#tool-settings{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    user-select: none;
+    overflow-y: auto;
+    height: 365px;
+}
+
+#tool-settings > button{
+    flex-basis: 50%;
+}
+
+#tool-settings > div{
+    flex-basis: 100%;
+    background-color: rgb(114, 114, 114);
+    border-radius: 7px;
+    padding: 4px;
+    max-width: 360px;
+}
+
+#tool-settings #blockSetting > div{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 3px;
+    width: min-content;
+    margin: auto;
+}
+
+#tool-settings #blockSetting > div select{
+    width: 110px;
+    aspect-ratio: 2/1;
+    text-align: center;
+    background-color: #666;
+    color: white;
+}
+
+#tool-settings #blockSetting > div select option:checked{
+    display: none;
+}
+
+#tool-settings input{
+    accent-color: darkgrey;
+    width: 40px;
+    height: 24px;
+    vertical-align: middle;
+    background: rgba(0,0,0,.2);
+    color: white;
+    border: 1px solid white;
+    padding: 4px;
+    font-size: 14pt;
+}

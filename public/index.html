@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/img/icon48.png" type="image/x-icon">
+    <link rel="stylesheet" href="render.css">
+    <title>DredArt</title>
+    <script defer src="ui.js"></script>
+    <script defer src="designer.js"></script>
+</head>
+
+<body>
+    <ul id="messageContainer"></ul>
+    <dialog id="dialog">
+        cool dialog
+    </dialog>
+    <main>
+        <section id="menu" class="">
+            <div class="span">
+                <h2>DredArt</h2>
+                <h3>The Painter Extension</h3>
+                <p>Paint great pixel arts from ordinary images!</p>
+                <p>Use Holo Blueprints to speed up your work!</p>
+                <p>Obtain the extension at:</p>
+                <div>
+                    <a title="Download from Chrome Web Store" target="_blank" href="https://chrome.google.com/webstore/detail/dredart/ocgomfneelmigjgpgnapekmedbmimamm"><img src="./img/chrome.webp" alt="Chrome"></a>
+                    <a title="Download from Mozilla Add-ons" target="_blank" href="https://addons.mozilla.org/pl/firefox/addon/dredart/"><img src="./img/firefox.webp" alt="Firefox"></a>
+                    <a title="Download from Opera addons" target="_blank" href="https://github.com/Kapixar/DredArt"><img src="./img/opera.webp" alt="GitHub"></a>
+                    <a title="View code on GitHub" target="_blank" href="https://github.com/Kapixar/DredArt"><img src="./img/github.webp" alt="GitHub"></a>
+                </div>
+                <p>Created with love by <a href="https://github.com/Kapixar/">I am Shrek</a></p>
+            </div>
+            <div class="span" id="mosaic-container">
+                <h2>MOSAIC</h2>
+                <h3>The largest pixel art</h3>
+                <p>We are painting pixel art made out of 100 ships.</p>
+                <p>And We need your help!</p>
+                <ul>
+                    You can help us by:
+                    <li>Uploading image to paint</li>
+                    <li>Donating metal</li>
+                    <li>Painting ships</li>
+                </ul>
+                <li></li>
+                <a class="discord" target="_blank" href="https://discord.gg/vMVPtfWCeX">Join us</a>
+            </div>
+            <div>
+                <h2>Tutorial</h2>
+                <h3>Let's dive into painting</h3>
+                <iframe src="https://www.youtube.com/embed/ICIYIbsq19E" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+            <div class="">
+                <h2>Designer</h2>
+                <h3>Fabulous Artworks</h3>
+                <p>Generate pixel arts with great precision!</p>
+                <input id="dz-designer" type="file" accept="png">
+                <label class="drop-zone" for="dz-designer">
+                    <span>
+                        <p>Drag & Drop</p>
+                        <p>Copy & Paste</p>
+                        <p>Select from System</p>
+                    </span>
+                </label>
+                <!-- <span class="warning">
+                    <span>Do not use any obscene pictures</span>
+                    <span>dredark.io dev is not affiliated with this project</span>
+                </span> -->
+            </div>
+            <div>
+                <h2>Compact</h2>
+                <h3>Holo w/o the extension</h3>
+                <p>Use Holo without installing anything</p>
+                <input id="dz-compact" type="file" accept="png">
+                <label class="drop-zone drop-zone2" for="dz-compact">
+                    <span>
+                        <p>Drag & Drop</p>
+                        <p>Select from System</p>
+                    </span>
+                </label>
+            </div>
+        </section>
+        <section id="designer" class="ui-shown">
+            <div id="canvasBox">
+                <canvas id="canvasMain" width="500" height="500"></canvas>
+                <div id="shipShape">
+                    <canvas width="78" height="78"></canvas>
+                </div>
+            </div>
+            <div>
+                <div id="settingsBox">
+                    <p class="selector">
+                        <span>Color pallete</span>
+                        <input checked type="radio" name="pallete" id="palleteDSA"><label for="palleteDSA">DSA</label>
+                        <input type="radio" name="pallete" id="pallete8BIT"><label for="pallete8BIT">8 BIT</label>
+                        <input type="radio" name="pallete" id="palleteGameBoy"><label for="palleteGameBoy">Game Boy</label>
+                        <input type="radio" name="pallete" id="palleteCustom"><label for="palleteCustom">Custom</label>
+                    </p>
+                    <p class="selector">
+                        <span>Scaling mode</span>
+                    </p>
+                    <p class="selector">
+                        <span>Color space match</span>
+                        <input checked type="radio" name="space" id="space76"><label for="space76">CIE-76</label>
+                        <input type="radio" name="space" id="space94"><label for="space94">CIE-94</label>
+                        <input type="radio" name="space" id="spaceRGB"><label for="spaceRGB">RGB</label>
+                    </p>
+                    <p class="selector">
+                        <span>Dithering alghoritm</span>
+                    </p>
+                    <p class="collapsible">
+
+                    </p>
+                </div>
+                <div id="summaryBox">
+                    <p>Your art is 78x45. Paint wil cost </p>
+                </div>
+            </div>
+            <div class="mosaic-banner">
+                Mosaic
+            </div>
+        </section>
+        <section id="compact">
+            <div>
+                thumbnail
+            </div>
+            <div>
+                <button>Get Legacy Holo</button>
+                <label>Enter bottom-left corner coordinate: 
+                    <input placeholder="1" type="number"><span> x </span>
+                    <input placeholder="1" type="number">
+                </label>
+                <p>How to use Legacy Holo:</p>
+                <ol>
+                    <li>Place these blocks on given coordinates (hold / aka ?)
+                        <ul>
+                            <li>Hatch - 24, 25</li>
+                            <li>Sign - 24, 25</li>
+                            <li>Sign(hover) - 24, 25</li>
+                            <li>Sign(near) - 24, 25</li>
+                        </ul>
+                    </li>
+                    <li>Drop the Zip into the game window</li>
+                    <li>Paint</li>
+                    <li>In case of invisible sprite:
+                        <ul>
+                            <li>Move close to the block</li>
+                            <li>Max zoom in</li>
+                            <li>Refresh the assets: Settings -> Modify assets -> Refresh</li>
+                        </ul>
+                    </li>
+                </ol>
+    
+                <hr>
+    
+                <button>Get BlueHolo</button>
+                
+                <p>How to use BlueHolo</p>
+                <ol>
+                    <li>Drop blueHolo.zip into the game window</li>
+                    <li>Paste the blueprint into a BP Scanner</li>
+                    <li>Place blueprint in desired place</li>
+                </ol>
+            </div>
+        </section>
+    </main>
+    <footer><span id="version">2.0</span> by <a target="_blank" href="https://github.com/Kapixar/">I am Shrek</a></footer>
+        <!-- <div id="upload" class="active">
+            <input type="file" id="pngInp" accept="image/*">
+            <label id="drop-zone" for="pngInp">
+                <h2>Drag & Drop image here!</h2>
+                <p>or</p>
+                <h2>Copy and paste it</h2>
+                <p>or</p>
+                <h4>Click to choose from file system</h4>
+            </label>
+            <h1>About</h1>
+            <p>This tool is part of <a href="https://chrome.google.com/webstore/detail/dredart/ocgomfneelmigjgpgnapekmedbmimamm" target="_blank">DredArt extension</a> made by I am Shrek.</p>
+            <p>It let's you create fine pixel arts from ordinary images.</p>
+            <p>Render is extremly simple, fast and intuitive. Works with most of image files.</p>
+            <span class="warning">
+                <span>Do not use any obscene pictures.</span>
+                <span>dredark.io developer is not affiliated with this project.</span>
+                <span>Source code is available on GitHub on MIT license.</span>
+            </span>
+        </div>
+    </div>    
+    <div>
+        <div id="setup">
+            <span id="show-help">?</span>
+            <div id="scalePanel">
+                <div id="canvasBox" data-help="Drag to move. Scroll to zoom.">
+                    <canvas id="canMain" width="500" height="500"></canvas>
+                    <div id="shipShape">
+                        <canvas width="78" height="78"></canvas>
+                        <canvas id="shipbg" class="hidden" width="400" height="400"></canvas>
+                    </div>
+                </div>
+                <input type="range" id="scalerange" step="0.001" orient="vertical" min="-0.2" max="0.2" data-help="Slide up to zoom in / down to zoom out.">
+                <div id="settings">
+                    <label data-help="Use to crop. For more precise cut, use graphic program.">crop image</label>
+                    <div id="sizeBox" data-help="Define size of pixel art. Aspect ratio autofills boxes to match proportions of image.">
+                        <span>Dimensions:</span>
+                        <input placeholder="78" type="text"><span> x </span>
+                        <input placeholder="78" type="text">
+                        <label><input type="checkbox" class="smallbox" checked><span></span>Aspect ratio</label>
+                        <button class="btn-accent">Apply</button>
+                    </div>
+                    <label data-help="Hide the pixel art preview. Reduces amount of operations."><input type="checkbox"><span></span>Hide result</label>
+                    <label data-help="Show paint texture in pixel art. May NOT match the result."><input type="checkbox"><span></span>Show background tiles</label>
+                    <label class="switch" data-help="None for small images, Floyd for bigger. Google for more details.">
+                        <span>Scaling method: (as incoming update preview)</span>
+                        <span>Smooth</span><input type="checkbox"><span class="slider"></span><span>Hard</span>
+                    </label>
+                    <label class="switch" data-help="None for small images, Floyd for bigger. Google for more details.">
+                        <span>Dithering algorithm:</span>
+                        <span>None</span><input type="checkbox"><span class="slider"></span><span>Floyd-Steinberg</span>
+                    </label>
+                    <label class="switch" data-help="Use as you prefer. CIE-94 may be slightly better. Google for more details.">
+                        <span>Color space:</span>
+                        <span>CIE-76</span><input type="checkbox"><span class="slider"></span><span>CIE-94</span>
+                    </label>
+                    <label data-help="Rotate the hue of image"><span>hue: </span><input type="range" step="1" min="0" max="360"><span>0 degrees</span></label>
+                    <label data-help="Change color intensity"><span>saturation: </span><input type="range" step="1" min="0" max="500"><span>100%</span></label>
+                    <label data-help="Brightn up / dim the image"><span>brightness: </span><input type="range" step="1" min="0" max="500"><span>100%</span></label>
+                    <label data-help="Change amount of color / grayscale"><span>contrast: </span><input type="range" step="1" min="0" max="500"><span>100%</span></label>
+                    <div>
+                        <button>Default colors</button><button>Reset settings</button><button class="btn-accent">Back</button><button class="btn-accent">Continue</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="download">
+            <button class="btn-accent">Back</button>
+            <p class="bigger">And here it is, your pixel art in full glory!</p>
+            <p class="big">Download with button below. You can paint it by reading numbers (🤮) or by putting it into Creator.</p>
+            <div>
+                <img src="" alt="Result picture thumbnail">
+            </div>
+            <div id="downloadbuttonbox">
+                <p>Pixel art is <span id="dimensions"></span>. Enter name:</p>
+                <input type="text" placeholder="dredArt_pixelart" >
+                <a href="#">Download Pixel Map</a>
+            </div>
+        </div>
+    </div>
+    <div id="cropBox" class="">
+        <h2>Crop the image by dragging borders</h2>
+        <div>
+            <div>
+                <canvas id="canCrop"></canvas>
+                <div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+        </div>
+        <button>Accept</button>
+    </div>
+    <script src="render.js"></script>
+    <script src="downscale/downscale.js"></script>
+    <script src="downscale/downsample.js"></script> -->
+</body>
+
+</html>

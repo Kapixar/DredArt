@@ -1,28 +1,40 @@
 {
     "name": "DredArt",
-    "description": "Dredark extension for pixel arts. Use any PNG and paint it using Holo!",
-    "version": "1.4.1",
-    "author": "I am Shrek, Kapi73#3815",
+    "description": "drednot.io extension for pixel arts. Use any image and paint it using Holo!",
+    "version": "2.0",
+    "author": "Kapixar, Kapi73#3815, I am Shrek",
     "manifest_version": 3,
     "content_scripts": [
         {
            "matches": ["https://drednot.io/*", "https://test.drednot.io/*"],
            "css": ["style.css"],
-           "js": ["script.js"]
+           "js": ["startup.js"]
         }
     ],
     "background": {
         "service_worker": "background.js"
     },
+    "permissions": [
+        "storage",
+        "scripting"
+    ],
+    "action": {
+        "default_title": "Open DredArt"
+    },
     "icons": { 
         "16": "img/icon16.png",
+        "32": "img/icon32.png",
         "48": "img/icon48.png",
         "128": "img/icon128.png" 
     },
     "web_accessible_resources": [
         { 
-            "resources": ["render/index.html", "help.html", "img/hatch.png", "img/mosaic.png"],
+            "resources": ["public/index.html", "help.html","img/hatch.png", "img/mosaic_banner.png", "img/painter.png", "img/designer.png", "img/legacy_bg.png", "img/setup_blank.png", "img/setup_color.png", "img/bp_bg.png", "img/icon16.png", "scanner.js"],
             "matches": ["https://drednot.io/*", "https://test.drednot.io/*"]
         }
+    ],
+    "host_permissions": [
+        "https://*.drednot.io/*"
     ]
+    
 }
