@@ -51,7 +51,7 @@
 /* Popup */
 
 #da-popup {
-    --themeColor: #6C969D;
+    --themeColor: rgb(144, 144, 144);
     /* display: flex; */
     /* flex-direction: column; */
     position: absolute;
@@ -61,7 +61,7 @@
     height: 400px;
     z-index: 100;
     transition: opacity 100ms, box-shadow 100ms, clip-path 1s;
-    background-color: rgb(25, 35, 45);
+    background: rgb(25, 35, 45) url('chrome-extension://__MSG_@@extension_id__/img/shrek.png') no-repeat center 50%;
     color: white;
     border-radius: 10px;
     overflow: hidden;
@@ -129,6 +129,12 @@
 
 #da-top-bar>* {
     cursor: pointer;
+    height: 100%;
+    color: white;
+}
+
+#da-top-bar img {
+    height: 100%;
 }
 
 /* Everything inside tool */
@@ -146,11 +152,12 @@
     max-height: 0;
     pointer-events: none;
     overflow: hidden;
+    transition: 200ms linear;
 }
 
 #da-content > :nth-child(1 of .active) {
     opacity: 1;
-    max-height: initial;
+    max-height: 400vh;
     pointer-events: initial;
     overflow: initial;
 }
@@ -163,8 +170,7 @@
     height: 100%;
     top: 0;
     left: 0;
-    max-height: 100vh;
-    transition: max-height 250ms;
+    /* max-height: 100vh;/ */
     display: flex;
     justify-content: space-evenly;
     flex-direction: column;
@@ -511,8 +517,7 @@
 #da-popup #allButton {
     padding: 7px;
     background: var(--themeColor);
-    color: white;
-    text-shadow: 1px 1px black;
+    color: rgb(114, 114, 114);
     border: 5px solid transparent;
 }
 
@@ -521,7 +526,6 @@
     background-color: transparent;
     color: var(--themeColor);
     border: 5px solid var(--themeColor);
-    text-shadow: 1px 1px black;
 }
 
 /* Part selection */
@@ -569,7 +573,7 @@
     text-align: center;
     height: 35px;
     line-height: 35px;
-    text-shadow: 0 0 10px black;
+    text-shadow: 0 0 6px black;
     transform-origin: center;
     animation: popIn .5s;
     transition: 200ms;
@@ -615,6 +619,8 @@
     padding: 10px;
     background: rgb(114, 114, 114);
     color: white;
+    box-shadow: rgb(51, 51, 51) 0px 3px;
+    text-shadow: 0 0 10px black;
     /* box-shadow: inset 0 0 5px black; */
 }
 
