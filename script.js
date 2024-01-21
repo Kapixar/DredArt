@@ -7,15 +7,15 @@ start.onclick = () => {
     if (t) t.classList.toggle('hidden');
     else renderTool();
 };
-start.innerHTML = "<i class='fas big-icon fa-palette'></i><div class='tooltip tooltip-low dark'>DredArt</div>";
+start.innerHTML = '<i class=\'fas big-icon fa-palette\'></i><div class=\'tooltip tooltip-low dark\'>DredArt</div>';
 
 const holoOff = document.createElement('a');
 holoOff.onclick = () => { removeHolo(); };
-holoOff.innerHTML = "<i class='fas big-icon fa-times-circle'></i><div class='tooltip tooltip-low dark'>Disable Holo</div>";
+holoOff.innerHTML = '<i class=\'fas big-icon fa-times-circle\'></i><div class=\'tooltip tooltip-low dark\'>Disable Holo</div>';
 
 const refresh = document.createElement('a');
 refresh.onclick = () => { refreshTXT(); };
-refresh.innerHTML = "<i class='fas big-icon fa-redo'></i><div class='tooltip tooltip-low dark'>Refresh</div>";
+refresh.innerHTML = '<i class=\'fas big-icon fa-redo\'></i><div class=\'tooltip tooltip-low dark\'>Refresh</div>';
 
 topBar.append(start, holoOff, refresh);
 
@@ -135,7 +135,7 @@ function renderTool() {
 
         if (file.length === null) return info('Error. Probably file is empty.');
 
-        if (file.type != 'image/png') return info('Error. File is not PNG. (Use DredArt | Render for pixel arts)');
+        if (file.type !== 'image/png') return info('Error. File is not PNG. (Use DredArt | Render for pixel arts)');
 
         const img = new Image();
         const imgurl = URL.createObjectURL(file);
@@ -143,10 +143,10 @@ function renderTool() {
         img.onload = function () {
             URL.revokeObjectURL(imgurl);
             if (this.width > 1600 || this.height > 1625) {
-                return info("Too big image! It's not created with DredArt | Render!");
+                return info('Too big image! It\'s not created with DredArt | Render!');
             }
             if (this.width < 20 || this.height < 45) {
-                return info("Too small image! It's not created with DredArt | Render!");
+                return info('Too small image! It\'s not created with DredArt | Render!');
             }
             const source = document.createElement('canvas');
             source.width = this.width / 20;
@@ -165,8 +165,8 @@ function renderTool() {
             for (let y = 0; y < scanner.height; y += 20) {
                 for (let x = 0; x < scanner.width; x += 20) {
                     const i = pxIndex(x, y, scanner.width);
-                    if (findIndex([sD[i], sD[i + 1], sD[i + 2]]) == 256) return info("Image contains colors that don't exist in Dredark color pallete. Use DredArt|Render for pixel arts. (Or you dragged directly from the discord preview)");
-                    if (sD[i + 3] != 255) return info('Image contains transparency. No transparency is allowed. Use DredArt | Render for pixel arts.');
+                    if (findIndex([sD[i], sD[i + 1], sD[i + 2]]) === 256) return info('Image contains colors that don\'t exist in Dredark color pallete. Use DredArt|Render for pixel arts. (Or you dragged directly from the discord preview)');
+                    if (sD[i + 3] !== 255) return info('Image contains transparency. No transparency is allowed. Use DredArt | Render for pixel arts.');
                     const j = pxIndex(x / 20, y / 20, source.width);
                     sData[j] = sD[i];
                     sData[j + 1] = sD[i + 1];
@@ -215,7 +215,7 @@ function renderTool() {
             let settObj;
             try {
                 settObj = JSON.parse(localStorage.getItem('holoInfo'));
-                if (Object.keys(settObj).length != 7) {
+                if (Object.keys(settObj).length !== 7) {
                     settObj = {
                         blocks: '0324',
                         holoColor: 0,
@@ -318,7 +318,7 @@ function renderTool() {
             };
 
             document.querySelector('#tool-settings #holoTXT').onchange = function () {
-                if (this.files[0].type != 'application/x-zip-compressed') return info('That is not an zip file.');
+                if (this.files[0].type !== 'application/x-zip-compressed') return info('That is not an zip file.');
                 openDB().then(() => {
                     const zip = new File([this.files[0]], 'tool_txt.zip', {
                         type: this.files[0].type,
@@ -363,8 +363,8 @@ function renderTool() {
             showSection(2);
             const corner = [1, 0];
 
-            if (c1 != '' && c1 != '-') corner[0] = parseInt(c1);
-            if (c2 != '' && c2 != '-') corner[1] = parseInt(c2) - 1;
+            if (c1 !== '' && c1 !== '-') corner[0] = parseInt(c1);
+            if (c2 !== '' && c2 !== '-') corner[1] = parseInt(c2) - 1;
             document.querySelector('div button').click();
 
             map.textContent = '';
@@ -440,7 +440,7 @@ function renderTool() {
                 };
                 const dontShowL = document.createElement('label');
                 dontShowL.setAttribute('for', 'dontShow');
-                dontShowL.textContent = "Don't show again";
+                dontShowL.textContent = 'Don\'t show again';
 
                 message.append(warnheader, parag1, parag2, parag3, dontShow, dontShowL);
             }
@@ -473,7 +473,7 @@ function renderTool() {
             // description help
             const descr = document.createElement('div');
             descr.classList.add('long');
-            descr.innerHTML = "<p>Visit the Help tab to learn how to use Holo.</p><p>In case Holo doesn't load: Fly directly over the selected part block, zoom in and click Refresh. More problems? Visit Help.</p>";
+            descr.innerHTML = '<p>Visit the Help tab to learn how to use Holo.</p><p>In case Holo doesn\'t load: Fly directly over the selected part block, zoom in and click Refresh. More problems? Visit Help.</p>';
             holo.appendChild(descr);
 
             // help number 1
@@ -668,12 +668,12 @@ function renderTool() {
 
             blocksSum = 0;
             for (let i = 0; i < 4; i += 1) {
-                if (blocks[i] == '') continue;
+                if (blocks[i] === '') continue;
                 blocksSum += i;
                 const cornerLabel = document.createElement('label');
                 cornerLabel.setAttribute('for', `corner${i}`);
                 const cornerInput = document.createElement('input');
-                if (i == 0) cornerInput.checked = true;
+                if (i === 0) cornerInput.checked = true;
                 cornerInput.onchange = () => { selectPart(); };
                 cornerInput.type = 'radio';
                 cornerInput.name = 'corners';
@@ -681,8 +681,8 @@ function renderTool() {
                 cornerInput.value = i;
                 cornerBox.append(cornerInput, cornerLabel);
             }
-            if (blocksSum == 2) cornerBox.classList.add('tower');
-            if (blocksSum == 0) stickyBox.classList.add('simple');
+            if (blocksSum === 2) cornerBox.classList.add('tower');
+            if (blocksSum === 0) stickyBox.classList.add('simple');
             else stickyBox.appendChild(cornerBox);
             holo.appendChild(stickyBox);
 
@@ -724,7 +724,7 @@ function renderTool() {
 
             // rendering button for each color
             for (const c in imgColors) {
-                if (imgColors[c].sum == 0) continue;
+                if (imgColors[c].sum === 0) continue;
                 const col = document.createElement('div');
                 col.classList.add('colorLabel');
 
@@ -758,7 +758,7 @@ function renderTool() {
                 const holoData = shadowCtx.getImageData(0, 0, shadowCan.width, shadowCan.height);
                 const hData = holoData.data;
                 for (let i = 0; i < data.length; i += 4) {
-                    if (data[i] == c[0] && data[i + 1] == c[1] && data[i + 2] == c[2]) hData[i + 3] = 0;
+                    if (data[i] === c[0] && data[i + 1] === c[1] && data[i + 2] === c[2]) hData[i + 3] = 0;
                 }
                 shadowCtx.putImageData(holoData, 0, 0);
                 return shadowCan;
@@ -780,7 +780,7 @@ function renderTool() {
                 if (currentPart === oldPart) return;
 
                 oldPart = currentPart;
-                for (let i = 0; i < 4; i += 1) if (currentPart != i) uploadHolo(subCan, usedBlocksGame[i]);
+                for (let i = 0; i < 4; i += 1) if (currentPart !== i) uploadHolo(subCan, usedBlocksGame[i]);
                 displayPart();
                 for (const colorLabel of colorLabels) colorLabel.setAttribute('amount', imgColors[colorLabel.textContent][currentPart]);
                 sortBy();
@@ -798,7 +798,7 @@ function renderTool() {
                     localStorage.setItem('tool-holo', 't');
                 }
 
-                uploadHolo(divideShadow(currentPart == 1 || currentPart == 3, currentPart == 2 || currentPart == 3), usedBlocksGame[currentPart]).then(() => {
+                uploadHolo(divideShadow(currentPart === 1 || currentPart === 3, currentPart === 2 || currentPart === 3), usedBlocksGame[currentPart]).then(() => {
                     refreshTXT();
                 });
             }
@@ -842,7 +842,7 @@ function renderTool() {
             // sorting color Labels
             function sortBy() {
                 const sortMode = document.querySelector('[name=sortby]:checked').value;
-                if (sortMode == '1') {
+                if (sortMode === '1') {
                     [...colorLabels]
                         .sort((a, b) => (parseInt(a.getAttribute('amount')) > parseInt(b.getAttribute('amount')) ? -1 : 1))
                         .forEach((n) => holo.appendChild(n));
@@ -859,7 +859,7 @@ function renderTool() {
             let showedColor = '';
             function showOnly(color) {
                 const tds = document.querySelectorAll('td');
-                if (color == showedColor) {
+                if (color === showedColor) {
                     tds.forEach((t) => {
                         t.classList.remove('transparent');
                     });
@@ -867,7 +867,7 @@ function renderTool() {
                     return;
                 }
                 tds.forEach((t) => {
-                    if (t.textContent == color) t.classList.remove('transparent');
+                    if (t.textContent === color) t.classList.remove('transparent');
                     else t.classList.add('transparent');
                 });
                 showedColor = color;
@@ -887,8 +887,8 @@ function renderTool() {
                         this.oldValue = this.value;
                         this.oldSelectionStart = this.selectionStart;
                         this.oldSelectionEnd = this.selectionEnd;
-                        if (this == i1 && this.value.length >= (this.value.indexOf('-') == -1 ? 2 : 3)) i2.focus();
-                        else if (this == i2 && this.value.length == 0) i1.focus();
+                        if (this === i1 && this.value.length >= (this.value.indexOf('-') === -1 ? 2 : 3)) i2.focus();
+                        else if (this === i2 && this.value.length === 0) i1.focus();
                     } else {
                         this.value = this.oldValue;
                         this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
@@ -928,7 +928,7 @@ function renderTool() {
     }
 
     function sendUpdateMessage(version) {
-        if (localStorage.getItem('tool-version') == version) return;
+        if (localStorage.getItem('tool-version') === version) return;
         const popup = document.querySelector('#disconnect-popup');
         tool.classList.add('disabled');
         popup.style.display = 'block';
@@ -1008,7 +1008,7 @@ function removeHolo() {
     localStorage.removeItem('tool-holo');
     document.querySelector('#new-ui-left button').click();
     document.querySelectorAll('#tool-holo div, #allButton, #checkButton').forEach((e) => { e.classList.remove('selected'); });
-    if (localStorage.getItem('tool-txt') == 'true') {
+    if (localStorage.getItem('tool-txt') === 'true') {
         openDB().then(() => {
             retrieveFile('tool_txt.zip').then((file) => {
                 const dataTransfer = new DataTransfer();
@@ -1025,7 +1025,7 @@ let db;
 function openDB() {
     return new Promise((resolve, reject) => {
         if (!('indexedDB' in window)) {
-            alert("This browser doesn't support IndexedDB. Saving Texture pack is not available.");
+            alert('This browser doesn\'t support IndexedDB. Saving Texture pack is not available.');
             reject(new Error('Error opening IndexedDB - no support'));
         }
 
