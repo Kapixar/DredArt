@@ -97,8 +97,6 @@ function renderTool() {
         };
     }
 
-    sendUpdateMessage('1.4');
-
     // Create pixel art
     document.getElementById('nImg').onclick = function () { window.open(chrome.runtime.getURL('../render/index.html')); };
 
@@ -925,67 +923,6 @@ function renderTool() {
             navChildren[o].classList.remove('chosen');
         }
         navChildren[s].classList.add('chosen');
-    }
-
-    function sendUpdateMessage(version) {
-        if (localStorage.getItem('tool-version') === version) return;
-        const popup = document.querySelector('#disconnect-popup');
-        tool.classList.add('disabled');
-        popup.style.display = 'block';
-        popup.innerHTML = `
-        <div>
-            <h2>DredArt Update!</h2>
-            <p>It's really pleasing to know that people uses your creation!</p>
-            Major changes in 1.4:
-            <ul>
-            <li>You can restore your textures when removing Holo (set it up in settings tab)</li>
-            <li>Holo is more reliable</li>
-            <li>Visual changes</li>
-            </ul>
-            <hr>
-            <p>Please give me 1 minute to introduce you to project that is very close to my heart:</p>
-            <h3>MOSAIC Project</h3>
-            <img src='' alt='Mosaic canvas'/>
-            <p>Picture this: the largest pixel art ever, 100 stunning ships arranged in a 10x10 grid, all coming together to create a breathtaking masterpiece.</p>
-            <p>We are already running, but we need your help to make it happen!</p>
-            <p><b>YOU can be a part of this incredible project in as little as 2 minutes!</b></p>
-            <ul>
-                <li>We need something to paint! We take everything as long it's appropriate. Upload images which will fill the canvas to our discord server. <a target='_blank' href='https://mosaic.kapixar.repl.co/'>Here you can check current canvas!</a></li>
-                <li>You can help paint ready ships!</li>
-                <li>If you happen to have any unused metal lying around, consider donating it to our cause!</li>
-            </ul>
-            <p><b>What do YOU get?</b></p>
-            <ul>
-                <li>Eternal glory of participation</li>
-                <li>Secret giveaway tickets</li>
-                <li>Flux for painting</li>
-            </ul>
-            <p>Join our discord server now for details of this amazing event!</p>
-            <a target='_blank' href='https://discord.gg/uNgD6vv67c'><button class='btn-meme'>Join our server</button></a>
-
-            <p>Close button opens after <span>60</span> seconds</p>
-            <p>Consider joining, it's <b>just</b> about uploading any image you want!</p> 
-            <button disabled class='btn-red'>Close</button>
-            <img alt='puss' src='https://i2-prod.mirror.co.uk/incoming/article25609261.ece/ALTERNATES/s615b/0_PUSS-IN-BOOTS.jpg'>
-        </div>
-        `;
-        const mosaic = document.querySelector('#disconnect-popup img');
-        mosaic.src = chrome.runtime.getURL('img/mosaic.png');
-
-        let count = 60;
-        const interval = setInterval(() => {
-            count--;
-            document.querySelector('#disconnect-popup span:last-of-type').textContent = count;
-            if (count <= 0) {
-                document.querySelector('#disconnect-popup button.btn-red').removeAttribute('disabled');
-                document.querySelector('#disconnect-popup button.btn-red').onclick = () => {
-                    popup.style.display = 'none';
-                    tool.classList.remove('disabled');
-                    localStorage.setItem('tool-version', version);
-                };
-                clearInterval(interval);
-            }
-        }, 1000);
     }
 }
 
