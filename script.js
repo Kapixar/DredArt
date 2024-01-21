@@ -36,9 +36,9 @@ function renderTool() {
             <div><h3>DredArt | Creator</h3></div>
             <input type='file' accept='.png' id='pImg'><label for='pImg'>Use pixel art</label><div><span>Drag & Drop / Select Pixel Map from Render to paint it into the game.</span></div>
             <label id='nImg'>Create pixel art</label><div><span>Scale and convert pictures to game color pallete. <a target='_blank' href='https://kapixar.github.io/DredArt/'>Also online.</a></span></div>
-            <label id='iMOSAIC'><a target='_blank' href='https://discord.gg/uNgD6vv67c'>Join MOSAIC</a></label><div><span>Contribute to the largest pixel art project! Join the Discord server and help us by sending image to paint!</span>
+            <label id='iMOSAIC'><a target='_blank' href='https://discord.gg/uNgD6vv67c'>Join MOSAIC</a></label><div><span>Help us finish the largest pixel art project! Join the Discord server to find out more!</span>
             </div>
-            <div><p>DredArt v1.4 by I am Shrek</p></div>
+            <div><p>DredArt v1.4.2 by I am Shrek</p></div>
         </div>
         <div id='tool-map'></div>
         <div id='tool-holo'></div>
