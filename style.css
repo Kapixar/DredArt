@@ -22,25 +22,25 @@
 /* Basic stuff */
 
 
-#top-bar span a:hover{
+#paint-start:hover, #paint-stop:hover, #paint-refresh:hover{
     cursor: pointer;
 }
 
-#top-bar span a:nth-last-child(3){
+#paint-start {
     color:rgb(255, 217, 0);
 }
 
-#top-bar span a:nth-last-child(2){
+#paint-stop {
     color:firebrick;
 }
 
-#top-bar span a:last-child{
+#paint-refresh {
     display: inline-block;
     color:rgb(128, 128, 128);
     transition: .5s;
 }
 
-#top-bar span a:last-child.expanded{
+#paint-refresh.expanded{
     width: 80px;
     background-color: rgb(80, 80, 80);
     border-radius: 10px;

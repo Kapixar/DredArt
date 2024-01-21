@@ -1,7 +1,7 @@
 // Top bar buttons
+const topBar = document.querySelector('#top-bar .icons') || document.querySelector('#top-bar span');
 const start = document.createElement('a');
-const topBar = document.querySelector('#top-bar span');
-// const game = document.getElementById('big-ui-container');
+start.id = 'paint-start';
 start.onclick = () => {
     const t = document.getElementById('paint-tool');
     if (t) t.classList.toggle('hidden');
@@ -10,10 +10,12 @@ start.onclick = () => {
 start.innerHTML = '<i class=\'fas big-icon fa-palette\'></i><div class=\'tooltip tooltip-low dark\'>DredArt</div>';
 
 const holoOff = document.createElement('a');
+holoOff.id = 'paint-stop';
 holoOff.onclick = () => { removeHolo(); };
 holoOff.innerHTML = '<i class=\'fas big-icon fa-times-circle\'></i><div class=\'tooltip tooltip-low dark\'>Disable Holo</div>';
 
 const refresh = document.createElement('a');
+refresh.id = 'paint-refresh';
 refresh.onclick = () => { refreshTXT(); };
 refresh.innerHTML = '<i class=\'fas big-icon fa-redo\'></i><div class=\'tooltip tooltip-low dark\'>Refresh</div>';
 
