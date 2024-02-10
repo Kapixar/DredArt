@@ -13,22 +13,23 @@
 </head>
 
 <body>
-    <canvas></canvas>
     <input type="range" id="min" min="0" max="255" value="10">
     <input type="range" id="max" min="0" max="255" value="120">
+    <p></p>
     <script>
         const min = document.querySelector('#min');
         const max = document.querySelector('#max');
         const rgb = [[222, 165, 164], [214, 145, 136], [173, 111, 105], [128, 64, 64], [77, 0, 0], [77, 25, 0], [128, 0, 0], [144, 30, 30], [186, 1, 1], [179, 54, 54], [179, 95, 54], [255, 0, 0], [216, 124, 99], [255, 64, 64], [255, 128, 128], [255, 195, 192], [195, 153, 83], [128, 85, 64], [128, 106, 64], [77, 51, 38], [77, 51, 0], [128, 42, 0], [155, 71, 3], [153, 101, 21], [213, 70, 0], [218, 99, 4], [255, 85, 0], [237, 145, 33], [255, 179, 31], [255, 128, 64], [255, 170, 128], [255, 212, 128], [181, 179, 92], [77, 64, 38], [77, 77, 0], [128, 85, 0], [179, 128, 7], [183, 162, 20], [179, 137, 54], [238, 230, 0], [255, 170, 0], [255, 204, 0], [255, 255, 0], [255, 191, 64], [255, 255, 64], [223, 190, 111], [255, 255, 128], [234, 218, 184], [199, 205, 144], [128, 128, 64], [77, 77, 38], [64, 77, 38], [128, 128, 0], [101, 114, 32], [141, 182, 0], [165, 203, 12], [179, 179, 54], [191, 201, 33], [206, 255, 0], [170, 255, 0], [191, 255, 64], [213, 255, 128], [248, 249, 156], [253, 254, 184], [135, 169, 107], [106, 128, 64], [85, 128, 64], [51, 77, 38], [51, 77, 0], [67, 106, 13], [85, 128, 0], [42, 128, 0], [103, 167, 18], [132, 222, 2], [137, 179, 54], [95, 179, 54], [85, 255, 0], [128, 255, 64], [170, 255, 128], [210, 248, 176], [143, 188, 143], [103, 146, 103], [64, 128, 64], [38, 77, 38], [25, 77, 0], [0, 77, 0], [0, 128, 0], [34, 139, 34], [3, 192, 60], [70, 203, 24], [54, 179, 54], [54, 179, 95], [0, 255, 0], [64, 255, 64], [119, 221, 119], [128, 255, 128], [64, 128, 85], [64, 128, 106], [38, 77, 51], [0, 77, 26], [0, 77, 51], [0, 128, 43], [23, 114, 69], [0, 171, 102], [28, 172, 120], [11, 218, 81], [0, 255, 85], [80, 200, 120], [64, 255, 128], [128, 255, 170], [128, 255, 212], [168, 227, 189], [110, 174, 161], [64, 128, 128], [38, 77, 64], [38, 77, 77], [0, 77, 77], [0, 128, 85], [0, 166, 147], [0, 204, 153], [0, 204, 204], [54, 179, 137], [54, 179, 179], [0, 255, 170], [0, 255, 255], [64, 255, 191], [64, 255, 255], [128, 255, 255], [133, 196, 204], [93, 138, 168], [64, 106, 128], [38, 64, 77], [0, 51, 77], [0, 128, 128], [0, 85, 128], [0, 114, 187], [8, 146, 208], [54, 137, 179], [33, 171, 205], [0, 170, 255], [100, 204, 219], [64, 191, 255], [128, 212, 255], [175, 238, 238], [64, 85, 128], [38, 51, 77], [0, 26, 77], [0, 43, 128], [0, 47, 167], [54, 95, 179], [40, 106, 205], [0, 127, 255], [0, 85, 255], [49, 140, 231], [73, 151, 208], [64, 128, 255], [113, 166, 210], [100, 149, 237], [128, 170, 255], [182, 209, 234], [146, 161, 207], [64, 64, 128], [38, 38, 77], [0, 0, 77], [25, 0, 77], [0, 0, 128], [42, 0, 128], [0, 0, 205], [54, 54, 179], [95, 54, 179], [0, 0, 255], [28, 28, 240], [106, 90, 205], [64, 64, 255], [133, 129, 217], [128, 128, 255], [177, 156, 217], [150, 123, 182], [120, 81, 169], [85, 64, 128], [106, 64, 128], [51, 38, 77], [51, 0, 77], [85, 0, 128], [137, 54, 179], [85, 0, 255], [138, 43, 226], [167, 107, 207], [127, 64, 255], [191, 64, 255], [148, 87, 235], [170, 128, 255], [153, 85, 187], [140, 100, 149], [128, 64, 128], [64, 38, 77], [77, 38, 77], [77, 0, 77], [128, 0, 128], [159, 0, 197], [179, 54, 179], [184, 12, 227], [170, 0, 255], [255, 0, 255], [255, 64, 255], [213, 128, 255], [255, 128, 255], [241, 167, 254], [128, 64, 106], [105, 45, 84], [77, 38, 64], [77, 0, 51], [128, 0, 85], [162, 0, 109], [179, 54, 137], [202, 31, 123], [255, 0, 170], [255, 29, 206], [233, 54, 167], [207, 107, 169], [255, 64, 191], [218, 112, 214], [255, 128, 213], [230, 168, 215], [145, 95, 109], [128, 64, 85], [77, 38, 51], [77, 0, 25], [128, 0, 42], [215, 0, 64], [179, 54, 95], [255, 0, 127], [255, 0, 85], [255, 0, 40], [222, 49, 99], [208, 65, 126], [215, 59, 62], [255, 64, 127], [249, 90, 97], [255, 128, 170], [17, 17, 17], [34, 34, 34], [51, 51, 51], [68, 68, 68], [85, 85, 85], [102, 102, 102], [119, 119, 119], [136, 136, 136], [153, 153, 153], [170, 170, 170], [187, 187, 187], [204, 204, 204], [221, 221, 221], [238, 238, 238], [255, 255, 255]];
 
-        min.oninput = () => { operate(); }
-        max.oninput = () => { operate(); }
+        const combos = rgbCombinations();
+        console.log(combos);
+
 
         const matrix = [
-            [0, 8, 2, 10],
-            [12, 4, 14, 6],
-            [3, 11, 1, 9],
-            [15, 7, 13, 5]
+            [0, 1/2, 1/8, 5/8],
+            [3/4, 1/4, 7/8, 3/8],
+            [3/16, 11/16, 1/16, 9/16],
+            [15/16, 7/16, 13/16, 5/16]
         ];
 
         const ditherMatrix = [
@@ -42,43 +43,65 @@
             [16 / 17, 8 / 17, 14 / 17, 6 / 17, 16 / 17, 8 / 17, 14 / 17, 6 / 17],
         ];
 
-        const can = document.querySelector('canvas');
-        const ctx = can.getContext('2d');
+        const img1 = new Image();
+        // img1.src = './img/pallete.png';
+        img1.src = './img/doggers.png';
 
-        const img = new Image();
-        img.src = './img/download.jpg';
-        // img.src = './img/doggers.png';
+        img1.onload = function () { operate(this, 0); }
+        img1.onerror = (e) => { console.log(e); }
 
-        img.onload = () => {
-            operate();
-        }
+        const img2 = new Image();
+        // img2.src = './img/pallete.png';
+        img2.src = './img/doggers.png';
 
-        img.onerror = (e) => {
-            console.log(e);
-        }
+        img2.onload = function () { operate(this, 1); }
+        img2.onerror = (e) => { console.log(e); }
 
-        function operate(){
+        min.oninput = () => { operate(img2, 1); }
+        // max.oninput = () => { operate(img2, 1); }
+
+        const img3 = new Image();
+        // img2.src = './img/pallete.png';
+        img3.src = './img/doggers.png';
+
+        img3.onload = function () { operate(this, 2); }
+        img3.onerror = (e) => { console.log(e); }
+
+        function operate(img, mode) {
+
+            const can = document.createElement('canvas');
+            const ctx = can.getContext('2d');
             can.width = img.width;
             can.height = img.height;
-            ctx.filter = 'blur(1px)'
+            // ctx.filter = 'blur(1px)'
             ctx.drawImage(img, 0, 0);
             // console.log(imgData);
             const imgData = ctx.getImageData(0, 0, can.width, can.height);
             // ctx.putImageData(kuwaharaFilter(imgData, 3), 0, 0);
-            ctx.putImageData(detectEdges(imgData, min.value, max.value), 0, 0);
-            // console.log(imgData);
-            // ctx.putImageData(orderedDither(imgData), 0, 0);
-            // ctx.putImageData(noDither(imgData), 0, 0);
+            // ctx.putImageData(detectEdges(imgData, min.value, max.value), 0, 0);
+            if (mode == 0) {
+                const myWorker = new Worker("worker.js");
+                myWorker.postMessage(imgData);
+                myWorker.onmessage = function (e) {
+                    ctx.putImageData(e.data, 0, 0);
+                }
+                // ctx.putImageData(YliluomaOrdered(imgData, can.width, can.height), 0, 0);
+            }
+            if (mode == 1) ctx.putImageData(orderedDither(imgData), 0, 0);
+            if (mode == 2) ctx.putImageData(noDither(imgData), 0, 0);
+
+            document.body.appendChild(can);
         }
 
-        function pxIndex(x, y) {
-            return (x + y * can.width) * 4;
+        function pxIndex(x, y, w) {
+            return (x + y * w) * 4;
         }
 
         function closestRGB(r, g, b) {
             let mD = 999999; let id;
-            for (let i = 0; i < 255; i++) {
-                const deltaE = Math.sqrt((r - rgb[i][0]) ** 2 + (g - rgb[i][1]) ** 2 + (b - rgb[i][2]) ** 2);
+            for (let i = 0; i < rgb.length; i++) {
+                // const deltaE = colorCompare([r, g, b], rgb[i]);
+                const deltaE = Math.pow(r - rgb[i][0], 2) + Math.pow(g - rgb[i][1], 2) + Math.pow(b - rgb[i][2], 2);
                 if (deltaE < mD) {
                     mD = deltaE;
                     id = i;
@@ -87,12 +110,14 @@
             return id;
         }
 
-        function orderedDither(imgData) {
+        function orderedDither(imgData, avg = 19) {
             const sD = imgData.data;
-            for (let y = 0; y < can.height; y++) {
-                for (let x = 0; x < can.width; x++) {
-                    const i = pxIndex(x, y);
-                    const m = matrix[x % 4][y % 4];
+            const w = imgData.width;
+            const h = imgData.height;
+            for (let y = 0; y < h; y++) {
+                for (let x = 0; x < w; x++) {
+                    const i = pxIndex(x, y, w);
+                    const m = matrix[x % 4][y % 4] * avg;
                     sD[i] += m;
                     sD[i + 1] += m;
                     sD[i + 2] += m;
@@ -105,11 +130,26 @@
             return imgData;
         }
 
+
+        function rgbCombinations() {
+            // all unique combinations of numbers from 0 to 255 (so cant be 0, 255 and 255, 0 at the same time)
+            let combinations = [];
+            for (let i = 0; i < 255; i++) {
+                for (let j = i; j < 255; j++) {
+                    combinations.push([i, j]);
+                }
+            }
+            return combinations;
+        }
+
+
         function noDither(imgData) {
             const sD = imgData.data;
-            for (let y = 0; y < can.height; y++) {
-                for (let x = 0; x < can.width; x++) {
-                    const i = pxIndex(x, y);
+            const w = imgData.width;
+            const h = imgData.height;
+            for (let y = 0; y < h; y++) {
+                for (let x = 0; x < w; x++) {
+                    const i = pxIndex(x, y, w);
                     const c = closestRGB(sD[i], sD[i + 1], sD[i + 2]);
                     sD[i] = rgb[c][0];
                     sD[i + 1] = rgb[c][1];
@@ -121,15 +161,17 @@
 
         function kuwaharaFilter(imgData, windowSize) {
             const sD = imgData.data;
+            const w = imgData.width;
+            const h = imgData.height;
             const quadrantSize = Math.ceil(windowSize / 2);
-            for (let y = 0; y < can.height; y++) {
-                for (let x = 0; x < can.width; x++) {
-                    const i = pxIndex(x, y);
+            for (let y = 0; y < h; y++) {
+                for (let x = 0; x < w; x++) {
+                    const i = pxIndex(x, y, w);
                     const br = rgb2v(sD[i], sD[i + 1], sD[i + 2]);
-                    const lX = clamp(x - windowSize + 1, 0, can.width - 1);
-                    const rX = clamp(x + windowSize - 1, 0, can.width - 1);
-                    const tY = clamp(y - windowSize + 1, 0, can.height - 1);
-                    const bY = clamp(y + windowSize - 1, 0, can.height - 1);
+                    const lX = clamp(x - windowSize + 1, 0, w - 1);
+                    const rX = clamp(x + windowSize - 1, 0, w - 1);
+                    const tY = clamp(y - windowSize + 1, 0, h - 1);
+                    const bY = clamp(y + windowSize - 1, 0, h - 1);
 
                     // console.log(lX, rX, tY, bY);
                     let r, g, b, devArray = [], avgArray = [];
@@ -137,7 +179,7 @@
                     let bQ1 = [], rgbQ1 = [0, 0, 0];
                     for (let y2 = tY; y2 <= y; y2++) {
                         for (let x2 = lX; x2 <= x; x2++) {
-                            const j = pxIndex(x2, y2);
+                            const j = pxIndex(x2, y2, w);
                             bQ1.push(Math.max(sD[j], sD[j + 1], sD[j + 2]))
                             rgbQ1[0] += sD[j]
                             rgbQ1[1] += sD[j + 1]
@@ -151,7 +193,7 @@
                     let bQ2 = [], rgbQ2 = [0, 0, 0];
                     for (let y2 = tY; y2 <= y; y2++) {
                         for (let x2 = x; x2 <= rX; x2++) {
-                            const j = pxIndex(x2, y2);
+                            const j = pxIndex(x2, y2, w);
                             bQ2.push(Math.max(sD[j], sD[j + 1], sD[j + 2]))
                             rgbQ2[0] += sD[j]
                             rgbQ2[1] += sD[j + 1]
@@ -165,7 +207,7 @@
                     let bQ3 = [], rgbQ3 = [0, 0, 0];
                     for (let y2 = y; y2 <= bY; y2++) {
                         for (let x2 = lX; x2 <= x; x2++) {
-                            const j = pxIndex(x2, y2);
+                            const j = pxIndex(x2, y2, w);
                             bQ3.push(Math.max(sD[j], sD[j + 1], sD[j + 2]))
                             rgbQ3[0] += sD[j]
                             rgbQ3[1] += sD[j + 1]
@@ -180,7 +222,7 @@
                     let bQ4 = [], rgbQ4 = [0, 0, 0];
                     for (let y2 = y; y2 <= bY; y2++) {
                         for (let x2 = x; x2 <= rX; x2++) {
-                            const j = pxIndex(x2, y2);
+                            const j = pxIndex(x2, y2, w);
                             bQ4.push(Math.max(sD[j], sD[j + 1], sD[j + 2]))
                             rgbQ4[0] += sD[j]
                             rgbQ4[1] += sD[j + 1]
@@ -272,13 +314,13 @@
                     let gx = 0, gy = 0;
                     for (let x1 = -1; x1 < 2; x1++) {
                         for (let y1 = -1; y1 < 2; y1++) {
-                            const i = pxIndex(Math.abs(x + x1), Math.abs(y + y1));
+                            const i = pxIndex(Math.abs(x + x1), Math.abs(y + y1), w);
                             gx += iD[i] * kernelX[y1 + 1][x1 + 1];
                             gy += iD[i] * kernelY[y1 + 1][x1 + 1];
                         }
                     }
                     const g = Math.sqrt(Math.pow(gx, 2) + Math.pow(gy, 2));
-                    const i = pxIndex(x, y);
+                    const i = pxIndex(x, y, w);
                     arc[i] = Math.atan2(gy, gx);
                     eD[i] = eD[i + 1] = eD[i + 2] = g;
                 }
@@ -287,9 +329,9 @@
             const sD = SuppressionData.data;
             for (let y = 0; y < imgData.height; y++) {
                 for (let x = 0; x < imgData.width; x++) {
-                    const i = pxIndex(x, y)
-                    if(eD[i] < tBottom) {
-                        sD[i] = sD[i+1] = sD[i+2] = 0;
+                    const i = pxIndex(x, y, w)
+                    if (eD[i] < tBottom) {
+                        sD[i] = sD[i + 1] = sD[i + 2] = 0;
                         sD[i + 3] = 255;
                         continue;
                     }
@@ -299,34 +341,34 @@
 
                     // angle 0
                     if ((0 <= (arctan) < 0.3927) || (2.7489 <= (arctan) <= 3.1416)) {
-                        q = eD[pxIndex(x, y+1)];
-                        r = eD[pxIndex(x, y-1)];
+                        q = eD[pxIndex(x, y + 1), w];
+                        r = eD[pxIndex(x, y - 1), w];
                     }
                     // angle 45
                     else if (0.3927 <= (arctan) < 1.1863) {
-                        q = eD[pxIndex(x+1, y-1)];
-                        r = eD[pxIndex(x-1, y+1)];
+                        q = eD[pxIndex(x + 1, y - 1), w];
+                        r = eD[pxIndex(x - 1, y + 1), w];
                     }
                     // angle 90
                     else if (1.1863 <= (arctan) < 1.9635) {
-                        q = eD[pxIndex(x+1, y)];
-                        r = eD[pxIndex(x-1, y)];
+                        q = eD[pxIndex(x + 1, y), w];
+                        r = eD[pxIndex(x - 1, y), w];
                     }
                     // angle 135
                     else if (1.9635 <= (arctan) < 2.7489) {
-                        q = eD[pxIndex(x-1, y-1)];
-                        r = eD[pxIndex(x+1, y+1)];
+                        q = eD[pxIndex(x - 1, y - 1), w];
+                        r = eD[pxIndex(x + 1, y + 1), w];
                     }
 
                     if (eD[i] >= q && eD[i] >= r) {
-                        if(eD[i] > tTop) sD[i] = sD[i+1] = sD[i+2] = 255
+                        if (eD[i] > tTop) sD[i] = sD[i + 1] = sD[i + 2] = 255
                         else {
-                            for(let y2 = -1; y2 < 2; y2++) {
-                                for(let x2 = -1; x2 < 2; x2++) {
-                                    if(x2 == 0 && y2 == 0) break;
-                                    const i2 = pxIndex(x + x2, y + y2);
-                                    if(eD[i2] > tTop) {
-                                        sD[i] = sD[i+1] = sD[i+2] = 255;
+                            for (let y2 = -1; y2 < 2; y2++) {
+                                for (let x2 = -1; x2 < 2; x2++) {
+                                    if (x2 == 0 && y2 == 0) break;
+                                    const i2 = pxIndex(x + x2, y + y2, w);
+                                    if (eD[i2] > tTop) {
+                                        sD[i] = sD[i + 1] = sD[i + 2] = 255;
                                         break;
                                     }
                                 }
@@ -335,9 +377,9 @@
                             // sD[i] = sD[i+1] = sD[i+2] = eD[i]
                         }
                     } else {
-                        sD[i] = sD[i+1] = sD[i+2] = 0;
+                        sD[i] = sD[i + 1] = sD[i + 2] = 0;
                     }
-                    sD[i+3] = 255;
+                    sD[i + 3] = 255;
                 }
             }
             return SuppressionData;

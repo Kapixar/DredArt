@@ -47,3 +47,7 @@ for(let y=0; y<canvas.height; y++){
         buildCommands.push(144, 0, generateTag(fIx), generateTag(y), 161, parseInt(spots.slice(fIx, lIx).reverse().join(''), 2), 145)
     }
 }
+
+- mosaic transform to settings and guide
+- add refresh button next to corners
+- refactor top bar to three bars: move, menu, close

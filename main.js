@@ -37,6 +37,7 @@
 //     });
 // }
 
+// setup for base2048
 const BITS_PER_CHAR = 11;
 const BITS_PER_BYTE = 8;
 const pairStrings = [
@@ -63,6 +64,7 @@ pairStrings.forEach((pairString, r) => {
     });
 });
 
+// encode canvas to string with base2048
 const encodePix = (uint8Array) => {
     const { length } = uint8Array;
 
@@ -96,6 +98,7 @@ const encodePix = (uint8Array) => {
     return str;
 };
 
+// decode string to canvas with base2048
 const decodePix = (str) => {
     const { length } = str;
 
@@ -141,6 +144,7 @@ const decodePix = (str) => {
 
     return new Uint8Array(uint8Array.buffer, 0, numUint8s);
 };
+
 const toggleSettingsUIBtn = document.querySelector(`button[onclick="toggleUI('settings');"`);
 const rgb = [[222, 165, 164], [214, 145, 136], [173, 111, 105], [128, 64, 64], [77, 0, 0], [77, 25, 0], [128, 0, 0], [144, 30, 30], [186, 1, 1], [179, 54, 54], [179, 95, 54], [255, 0, 0], [216, 124, 99], [255, 64, 64], [255, 128, 128], [255, 195, 192], [195, 153, 83], [128, 85, 64], [128, 106, 64], [77, 51, 38], [77, 51, 0], [128, 42, 0], [155, 71, 3], [153, 101, 21], [213, 70, 0], [218, 99, 4], [255, 85, 0], [237, 145, 33], [255, 179, 31], [255, 128, 64], [255, 170, 128], [255, 212, 128], [181, 179, 92], [77, 64, 38], [77, 77, 0], [128, 85, 0], [179, 128, 7], [183, 162, 20], [179, 137, 54], [238, 230, 0], [255, 170, 0], [255, 204, 0], [255, 255, 0], [255, 191, 64], [255, 255, 64], [223, 190, 111], [255, 255, 128], [234, 218, 184], [199, 205, 144], [128, 128, 64], [77, 77, 38], [64, 77, 38], [128, 128, 0], [101, 114, 32], [141, 182, 0], [165, 203, 12], [179, 179, 54], [191, 201, 33], [206, 255, 0], [170, 255, 0], [191, 255, 64], [213, 255, 128], [248, 249, 156], [253, 254, 184], [135, 169, 107], [106, 128, 64], [85, 128, 64], [51, 77, 38], [51, 77, 0], [67, 106, 13], [85, 128, 0], [42, 128, 0], [103, 167, 18], [132, 222, 2], [137, 179, 54], [95, 179, 54], [85, 255, 0], [128, 255, 64], [170, 255, 128], [210, 248, 176], [143, 188, 143], [103, 146, 103], [64, 128, 64], [38, 77, 38], [25, 77, 0], [0, 77, 0], [0, 128, 0], [34, 139, 34], [3, 192, 60], [70, 203, 24], [54, 179, 54], [54, 179, 95], [0, 255, 0], [64, 255, 64], [119, 221, 119], [128, 255, 128], [64, 128, 85], [64, 128, 106], [38, 77, 51], [0, 77, 26], [0, 77, 51], [0, 128, 43], [23, 114, 69], [0, 171, 102], [28, 172, 120], [11, 218, 81], [0, 255, 85], [80, 200, 120], [64, 255, 128], [128, 255, 170], [128, 255, 212], [168, 227, 189], [110, 174, 161], [64, 128, 128], [38, 77, 64], [38, 77, 77], [0, 77, 77], [0, 128, 85], [0, 166, 147], [0, 204, 153], [0, 204, 204], [54, 179, 137], [54, 179, 179], [0, 255, 170], [0, 255, 255], [64, 255, 191], [64, 255, 255], [128, 255, 255], [133, 196, 204], [93, 138, 168], [64, 106, 128], [38, 64, 77], [0, 51, 77], [0, 128, 128], [0, 85, 128], [0, 114, 187], [8, 146, 208], [54, 137, 179], [33, 171, 205], [0, 170, 255], [100, 204, 219], [64, 191, 255], [128, 212, 255], [175, 238, 238], [64, 85, 128], [38, 51, 77], [0, 26, 77], [0, 43, 128], [0, 47, 167], [54, 95, 179], [40, 106, 205], [0, 127, 255], [0, 85, 255], [49, 140, 231], [73, 151, 208], [64, 128, 255], [113, 166, 210], [100, 149, 237], [128, 170, 255], [182, 209, 234], [146, 161, 207], [64, 64, 128], [38, 38, 77], [0, 0, 77], [25, 0, 77], [0, 0, 128], [42, 0, 128], [0, 0, 205], [54, 54, 179], [95, 54, 179], [0, 0, 255], [28, 28, 240], [106, 90, 205], [64, 64, 255], [133, 129, 217], [128, 128, 255], [177, 156, 217], [150, 123, 182], [120, 81, 169], [85, 64, 128], [106, 64, 128], [51, 38, 77], [51, 0, 77], [85, 0, 128], [137, 54, 179], [85, 0, 255], [138, 43, 226], [167, 107, 207], [127, 64, 255], [191, 64, 255], [148, 87, 235], [170, 128, 255], [153, 85, 187], [140, 100, 149], [128, 64, 128], [64, 38, 77], [77, 38, 77], [77, 0, 77], [128, 0, 128], [159, 0, 197], [179, 54, 179], [184, 12, 227], [170, 0, 255], [255, 0, 255], [255, 64, 255], [213, 128, 255], [255, 128, 255], [241, 167, 254], [128, 64, 106], [105, 45, 84], [77, 38, 64], [77, 0, 51], [128, 0, 85], [162, 0, 109], [179, 54, 137], [202, 31, 123], [255, 0, 170], [255, 29, 206], [233, 54, 167], [207, 107, 169], [255, 64, 191], [218, 112, 214], [255, 128, 213], [230, 168, 215], [145, 95, 109], [128, 64, 85], [77, 38, 51], [77, 0, 25], [128, 0, 42], [215, 0, 64], [179, 54, 95], [255, 0, 127], [255, 0, 85], [255, 0, 40], [222, 49, 99], [208, 65, 126], [215, 59, 62], [255, 64, 127], [249, 90, 97], [255, 128, 170], [17, 17, 17], [34, 34, 34], [51, 51, 51], [68, 68, 68], [85, 85, 85], [102, 102, 102], [119, 119, 119], [136, 136, 136], [153, 153, 153], [170, 170, 170], [187, 187, 187], [204, 204, 204], [221, 221, 221], [238, 238, 238], [255, 255, 255]];
 const canvasSettings = { colorSpace: 'srgb' };
@@ -175,6 +179,8 @@ const holoItems = [
 
 const tool = document.createElement('div');
 tool.id = 'da-popup';
+tool.classList.add('hidden');
+setTimeout(() => tool.classList.remove('hidden'), 1);
 document.body.append(tool);
 const messageContainer = document.createElement('div');
 messageContainer.id = 'da-messageContainer';
@@ -199,8 +205,13 @@ settingBtn.src = chrome.runtime.getURL('img/icons8-settings.svg');
 settingBtn.onclick = () => {
     console.log('settings');
 };
+const helpBtn = document.createElement('img');
+helpBtn.src = chrome.runtime.getURL('img/icons8-help.png');
+helpBtn.onclick = () => {
+    console.log('help');
+};
 const buttonsSpan = document.createElement('span');
-buttonsSpan.append(settingBtn, closeBtn);
+buttonsSpan.append(settingBtn, closeBtn, helpBtn);
 const title = document.createElement('span');
 title.textContent = 'DredArt';
 topBar.append(menuHam, title, buttonsSpan);
@@ -366,7 +377,7 @@ function generateInsertion() {
 
     // Paste handler
     document.onpaste = (e) => {
-        if (insertBox.classList.contains('active') && !mainMenu.classList.contains('active')) return;
+        if (!insertBox.classList.contains('active') || mainMenu.classList.contains('active')) return;
         e.preventDefault();
         const { items } = e.clipboardData;
         // if (items.length > 1) return info('You can only paste one file', false);
@@ -428,7 +439,7 @@ function validateImage(file = false, url = false) {
     if (file.type !== 'image/png' && !url) return info('File is not a PNG.', false);
 
     const img = new Image();
-    const imgUrl = url ? (url.startsWith('data') ? url : `https://corsing.kapixar.repl.co?u=${url}`) : URL.createObjectURL(file);
+    const imgUrl = url ? (url.startsWith('data') ? url : `https://corsing.kapixar.repl.co/${url.slice(url.indexOf('://') + 2)}`) : URL.createObjectURL(file);
     img.src = imgUrl;
     console.log(imgUrl);
     img.onerror = function (e) {

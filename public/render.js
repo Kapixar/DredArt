@@ -819,6 +819,7 @@ function design(OGimg) {
             for (let y = 0; y < canResult.height; y++) {
                 for (let x = 0; x < canResult.width; x++) {
                     const i = pxIndex(x, y);
+
                     const m = matrix[x % 4][y % 4] / 16;
                     sD[i] += r * m;
                     sD[i + 1] += r * m;
