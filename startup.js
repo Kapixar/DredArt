@@ -85,4 +85,9 @@ addIcon('fa-times-circle', 'Disable Holo', disableLegacyHolo);
 
 addIcon('fa-redo', 'Refresh', refreshTXT);
 
+const daBlob = document.createElement('div');
+daBlob.id = 'da-blob';
+
+
+document.body.append(daBlob);
 chrome.runtime.sendMessage({ action: 'reload' });

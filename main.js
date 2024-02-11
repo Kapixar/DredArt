@@ -200,18 +200,18 @@ closeBtn.src = chrome.runtime.getURL('img/icons8-x-50.png');
 closeBtn.onclick = () => {
     chrome.runtime.sendMessage({ action: 'togglePopup' });
 };
-const settingBtn = document.createElement('img');
-settingBtn.src = chrome.runtime.getURL('img/icons8-settings.svg');
-settingBtn.onclick = () => {
-    console.log('settings');
-};
-const helpBtn = document.createElement('img');
-helpBtn.src = chrome.runtime.getURL('img/icons8-help.png');
-helpBtn.onclick = () => {
-    console.log('help');
-};
+// const settingBtn = document.createElement('img');
+// settingBtn.src = chrome.runtime.getURL('img/icons8-settings.svg');
+// settingBtn.onclick = () => {
+//     console.log('settings');
+// };
+// const helpBtn = document.createElement('img');
+// helpBtn.src = chrome.runtime.getURL('img/icons8-help.png');
+// helpBtn.onclick = () => {
+//     console.log('help');
+// };
 const buttonsSpan = document.createElement('span');
-buttonsSpan.append(settingBtn, closeBtn, helpBtn);
+buttonsSpan.append(closeBtn);
 const title = document.createElement('span');
 title.textContent = 'DredArt';
 topBar.append(menuHam, title, buttonsSpan);
@@ -230,16 +230,28 @@ const useButton = document.createElement('span');
 useButton.textContent = 'Paint';
 useButton.setAttribute('data-desc', 'Insert PixelMap and use Holo to paint it in a blitz!');
 useButton.onclick = () => { generateInsertion(); };
+
 const createButton = document.createElement('span');
 createButton.textContent = 'Design';
 createButton.setAttribute('data-desc', 'Generate fine pixel art from ordinary images!');
 createButton.onclick = () => { window.open(chrome.runtime.getURL('../public/index.html')); };
-const adButton = document.createElement('span');
-adButton.textContent = 'Help Mosaic!';
-adButton.setAttribute('data-desc', 'Help me build the largest pixel art ever!');
-adButton.onclick = () => { window.open('https://discord.gg/uNgD6vv67c'); };
 
-mainMenu.append(useButton, createButton, adButton);
+const helpButtonGroup = document.createElement('div');
+helpButtonGroup.classList.add('btn-group');
+
+const settingsButton = document.createElement('span');
+settingsButton.textContent = 'Settings';
+settingsButton.setAttribute('data-desc', 'Generate fine pixel art from ordinary images!');
+settingsButton.onclick = () => { }; // todo
+
+const guideButton = document.createElement('span');
+guideButton.textContent = 'Guide';
+guideButton.setAttribute('data-desc', 'Generate fine pixel art from ordinary images!');
+guideButton.onclick = () => { }; // todo
+
+helpButtonGroup.append(settingsButton, guideButton);
+
+mainMenu.append(useButton, createButton, helpButtonGroup);
 
 // Settings tab
 const settings = document.createElement('div');

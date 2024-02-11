@@ -22,14 +22,18 @@
         "default_title": "Open DredArt"
     },
     "icons": { 
-        "16": "img/icon16.png",
-        "32": "img/icon32.png",
-        "48": "img/icon48.png",
-        "128": "img/icon128.png" 
+        "16": "img/logo16.png",
+        "32": "img/logo32.png",
+        "48": "img/logo48.png",
+        "128": "img/logo128.png" 
     },
     "web_accessible_resources": [
         { 
-            "resources": ["public/index.html", "help.html","img/hatch.png", "img/mosaic_banner.png", "img/painter.png", "img/designer.png", "img/legacy_bg.png", "img/setup_blank.png", "img/setup_color.png", "img/bp_bg.png", "img/icon16.png", "scanner.js", "img/icons8-menu.svg", "img/icons8-settings.svg", "img/icons8-x-50.png"],
+            "resources": [
+                "public/index.html",  "scanner.js", "help.html", 
+                "img/hatch.png", "img/settings_banner.png", "img/painter.png", "img/designer.png", 
+                "img/legacy_bg.png", "img/setup_blank.png", "img/setup_color.png", "img/bp_bg.png", "img/icon16.png", 
+                "img/icons8-menu.svg", "img/icons8-settings.svg", "img/icons8-x-50.png"],
             "matches": ["https://drednot.io/*", "https://test.drednot.io/*"]
         }
     ],
