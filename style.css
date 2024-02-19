@@ -80,7 +80,7 @@
     width: 425px;
     height: 410px;
     z-index: 100;
-    transition: opacity 100ms, box-shadow 100ms, clip-path 1s;
+    transition: opacity 100ms, box-shadow 100ms, clip-path 1s, mask 1s;
     background-color: rgb(25, 35, 45);
     color: white;
     border-radius: 10px;
@@ -88,6 +88,7 @@
     scrollbar-width: 13px;
 
     /* animation: 1s melt-enter; */
+    /* clip-path: url('chrome-extension://__MSG_@@extension_id__/assets/splash2.svg#splashEffect'); */
     clip-path: path('M 0 399.76 C 17.7013 541.42 35.4238 612.26 53.125 612.26 C 79.6875 612.26 76.3087 462.8 106.25 462.26 C 136.1912 461.7 132.8125 568.5 159.375 568.5 C 185.9375 568.5 185.2363 416.1 212.5 424.76 C 239.7637 433.4 239.5087 601.6 265.625 600.94 C 291.7412 600.26 292.74 478.08 319.77 474.76 C 346.7788 471.42 344.59 587.26 370.8975 587.26 C 388.4287 587.26 406.47 524.76 425 399.76 L 425 0.26 L 0 0.26 L 0 399.76 Z');
 }
 
@@ -97,6 +98,7 @@
 
 #da-popup.hidden {
     pointer-events: none;
+    /* -webkit-mask: url('chrome-extension://__MSG_@@extension_id__/assets/splash1.svg#splashEffect' ) center/contain no-repeat; */
     clip-path: path('M 0 -0.24 C 17.7013 -16.92 35.4238 -25.24 53.125 -25.24 C 79.6875 -25.24 76.3087 0.3 106.25 -0.24 C 136.1912 -0.8 132.8125 -69 159.375 -69 C 185.9375 -69 185.2363 -8.9 212.5 -0.24 C 239.7637 8.4 239.5087 -35.9 265.625 -36.56 C 291.7412 -37.24 292.74 3.08 319.77 -0.24 C 346.7788 -3.58 344.59 -50.24 370.8975 -50.24 C 388.4287 -50.24 406.47 -33.58 425 -0.24 L 425 -68.74 L 0 -68.74 L 0 -0.24 Z');
 }
 
@@ -106,11 +108,13 @@
 
 @keyframes melt-enter {
     0% {
-        clip-path: path('M 0 -0.24 C 17.7013 -16.92 35.4238 -25.24 53.125 -25.24 C 79.6875 -25.24 76.3087 0.3 106.25 -0.24 C 136.1912 -0.8 132.8125 -69 159.375 -69 C 185.9375 -69 185.2363 -8.9 212.5 -0.24 C 239.7637 8.4 239.5087 -35.9 265.625 -36.56 C 291.7412 -37.24 292.74 3.08 319.77 -0.24 C 346.7788 -3.58 344.59 -50.24 370.8975 -50.24 C 388.4287 -50.24 406.47 -33.58 425 -0.24 L 425 -68.74 L 0 -68.74 L 0 -0.24 Z');
+        /* clip-path: url('chrome-extension://__MSG_@@extension_id__/assets/splash1.svg#splashEffect'); */
+        mask: url('chrome-extension://__MSG_@@extension_id__/assets/splash1.svg#splashEffect' ) center/contain no-repeat;
     }
 
     100% {
-        clip-path: path('M 0 399.76 C 17.7013 541.42 35.4238 612.26 53.125 612.26 C 79.6875 612.26 76.3087 462.8 106.25 462.26 C 136.1912 461.7 132.8125 568.5 159.375 568.5 C 185.9375 568.5 185.2363 416.1 212.5 424.76 C 239.7637 433.4 239.5087 601.6 265.625 600.94 C 291.7412 600.26 292.74 478.08 319.77 474.76 C 346.7788 471.42 344.59 587.26 370.8975 587.26 C 388.4287 587.26 406.47 524.76 425 399.76 L 425 0.26 L 0 0.26 L 0 399.76 Z');
+        /* clip-path: url('chrome-extension://__MSG_@@extension_id__/assets/splash2.svg#splashEffect'); */
+        mask: url('chrome-extension://__MSG_@@extension_id__/assets/splash2.svg#splashEffect' ) center/contain no-repeat;
     }
 }
 

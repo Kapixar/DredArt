@@ -557,9 +557,9 @@ async function generateTool(sourceCanvas) {
     const ySizesBP = generateHoloSizes(can.height, 4);
     const yCentersBP = generateCentres(ySizesBP);
 
-    const xSizesLeg = generateHoloSizes(can.width, 2); // leg holo
+    const xSizesLeg = generateHoloSizes(can.width, 4); // leg holo
     const xCentersLeg = generateCentres(xSizesLeg);
-    const ySizesLeg = generateHoloSizes(can.height, 2);
+    const ySizesLeg = generateHoloSizes(can.height, 4);
     const yCentersLeg = generateCentres(ySizesLeg);
 
     console.log(xSizesBP, xCentersBP, ySizesBP, yCentersBP);
@@ -625,7 +625,7 @@ async function generateTool(sourceCanvas) {
     modeCheck.type = 'checkbox';
     modeCheck.id = 'holo-type';
 
-    // slider what type of holo use
+    // holo setup button
     const setupButton = document.createElement('div');
     setupButton.id = 'da-setup-btn';
     setupButton.classList.add('long');
@@ -641,6 +641,7 @@ async function generateTool(sourceCanvas) {
     stats.style = `background-image: linear-gradient(to right, transparent 0%, var(--themeColor) ${length * 100}%), url(${thUrl});`;
     // topBar.style.backgroundColor = themeString;
 
+    // draw Show all canvas
     const allCan = document.createElement('canvas');
     const allCtx = allCan.getContext('2d');
     allCan.width = can.width * 40;
@@ -661,6 +662,7 @@ async function generateTool(sourceCanvas) {
         }
     }
 
+    // draw error canvas
     const blendCan = document.createElement('canvas');
     const chtx = blendCan.getContext('2d', settings);
     blendCan.width = can.width;
@@ -836,6 +838,7 @@ async function generateTool(sourceCanvas) {
     mainBox.appendChild(sortBox);
 
     // add colors buttons
+    console.log(imgColors);
     for (const c in imgColors) {
         if (imgColors[c].sum === 0) continue;
         const col = document.createElement('div');
@@ -880,11 +883,11 @@ async function generateTool(sourceCanvas) {
     }
 
     // Return size of each holo segment from one edge
-    function generateHoloSizes(length, div) {
+    function generateHoloSizes(edgeLength, div) {
         const div2 = div * 2;
-        let diff = (length + div) % div2;
+        let diff = (edgeLength + div) % div2;
 
-        const base = (Math.floor((length + div) / div2) * div2 - div) / div; // (Math.floor((length + 5) / 10) * 10 - 5) / 5
+        const base = (Math.floor((edgeLength + div) / div2) * div2 - div) / div; // (Math.floor((edgeLength + 5) / 10) * 10 - 5) / 5
         const res = [...Array(div)].map(() => base);
         let i = 0;
         while (diff > 0) {
@@ -904,9 +907,9 @@ async function generateTool(sourceCanvas) {
     function generateCentres(sideSizes) {
         const result = [];
         let distance = 0;
-        for (const length of sideSizes) {
-            result.push(distance + Math.floor(length / 2 + 1) - 1);
-            distance += length;
+        for (const partLength of sideSizes) {
+            result.push(distance + Math.floor(partLength / 2 + 1) - 1);
+            distance += partLength;
         }
         return result;
     }

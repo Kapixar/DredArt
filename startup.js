@@ -1,5 +1,5 @@
 const teamMenu = document.getElementById('team_menu');
-const gameTopBar = document.querySelector('#top-bar span');
+const gameTopBar = document.querySelector('#top-bar div');
 const legHoloItems = ['anchor', 'sign', 'sign_hover', 'sign_near', 'item_hatch_bg', 'item_hatch', 'item_hatch_starter', 'bg_ship', 'tiles_subworld', 'tiles_overworld', 'bg_gradient'];
 //     0: 'bg_ship'
 const holojkItems = {
@@ -88,6 +88,9 @@ addIcon('fa-redo', 'Refresh', refreshTXT);
 const daBlob = document.createElement('div');
 daBlob.id = 'da-blob';
 
-
+daBlob.onclick = () => {
+    chrome.runtime.sendMessage({ action: 'togglePopup' });
+};
+console.log(document.body);
 document.body.append(daBlob);
 chrome.runtime.sendMessage({ action: 'reload' });
