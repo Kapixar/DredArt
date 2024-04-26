@@ -17,3 +17,10 @@ for the sake of simplicity settings reduced to:
  - default holo mode
  - blocks used by legacy holo
  - texture pack overrides
+
+
+
+
+ ERRORS: 
+ after long playing:
+drednot.io/:1 Uncaught (in promise) Error: A listener indicated an asynchronous response by returning true, but the message channel closed before a response was received

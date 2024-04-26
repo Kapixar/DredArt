@@ -184,39 +184,28 @@ setTimeout(() => tool.classList.remove('hidden'), 1);
 document.body.append(tool);
 const messageContainer = document.createElement('div');
 messageContainer.id = 'da-messageContainer';
-// Top bar
+
+// MARK: Top bar
 const topBar = document.createElement('div');
 topBar.id = 'da-top-bar';
-topBar.onclick = () => {
-    console.log(tool.classList.contains('drag'));
+const menuHam = document.createElement('img');
+menuHam.src = chrome.runtime.getURL('img/palette-mini.png');
+menuHam.onclick = () => {
     if (!tool.classList.contains('drag')) mainMenu.classList.toggle('active');
     tool.classList.remove('drag');
 };
-const menuHam = document.createElement('img');
-menuHam.src = chrome.runtime.getURL('img/icons8-menu.svg');
 
 const closeBtn = document.createElement('img');
 closeBtn.src = chrome.runtime.getURL('img/icons8-x-50.png');
 closeBtn.onclick = () => {
     chrome.runtime.sendMessage({ action: 'togglePopup' });
 };
-// const settingBtn = document.createElement('img');
-// settingBtn.src = chrome.runtime.getURL('img/icons8-settings.svg');
-// settingBtn.onclick = () => {
-//     console.log('settings');
-// };
-// const helpBtn = document.createElement('img');
-// helpBtn.src = chrome.runtime.getURL('img/icons8-help.png');
-// helpBtn.onclick = () => {
-//     console.log('help');
-// };
-const buttonsSpan = document.createElement('span');
-buttonsSpan.append(closeBtn);
+
 const title = document.createElement('span');
 title.textContent = 'DredArt';
-topBar.append(menuHam, title, buttonsSpan);
+topBar.append(menuHam, title, closeBtn);
 
-dragElement(tool, topBar);
+dragElement(tool, title);
 
 // The tool menu and content
 const mainContent = document.createElement('div');
@@ -298,6 +287,7 @@ function dragElement(element, dragzone) {
     const dragMouseUp = () => {
         document.onmouseup = null;
         document.onmousemove = null;
+        element.classList.remove('drag');
     };
 
     const dragMouseMove = (event) => {
@@ -319,7 +309,7 @@ function dragElement(element, dragzone) {
 
         // Border ( Div Container )
         minBoundX = element.parentNode.offsetLeft; // minimal -> Top Position.
-        minBoundY = 30;
+        minBoundY = 0;
 
         maxBoundX = minBoundX + element.parentNode.offsetWidth - element.offsetWidth; // Maximal.
         maxBoundY = minBoundY + element.parentNode.offsetHeight - element.offsetHeight - 30;
@@ -341,9 +331,10 @@ function generateInsertion() {
 
     // close button
     const closeButton = document.createElement('span');
-    closeButton.textContent = 'x';
+    closeButton.textContent = '❮';
     closeButton.onclick = () => {
         insertBox.classList.remove('active');
+        mainMenu.classList.add('active');
     };
 
     // File input handler
@@ -551,25 +542,30 @@ async function generateTool(sourceCanvas) {
         chrome.storage.local.set({ lastUsed: previous.lastUsed });
     }
 
+    // TODO: add this to settings or determine on screen width
+    const partThreshold = 30;
+    const XpartsToDivideInto = Math.ceil(can.width / partThreshold);
+    const YpartsToDivideInto = Math.ceil(can.height / partThreshold);
+
     // calculating size of textures for holo
-    const xSizesBP = generateHoloSizes(can.width, 4); // bp holo
-    const xCentersBP = generateCentres(xSizesBP);
-    const ySizesBP = generateHoloSizes(can.height, 4);
-    const yCentersBP = generateCentres(ySizesBP);
+    const xSizes = generateHoloSizes(can.width, XpartsToDivideInto); // bp holo
+    const xCenters = generateCentres(xSizes);
+    const ySizes = generateHoloSizes(can.height, YpartsToDivideInto);
+    const yCenters = generateCentres(ySizes);
 
-    const xSizesLeg = generateHoloSizes(can.width, 4); // leg holo
-    const xCentersLeg = generateCentres(xSizesLeg);
-    const ySizesLeg = generateHoloSizes(can.height, 4);
-    const yCentersLeg = generateCentres(ySizesLeg);
+    // const xSizesLeg = generateHoloSizes(can.width, XpartsToDivideInto); // leg holo
+    // const xCentersLeg = generateCentres(xSizesLeg);
+    // const ySizesLeg = generateHoloSizes(can.height, YpartsToDivideInto);
+    // const yCentersLeg = generateCentres(ySizesLeg);
 
-    console.log(xSizesBP, xCentersBP, ySizesBP, yCentersBP);
+    console.log(xSizes, xCenters, ySizes, yCenters);
 
     // BP string
-    const holoBP = await encodeBlueprint(can.width, can.height, xCentersBP, yCentersBP);
+    const holoBP = await encodeBlueprint(can.width, can.height, xCenters, yCenters);
     console.log(holoBP);
 
     // Calculating existing colors inside the worker
-    const { imgColors, borderColors } = await scanCanvasWithWorker();
+    const { imgColors, artThemeRGB } = await scanCanvasWithWorker();
 
     // First box in Holo UI - info about art
     const stats = document.createElement('div');
@@ -588,7 +584,8 @@ async function generateTool(sourceCanvas) {
     const pxInfo = [
         [`Art size: ${sourceCanvas.width} x ${sourceCanvas.height}`, false],
         [`Paint cost: ${ironCost} iron`, false],
-        [`Estimated real cost: ${Math.round(ironCost * 1.02) + Math.abs(sourceCanvas.width + sourceCanvas.height - 23) * 4} iron`, 'Expanding starter ship + 2% of mistakes'],
+        [`Full cost: ${Math.round(ironCost * 1.02) + Math.abs(sourceCanvas.width + sourceCanvas.height - 23) * 4} iron`, 'Expanding starter ship + 2% of mistakes'],
+        ['Estimated time: X hours', '(Work In Progress) Based on average painting speed'],
     ];
 
     for (const stat of pxInfo) {
@@ -598,7 +595,10 @@ async function generateTool(sourceCanvas) {
         stats.append(pInfo);
     }
 
-    const sendChat = document.createElement('button');
+    // MARK: chat send button
+    const sendChat = document.createElement('label');
+    sendChat.classList.add('long');
+    sendChat.id = 'da-send-chat';
     sendChat.textContent = 'Share by chat';
     sendChat.onclick = () => {
         if (document.getElementById('exit_button').style.display === 'none') return info('You need to join a ship to do that.', false);
@@ -615,7 +615,6 @@ async function generateTool(sourceCanvas) {
             counter += 300;
         }, 1500);
     };
-    stats.append(sendChat);
 
     // slider what type of holo use
     const holoModeBox = document.createElement('label');
@@ -629,13 +628,16 @@ async function generateTool(sourceCanvas) {
     const setupButton = document.createElement('div');
     setupButton.id = 'da-setup-btn';
     setupButton.classList.add('long');
+    setupButton.onclick = () => {
+
+    };
     // setupButton.textContent = 'Holo Setup';
 
-    mainBox.append(stats, modeCheck, holoModeBox, setupButton);
+    mainBox.append(stats, sendChat, modeCheck, holoModeBox, setupButton);
 
     // Setting theme of image
     const length = ((stats.clientHeight * can.width) / can.height) / stats.clientWidth;
-    const artThemeRGB = rgb[parseInt(Object.entries(borderColors).sort((a, b) => b[1] - a[1])[0][0], 16)];
+
     const themeString = `rgb(${artThemeRGB[0]}, ${artThemeRGB[1]}, ${artThemeRGB[2]})`;
     tool.style.setProperty('--themeColor', themeString);
     stats.style = `background-image: linear-gradient(to right, transparent 0%, var(--themeColor) ${length * 100}%), url(${thUrl});`;
@@ -653,7 +655,7 @@ async function generateTool(sourceCanvas) {
     allCtx.shadowColor = 'black';
     for (let y = 0; y < can.height; y++) {
         for (let x = 0; x < can.width; x++) {
-            if (xCentersBP.includes(x) && yCentersBP.includes(y)) allCtx.shadowBlur = 2;
+            if (xCenters.includes(x) && yCenters.includes(y)) allCtx.shadowBlur = 2;
             else allCtx.shadowBlur = 0;
             const i = (x + y * can.width) * 4;
             const t = findIndex([data[i], data[i + 1], data[i + 2]]).toString(16).padStart(2, '0').toUpperCase();
@@ -682,7 +684,8 @@ async function generateTool(sourceCanvas) {
 
     // uploadTextures([[allCan, 'block.png']]);
     // divideCanvas(renderShadow([77, 25, 0]), xSizesBP, ySizesBP);
-    divideCanvas(allCan, xSizesBP, ySizesBP, true);
+    const allCanParts = divideCanvas(allCan, xSizes, ySizes, true);
+    uploadTextures(allCanParts);
 
     // sticky box
     const stickyBox = document.createElement('div');
@@ -690,13 +693,8 @@ async function generateTool(sourceCanvas) {
 
     // make stickyBox float
     const stickyObserver = new IntersectionObserver(
-        (e) => {
-            console.log(e.intersectionRatio);
-            e.target.classList.toggle('pinned', e.intersectionRatio < 1);
-            topBar.classList.toggle('pinned', e.intersectionRatio < 1);
-            e.target.style.setProperty('--stickTheme', e.intersectionRatio < 1 ? themeString : '');
-        },
-        // { threshold: [1] },
+        ([e]) => e.target.classList.toggle('pinned', e.intersectionRatio < 1),
+        { threshold: [1] },
     );
     stickyObserver.observe(stickyBox);
 
@@ -783,27 +781,24 @@ async function generateTool(sourceCanvas) {
     // Part selection
     const partBox = document.createElement('div');
     partBox.classList.add('partSelector');
+    partBox.style.setProperty('--partsOnXAxis', XpartsToDivideInto);
 
-    // fill blocks with good values
-    const blocks = ['f', 'f', 'f', 'f'];
-    let blocksSum = 0;
-    for (let i = 0; i < 4; i += 1) {
-        if (blocks[i] === '') continue;
-        blocksSum += i;
-        const cornerLabel = document.createElement('label');
-        cornerLabel.setAttribute('for', `da-part${i}`);
-        const cornerInput = document.createElement('input');
-        if (i === 0) cornerInput.checked = true;
-        cornerInput.onchange = () => { changePart(i); };
-        cornerInput.type = 'radio';
-        cornerInput.name = 'da-part';
-        cornerInput.id = `da-part${i}`;
-        cornerInput.value = i;
-        partBox.append(cornerInput, cornerLabel);
+    for (let y = 0; y < YpartsToDivideInto; y++) {
+        for (let x = 0; x < XpartsToDivideInto; x++) {
+            const i = x + y * XpartsToDivideInto;
+            const cornerLabel = document.createElement('label');
+            cornerLabel.setAttribute('for', `da-part${i}`);
+            const cornerInput = document.createElement('input');
+            if (i === 0) cornerInput.checked = true;
+            cornerInput.onchange = () => { changePart(i); };
+            cornerInput.type = 'radio';
+            cornerInput.name = 'da-part';
+            cornerInput.id = `da-part${i}`;
+            cornerInput.value = i;
+            partBox.append(cornerInput, cornerLabel);
+        }
     }
-    if (blocksSum === 2) partBox.classList.add('tower');
-    if (blocksSum === 0) stickyBox.classList.add('simple');
-    else stickyBox.appendChild(partBox);
+    stickyBox.appendChild(partBox);
 
     mainBox.appendChild(stickyBox);
 
@@ -819,7 +814,7 @@ async function generateTool(sourceCanvas) {
     sortNameInput.name = 'da-sort';
     sortNameInput.id = 'da-sname';
     sortNameInput.checked = true;
-    sortNameInput.onclick = function () { sortBy(); };
+    sortNameInput.onclick = function () { sortColors(); };
     const sortNameLabel = document.createElement('label');
     sortNameLabel.textContent = 'Name';
     sortNameLabel.setAttribute('for', 'da-sname');
@@ -829,7 +824,7 @@ async function generateTool(sourceCanvas) {
     sortAmountInput.value = '1';
     sortAmountInput.name = 'da-sort';
     sortAmountInput.id = 'da-samount';
-    sortAmountInput.onclick = function () { sortBy(); };
+    sortAmountInput.onclick = function () { sortColors(); };
     const sortAmountLabel = document.createElement('label');
     sortAmountLabel.textContent = 'Amount';
     sortAmountLabel.setAttribute('for', 'da-samount');
@@ -838,19 +833,18 @@ async function generateTool(sourceCanvas) {
     mainBox.appendChild(sortBox);
 
     // add colors buttons
-    console.log(imgColors);
     for (const c in imgColors) {
         if (imgColors[c].sum === 0) continue;
-        const col = document.createElement('div');
-        col.classList.add('colorLabel');
-        col.style.opacity = 0;
-        col.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 200, delay: 2000, fill: 'forwards' });
+        const colorTile = document.createElement('div');
+        colorTile.classList.add('colorLabel');
+        colorTile.style.opacity = 0;
+        colorTile.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 200, delay: 2000, fill: 'forwards' });
 
-        col.textContent = c;
-        col.setAttribute('amount', imgColors[c][0]);
+        colorTile.textContent = c;
+        colorTile.setAttribute('amount', imgColors[c][0]);
 
         const cRGB = rgb[parseInt(c, 16)];
-        col.onclick = async function () {
+        colorTile.onclick = async function () {
             document.querySelectorAll('.colorLabel, #allButton, #checkButton').forEach((e) => {
                 e.classList.remove('selected');
             });
@@ -859,27 +853,37 @@ async function generateTool(sourceCanvas) {
                 //     refreshCurrent(renderShadow(cRGB));
             }
         };
-        col.style['background-color'] = `rgb(${cRGB[0]},${cRGB[1]},${cRGB[2]})`;
-        col.style['accent-color'] = `rgb(${cRGB[0]},${cRGB[1]},${cRGB[2]})`;
-        mainBox.appendChild(col);
+        colorTile.style.setProperty('--tileColor', `rgb(${cRGB[0]},${cRGB[1]},${cRGB[2]})`);
+        // col.style['accent-color'] = `rgb(${cRGB[0]},${cRGB[1]},${cRGB[2]})`;
+        mainBox.appendChild(colorTile);
+    }
+
+    function sortColors() {
+        const sortType = document.querySelector('input[name="da-sort"]:checked').value;
+        const colorLabels = document.querySelectorAll('.colorLabel');
+        const colorArray = Array.from(colorLabels);
+        colorArray.sort((a, b) => {
+            if (sortType === '0') return parseInt(a.textContent, 16) - parseInt(b.textContent, 16);
+            return parseInt(b.getAttribute('amount')) - parseInt(a.getAttribute('amount'));
+        });
+        for (const c of colorArray) mainBox.appendChild(c);
     }
 
     tool.classList.remove('loading');
 
     function scanCanvasWithWorker() {
-        // use promise
         return new Promise((resolve) => {
             const myWorker = new Worker(chrome.runtime.getURL('scanner.js'));
             myWorker.onmessage = (event) => {
                 resolve(event.data);
                 myWorker.terminate();
             };
-            myWorker.postMessage({ xSizesLeg, ySizesLeg, data });
+            myWorker.postMessage({ xSizes, ySizes, data });
         });
     }
 
     function changePart(partID) {
-
+        
     }
 
     // Return size of each holo segment from one edge
@@ -932,7 +936,7 @@ async function generateTool(sourceCanvas) {
         return shadowCan;
     }
 
-    function divideCanvas(canToDiv, xLen, yLen, large = false) {
+    function divideCanvas(canToDiv, xLen, yLen, isCanLarge = false) {
         const canList = [];
         let iCount = 0;
         let xDist = 0;
@@ -949,16 +953,16 @@ async function generateTool(sourceCanvas) {
                 divCtx.imageSmoothingEnabled = false;
                 // divCtx.fillStyle = 'black';
                 // divCtx.fillRect(0,0,680,680);
-                divCtx.drawImage(canToDiv, xDist, yDist, large ? x * 40 : x, large ? y * 40 : y, 0, 0, x * 40, y * 40);
+                divCtx.drawImage(canToDiv, xDist, yDist, isCanLarge ? x * 40 : x, isCanLarge ? y * 40 : y, 0, 0, x * 40, y * 40);
                 // sizeCtx.strokeRect(1, 1, (x ? width2 : width1) - 1, (y ? height2 : height1) - 1);
                 canList.push([canDiv, `${holoItems[iCount][1]}.png`]);
                 // console.log(Object.values(holoItems)[iCount], canToDiv, xDist, yDist, divCtx.width, divCtx.height, 0, 0, divCtx.width, divCtx.height);
                 iCount++;
-                yDist += large ? y * 40 : y;
+                yDist += isCanLarge ? y * 40 : y;
             }
-            xDist += large ? x * 40 : x;
+            xDist += isCanLarge ? x * 40 : x;
         }
-        uploadTextures(canList);
+        return canList;
     }
 
     // Insert array of canvases as game assets
@@ -1000,6 +1004,8 @@ async function generateTool(sourceCanvas) {
         }
     }
 
+    // setup holo for user process
+    // stage 1: just display what and where place blocks
     function runSetupLeg() {
         while (dialogContent.childNodes.length) dialogContent.lastChild.remove();
         const asking = document.createElement('p');
@@ -1041,7 +1047,7 @@ function canToStr(canStr, dataCan) { // converts pixel art into base64 (78x78 wi
     let imgStr = `${canStr.width},${canStr.height},`;
     // let prevID = '';
     // let sameCount = 0;
-    let imgArray = [];
+    const imgArray = [];
     for (let y = 0; y < canStr.height; y++) {
         for (let x = 0; x < canStr.width; x++) {
             const i = (x + y * canStr.width) * 4;
@@ -1058,7 +1064,6 @@ function canToStr(canStr, dataCan) { // converts pixel art into base64 (78x78 wi
         }
     }
     const compressedImg = encodePix(imgArray);
-    console.log(compressedImg);
     imgStr += compressedImg;
     // imgStr += prevID;
     // if (sameCount > 1) imgStr += `;${sameCount}`;
@@ -1081,22 +1086,6 @@ function strToCan(imgStr) {
         let y = 0;
         let dataIndex = 0;
         while (dataIndex < imgArray.length) {
-            // const hexValue = `${base2048[dataIndex]}${base2048[dataIndex + 1]}`;
-            // const colorID = rgb[parseInt(hexValue, 16)];
-            // let amount = 1;
-            // if (base2048[dataIndex + 2] === ';') {
-            //     amount = parseInt(base2048[dataIndex + 3]);
-            //     dataIndex += 4;
-            // } else dataIndex += 2;
-            // while (amount > 0) {
-            //     ctx.fillStyle = `rgb(${colorID[0]}, ${colorID[1]}, ${colorID[2]})`;
-            //     ctx.fillRect(x, y, 1, 1);
-            //     amount--;
-            //     if (x >= width - 1) {
-            //         x = 0;
-            //         y++;
-            //     } else x++;
-            // }
             const colorID = rgb[imgArray[dataIndex]];
             ctx.fillStyle = `rgb(${colorID[0]}, ${colorID[1]}, ${colorID[2]})`;
             ctx.fillRect(x, y, 1, 1);
@@ -1106,10 +1095,10 @@ function strToCan(imgStr) {
                 y++;
             } else x++;
         }
-        if (x !== 0) throw new Error('Package not complete');
+        if (x !== 0) throw new Error('Image Package not complete');
         return canStr;
     } catch (error) {
-        info('Something went wrong when loading image. Check console.', false);
+        info('Something went wrong when loading image. Check browser console.', false);
         return false;
     }
 }

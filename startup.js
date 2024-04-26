@@ -85,12 +85,12 @@ addIcon('fa-times-circle', 'Disable Holo', disableLegacyHolo);
 
 addIcon('fa-redo', 'Refresh', refreshTXT);
 
-const daBlob = document.createElement('div');
+const daBlob = document.createElement('img');
+daBlob.src = chrome.runtime.getURL('img/palette-mini.png');
 daBlob.id = 'da-blob';
 
 daBlob.onclick = () => {
     chrome.runtime.sendMessage({ action: 'togglePopup' });
 };
-console.log(document.body);
 document.body.append(daBlob);
 chrome.runtime.sendMessage({ action: 'reload' });

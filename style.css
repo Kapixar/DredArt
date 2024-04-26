@@ -6,8 +6,6 @@
     right: 30px;
     background-color: #c5c5c5;
     border-radius: 0 0 50% 50%;
-    width: 40px;
-    height: 15px;
     transition: cubic-bezier(1,.19,.92,.31) 100ms;
     z-index: 1000000;
     cursor: pointer;
@@ -15,7 +13,6 @@
 
 #da-blob:hover {
     border-radius: 0 0 10px 10px;
-    height: 20px;
 }
 
 #top-bar span a:hover {
@@ -76,7 +73,7 @@
     /* flex-direction: column; */
     position: absolute;
     right: 0;
-    top: 29px;
+    top: 0;
     width: 425px;
     height: 410px;
     z-index: 100;
@@ -92,18 +89,14 @@
     clip-path: path('M 0 399.76 C 17.7013 541.42 35.4238 612.26 53.125 612.26 C 79.6875 612.26 76.3087 462.8 106.25 462.26 C 136.1912 461.7 132.8125 568.5 159.375 568.5 C 185.9375 568.5 185.2363 416.1 212.5 424.76 C 239.7637 433.4 239.5087 601.6 265.625 600.94 C 291.7412 600.26 292.74 478.08 319.77 474.76 C 346.7788 471.42 344.59 587.26 370.8975 587.26 C 388.4287 587.26 406.47 524.76 425 399.76 L 425 0.26 L 0 0.26 L 0 399.76 Z');
 }
 
-#da-popup.drag {
+/* #da-popup.drag {
     box-shadow: 0 0 10px 10px rgb(15, 21, 27);
-}
+} */
 
 #da-popup.hidden {
     pointer-events: none;
     /* -webkit-mask: url('chrome-extension://__MSG_@@extension_id__/assets/splash1.svg#splashEffect' ) center/contain no-repeat; */
     clip-path: path('M 0 -0.24 C 17.7013 -16.92 35.4238 -25.24 53.125 -25.24 C 79.6875 -25.24 76.3087 0.3 106.25 -0.24 C 136.1912 -0.8 132.8125 -69 159.375 -69 C 185.9375 -69 185.2363 -8.9 212.5 -0.24 C 239.7637 8.4 239.5087 -35.9 265.625 -36.56 C 291.7412 -37.24 292.74 3.08 319.77 -0.24 C 346.7788 -3.58 344.59 -50.24 370.8975 -50.24 C 388.4287 -50.24 406.47 -33.58 425 -0.24 L 425 -68.74 L 0 -68.74 L 0 -0.24 Z');
-}
-
-#da-popup.loading #da-ui {
-    animation: none;
 }
 
 @keyframes melt-enter {
@@ -118,20 +111,18 @@
     }
 }
 
+/* Top bar */
+
 #da-top-bar {
     display: flex;
     align-items: center;
     justify-content: space-around;
-    background-color: var(--themeColor);
     color: white;
-    cursor: move;
     text-align: center;
-    border-radius: 15px;
     border: 0 solid transparent;
     margin: 7px;
     height: 23px;
     transition: 200ms linear;
-    box-shadow: 0 0 2px white;
 }
 
 #da-top-bar.pinned {
@@ -142,18 +133,18 @@
     box-shadow: none;
 }
 
-#da-top-bar:hover {
-    filter: brightness();
-}
-
-#da-top-bar>* {
+#da-top-bar > * {
+    height: 100%;
     cursor: pointer;
-    height: 100%;
-    color: white;
+    background-color: var(--themeColor);
+    border-radius: 15px;
+    border: 0 solid transparent;
 }
 
-#da-top-bar img {
-    height: 100%;
+#da-top-bar span {
+    cursor: move;
+    margin: 7px;
+    min-width: 50%;
 }
 
 /* Everything inside tool */
@@ -169,9 +160,10 @@
 #da-content > * {
     opacity: 0;
     max-height: 0;
+    /* max-height: 400vh; */
     pointer-events: none;
     overflow: hidden;
-    /* transition: 200ms linear; */
+    transition: opacity 800ms linear;
 }
 
 #da-content > :nth-child(1 of .active) {
@@ -197,12 +189,12 @@
     background-color: rgb(25, 35, 45);
     z-index: 500;
     border-radius: 10px;
-    padding-inline: 15px;
+    padding-inline: 15px;    
 }
 
-/* #da-menu.hidden {
+#da-menu.hidden {
     max-height: 0;
-} */
+}
 
 #da-menu span {
     border-radius: 10px;
@@ -283,9 +275,11 @@
 }
 
 #da-insert>span {
+    cursor: pointer;
     position: absolute;
-    top: 0;
-    right: 0;
+    left: 10px;
+    top: 10px;
+    font-size: 15px;
 }
 
 #da-insert>label {
@@ -351,7 +345,7 @@
     filter: drop-shadow(0 0 5px black);
 }
 
-/* dialog for setup and simmilar */
+/* dialog for setup */
 #da-dialog {
     display: flex;
     flex-direction: column;
@@ -368,22 +362,19 @@
 #da-ui {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    animation: 2s melt-enter;
+    /* animation: 2s melt-enter; */
 }
 
-#da-ui>div,
-#da-ui>label {
+#da-ui > div,
+#da-ui > label {
     border-radius: 7px;
     padding: 7px;
-    /* border: 7px dashed transparent; */
     text-shadow: 0 0 4px black;
     color: white;
-    margin: 7px;
+    margin: 6px;
     align-items: center;
     justify-items: center;
     user-select: none;
-    /* transition: .2s; */
-    /* background-color: rgb(114, 114, 114); */
 }
 
 #da-ui .long {
@@ -427,6 +418,12 @@
 
 #da-stats p {
     margin: 0;
+}
+
+/* Holo mode swap */
+#da-send-chat {
+    text-align: center;
+    cursor: pointer;
 }
 
 /* Holo mode swap */
@@ -531,7 +528,7 @@
     initial-value: rgb(114, 114, 114);
 }
 
-.sticky {
+div.sticky {
     --stickTheme: rgb(114, 114, 114);
     display: grid;
     position: sticky;
@@ -540,10 +537,10 @@
     grid-auto-flow: column;
     top: -1px;
     transition: --stickTheme 200ms;
-    padding-right: 15px;
+    padding: 0px;
     z-index: 100;
     justify-items: center;
-    background: linear-gradient(var(--stickTheme) 0%, rgb(114, 114, 114) 50%);
+    background: linear-gradient(var(--stickTheme) 0%, rgb(114, 114, 114) 100%);
 }
 
 .sticky.simple {
@@ -552,29 +549,29 @@
 
 #da-ui .sticky.pinned {
     border-radius: 0 0 10px 10px;
-    box-shadow: 0 0 5px black;
+    /* box-shadow: 0 0 5px black; */
+    --stickTheme: rgb(25, 35, 45);
 }
 
-/* Buttons on sticky box */
-
-#da-popup #allButton {
+.sticky > button {
+    border-radius: 7px;
     padding: 7px;
-    background: var(--themeColor);
-    color: rgb(114, 114, 114);
+    background: rgb(188, 188, 188);
+    color: black;
     border: 5px solid transparent;
+    box-shadow: var(--themeColor) 0px 3px;
 }
 
-#da-popup #checkButton {
-    padding: 7px;
-    background-color: transparent;
-    color: var(--themeColor);
-    border: 5px solid var(--themeColor);
+.sticky > button:hover {
+    transform: translateY(2px);
+    box-shadow: var(--themeColor) 0px 1px;
 }
 
 /* Part selection */
 .partSelector {
+    --partsOnXAxis: 2;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(var(--partsOnXAxis), 1fr);
     gap: 2px;
 }
 
@@ -612,15 +609,17 @@
 
 /* Color labels */
 #da-ui>.colorLabel {
+    --tileColor: rgb(0, 0, 0);
     position: relative;
     text-align: center;
     height: 35px;
     line-height: 35px;
     text-shadow: 0 0 6px black;
+    background-color: var(--tileColor);
     transform-origin: center;
     cursor: pointer;
     animation: popIn .5s;
-    transition: 200ms;
+    transition: clip-path 250ms, box-shadow 300ms;
     /* clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); */
     clip-path: path("M 32.414 51.324 C 28.308 50.884 29.07 46.228 20.977 52.937 C 5.727 51.91 -1.898 51.324 -3.951 41.646 C -10.549 32.995 -7.03 25.956 -3.951 26.103 C -6.444 15.399 -8.643 8.214 -2.484 -2.344 C 17.458 -2.344 24.056 -6.01 36.813 -4.25 C 31.094 -6.889 49.863 -10.995 55.875 -2.051 C 58.075 -5.423 64.087 -6.01 70.245 -2.49 C 81.536 -4.837 105 -5 112 6 C 110 16 116 22 112 26 C 116 36 119 42 99 52 C 74.351 51.764 72.005 50.737 62.914 51.617 C 57.048 51.03 53.676 49.857 47.664 52.35 C 44.291 51.03 40.185 51.764 37.4 51.324 Z");
 }
@@ -638,11 +637,12 @@
 }
 
 #da-ui>.colorLabel:not(.selected):hover {
-    box-shadow: inset 0 0 10px black;
+    /* box-shadow: inset 0 0 10px black; */
+    clip-path: path("M 37.9088 48.236 C 34.4585 47.698 30 48 24 48 C 15 48 12 44 5 41 C 2 36 1 26 3 22 C 6 14 2 8 7 4 C 19.8061 1.156 34 1 37 1 C 42 1 44 1 53 2 C 61 2 66.0168 2.08 70 1 C 77.786 0.028 82 3 84.1926 9.199 C 86.6571 15.377 87 19 87 28 C 87 35 84 41 84 44 C 78 49 69 46 65 46 C 56 48 57 47 51 48 C 45 48 41.2319 47.643 37.9045 48.233 Z");
 }
 
 #da-ui>.colorLabel.selected, #allButton.selected {
-    box-shadow: inset 0 0 20px white;
+    box-shadow: 0 0 10px var(--tileColor);
     clip-path: path("M 37.9088 48.236 C 34.4585 47.698 30.8142 46.228 26.2276 42.014 C 20.4336 38.94 12.9521 42.257 6.59 38.265 C 1.9462 35.705 10.1877 26.016 9.8909 21.742 C 11.7872 14.397 10.6721 7.852 14.6333 5.049 C 19.8061 1.156 35.5397 6.876 37.6088 5.28 C 40.0256 5.64 43.6126 1.798 51.5997 4.419 C 58.7187 6.385 66.0168 2.08 71.3931 1.262 C 77.786 0.028 84.6972 2.777 84.1926 9.199 C 86.6571 15.377 77.7616 21.04 78.0584 27.16 C 78.3128 33.24 82.3408 39.48 79.7968 41.44 C 77.2528 43.36 68.1792 41 62.4128 40.56 C 56.6888 40.12 54.3144 41.56 50.4984 43.96 C 46.64 46.32 41.2319 47.643 37.9045 48.233 Z");
 }
 
@@ -653,7 +653,7 @@
     position: absolute;
     top: 0px;
     right: 7px;
-    text-shadow: 0 0 4px black;
+    text-shadow: 0 0 10px black;
     font-size: smaller;
 }
 
@@ -661,10 +661,9 @@
 
 #da-popup button{
     padding: 10px;
-    background: rgb(114, 114, 114);
     color: white;
-    box-shadow: rgb(51, 51, 51) 0px 3px;
-    text-shadow: 0 0 10px black;
+    /* box-shadow: rgb(51, 51, 51) 0px 3px; */
+    text-shadow: 0 0 7px black;
     /* box-shadow: inset 0 0 5px black; */
 }
 
