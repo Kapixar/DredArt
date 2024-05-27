@@ -67,30 +67,27 @@ function disableLegacyHolo() {
     });
 }
 
-function addIcon(p, t, f) {
-    const a = document.createElement('a');
-    const i = document.createElement('i');
-    i.classList.add('fas', 'big-icon', p);
-    const d = document.createElement('div');
-    d.classList.add('tooltip', 'tooltip-low', 'dark');
-    d.textContent = t;
-    a.append(i, d);
-    gameTopBar.append(a);
-    a.onclick = f;
-}
-
-addIcon('fa-palette', 'DredArt', () => { chrome.runtime.sendMessage({ action: 'togglePopup' }); });
-
-addIcon('fa-times-circle', 'Disable Holo', disableLegacyHolo);
-
-addIcon('fa-redo', 'Refresh', refreshTXT);
-
-const daBlob = document.createElement('img');
-daBlob.src = chrome.runtime.getURL('img/palette-mini.png');
+const daBlob = document.createElement('div');
 daBlob.id = 'da-blob';
 
-daBlob.onclick = () => {
-    chrome.runtime.sendMessage({ action: 'togglePopup' });
-};
+function addIcon(p, f) {
+    const i = document.createElement('i');
+    i.classList.add('fas', 'big-icon', p);
+    daBlob.append(i);
+    i.onclick = f;
+}
+
+addIcon('fa-palette', () => { chrome.runtime.sendMessage({ action: 'togglePopup' }); });
+
+addIcon('fa-broom', disableLegacyHolo);
+
+addIcon('fa-redo', refreshTXT);
+
 document.body.append(daBlob);
-chrome.runtime.sendMessage({ action: 'reload' });
+
+window.addEventListener('beforeunload', () => {
+    console.log('huh');
+    const count = localStorage.getItem('count');
+    localStorage.setItem('count', count ? parseInt(count) + 1 : 1);
+    chrome.runtime.sendMessage({ action: 'reload' });
+});

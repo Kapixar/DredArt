@@ -699,7 +699,6 @@ label:hover input[type="range"] {
 
 #scalerange {
     appearance: slider-horizontal;
-    -webkit-appearance: slider-vertical;
     cursor: zoom-in;
     width: 50px;
     accent-color: var(--bg-accent);

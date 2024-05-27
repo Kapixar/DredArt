@@ -27,8 +27,27 @@ onmessage = (event) => {
         for (let o = 0; o < w; o++) {
             const j = (o + i * w) * 4;
             const gc = findIndex([data[j], data[j + 1], data[j + 2]]).toString(16).padStart(2, '0').toUpperCase();
+            // find which part of the radar this pixel belongs to
+            let radarPartX = 0;
+            let radarSum = 0;
+            for (let x = 0; x < xSizes.length; x++) {
+                radarSum += xSizes[x];
+                if (o < radarSum) {
+                    radarPartX = x;
+                    break;
+                }
+            }
+            let radarPartY = 0;
+            radarSum = 0;
+            for (let y = 0; y < ySizes.length; y++) {
+                radarSum += ySizes[y];
+                if (i < radarSum) {
+                    radarPartY = y;
+                    break;
+                }
+            }
+            const radarPart = radarPartX + radarPartY * xSizes.length;
 
-            const radarPart = (o < xSizes[0] ? 0 : 1) + (i < ySizes[0] ? 0 : 2);
             imgColors[gc][radarPart]++;
             imgColors[gc].sum++;
             if (o === 2 - 1) {

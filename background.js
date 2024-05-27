@@ -25,9 +25,11 @@
 //     })
 // });
 
-const inserted = [];
+let inserted;
+chrome.storage.local.get('inserted', (res) => { console.log(res); inserted = res.inserted || []; });
 
 function togglePopup(tabID) {
+    console.log(tabID, inserted);
     if (inserted.includes(tabID)) chrome.tabs.sendMessage(tabID, { action: 'togglePopup' });
     else {
         chrome.scripting.executeScript({
@@ -35,6 +37,7 @@ function togglePopup(tabID) {
             files: ['main.js', 'pako.js', 'patch_worker.js'],
         });
         inserted.push(tabID);
+        chrome.storage.local.set({ inserted });
     }
 }
 
@@ -47,6 +50,10 @@ chrome.runtime.onMessage.addListener(async (req, sender) => {
     // console.log(scripts);
     if (req.action === 'togglePopup') togglePopup(sender.tab.id);
     if (req.action === 'reload') {
-        if (inserted.includes(sender.tab.id)) inserted.splice(inserted.indexOf(sender.tab.id), 1);
+        if (inserted.includes(sender.tab.id)) {
+            console.log('removing tad id', sender.tab.id);
+            inserted.splice(inserted.indexOf(sender.tab.id), 1);
+            chrome.storage.local.set({ inserted });
+        }
     }
 });

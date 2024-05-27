@@ -1,43 +1,10 @@
 /* eslint-disable no-bitwise */
-// let tabID = null;
-
-// document.querySelector('button').onclick = () => {
-//     // chrome.runtime.sendMessage({ message: 'hello' }, (res) => {
-//     //     document.querySelector('p').textContent = res.status
-//     // })
-//     // console.log(tabID);
-//     // if(tabID) chrome.tabs.sendMessage(tabID, {message: "your message"})
-//     sendData('hello my guy');
-// };
-
-// chrome.tabs.onActivated.addListener(async () => {
-//     chrome.tabs.query({ active: true, currentWindow: true }, async (tab) => {
-//         tabID = tab[0].id;
-//         console.log(tabID);
-//         if (tab[0].url) {
-//             console.log('show');
-//             await chrome.sidePanel.setOptions({
-//                 tabID,
-//                 path: 'main.html',
-//                 enabled: true,
-//             });
-//         } else {
-//             console.log('hide');
-//             await chrome.sidePanel.setOptions({
-//                 tabID,
-//                 enabled: false
-//             });
-//         }
-//     })
-// });
-
-// function sendData(mess) {
-//     chrome.tabs.query({ currentWindow: true, active: true }, (tabs) => {
-//         chrome.tabs.sendMessage(tabs[0].id, {message: mess})
-//     });
-// }
 
 // setup for base2048
+/**
+  Base2048 is a binary-to-text encoding optimised for transmitting data
+  through Twitter. https://github.com/qntm/base2048
+*/
 const BITS_PER_CHAR = 11;
 const BITS_PER_BYTE = 8;
 const pairStrings = [
@@ -150,31 +117,43 @@ const rgb = [[222, 165, 164], [214, 145, 136], [173, 111, 105], [128, 64, 64], [
 const canvasSettings = { colorSpace: 'srgb' };
 
 const holoItems = [
-    [50, 'scrap'],
-    [52, 'ball_vg'],
-    [54, 'ball_bg'],
-    [119, 'hand_cannon'],
-    [161, 'void_orb'],
-    [254, 'annihilator_tile'],
-    [300, 'wrench_bronze_et'],
-    [301, 'wrench_silver_et'],
-    [302, 'wrench_gold_et'],
-    [303, 'wrench_flux_et'],
-    [304, 'wrench_platinum_et'],
-    [311, 'wrench_platinum'],
-    [312, 'wrench_flux'],
-    [313, 'cap'],
-    [314, 'glasses'],
-    [315, 'shades'],
-    [316, 'top_hat'],
-    [317, 'horns'],
-    [318, 'mask_alien'],
-    [319, 'mask_clown'],
-    [320, 'mask_goblin'],
-    [322, 'witch_hat'],
-    [323, 'gremlin_red'],
-    [324, 'gremlin_orange'],
-    [325, 'gremlin_yellow'],
+    [
+        // bp items
+        [49, 'comp_exp.png'],
+        [50, 'comp_iron.png'],
+        [52, 'ball_vg.png'],
+        [54, 'ball_bg.png'],
+        [119, 'hand_cannon.png'],
+        [161, 'void_orb.png'],
+        [254, 'annihilator_tile.png'],
+        [300, 'wrench_bronze_et.png'],
+        [301, 'wrench_silver_et.png'],
+        [302, 'wrench_gold_et.png'],
+        [303, 'wrench_flux_et.png'],
+        [304, 'wrench_platinum_et.png'],
+        [311, 'wrench_platinum.png'],
+        [312, 'wrench_flux.png'],
+        [313, 'cap.png'],
+        [314, 'glasses.png'],
+        [315, 'shades.png'],
+        [316, 'top_hat.png'],
+        [317, 'horns.png'],
+        [318, 'mask_alien.png'],
+        [319, 'mask_clown.png'],
+        [320, 'mask_goblin.png'],
+        [322, 'witch_hat.png'],
+        [323, 'gremlin_red.png'],
+        [324, 'gremlin_orange.png'],
+        [325, 'gremlin_yellow.png'],
+    ],
+    [
+        // legacy items
+        [0, 'sign.png'],
+        [1, 'sign_hover.png'],
+        [2, 'sign_near.png'],
+        [3, 'item_hatch_bg.png'],
+        [4, 'comp_silver.png'],
+    ],
 ];
 
 const tool = document.createElement('div');
@@ -188,17 +167,16 @@ messageContainer.id = 'da-messageContainer';
 // MARK: Top bar
 const topBar = document.createElement('div');
 topBar.id = 'da-top-bar';
-const menuHam = document.createElement('img');
-menuHam.src = chrome.runtime.getURL('img/palette-mini.png');
+const menuHam = document.createElement('i');
+menuHam.classList.add('fas', 'big-icon', 'fa-bars');
 menuHam.onclick = () => {
-    if (!tool.classList.contains('drag')) mainMenu.classList.toggle('active');
-    tool.classList.remove('drag');
+    if (document.querySelector('#da-content .active:not(#da-menu)')) mainMenu.classList.toggle('active');
 };
 
-const closeBtn = document.createElement('img');
-closeBtn.src = chrome.runtime.getURL('img/icons8-x-50.png');
+const closeBtn = document.createElement('i');
+closeBtn.classList.add('fas', 'big-icon', 'fa-times');
 closeBtn.onclick = () => {
-    chrome.runtime.sendMessage({ action: 'togglePopup' });
+    tool.classList.toggle('hidden');
 };
 
 const title = document.createElement('span');
@@ -230,13 +208,13 @@ helpButtonGroup.classList.add('btn-group');
 
 const settingsButton = document.createElement('span');
 settingsButton.textContent = 'Settings';
-settingsButton.setAttribute('data-desc', 'Generate fine pixel art from ordinary images!');
-settingsButton.onclick = () => { }; // todo
+settingsButton.setAttribute('data-desc', 'Tweak your experience!');
+settingsButton.onclick = () => { toggleSettingsUI(); };
 
 const guideButton = document.createElement('span');
 guideButton.textContent = 'Guide';
-guideButton.setAttribute('data-desc', 'Generate fine pixel art from ordinary images!');
-guideButton.onclick = () => { }; // todo
+guideButton.setAttribute('data-desc', 'Learn how to use DredArt!');
+guideButton.onclick = () => { toggleGuideUI(); }; // todo
 
 helpButtonGroup.append(settingsButton, guideButton);
 
@@ -249,11 +227,6 @@ settings.id = 'da-settings';
 // dialog - setup
 const dialogBox = document.createElement('div');
 dialogBox.id = 'da-dialog';
-const dialogClose = document.createElement('span');
-dialogClose.textContent = 'x';
-dialogClose.onclick = () => dialogBox.classList.remove('active');
-const dialogContent = document.createElement('span');
-dialogBox.append(dialogClose, dialogContent);
 
 // inserting image
 const insertBox = document.createElement('div');
@@ -267,7 +240,7 @@ mainContent.append(mainMenu, dialogBox, settings, insertBox, mainBox);
 tool.append(topBar, mainContent, messageContainer);
 
 chrome.runtime.onMessage.addListener((req) => {
-    if (req.action === 'togglePopup') tool.classList.toggle('hidden');
+    if (req.action === 'das') tool.classList.toggle('hidden');
 });
 
 // Dragging popup handler
@@ -397,15 +370,21 @@ function generateInsertion() {
     const lastGallery = document.createElement('div');
     chrome.storage.local.get('lastUsed').then((result) => {
         if (!result.lastUsed) {
-            lastGallery.textContent = 'Nothing. Let\'s create history!';
+            lastGallery.textContent = 'Nothing. Let\'s start painting!';
             return;
         }
         for (const last of result.lastUsed) {
             const thumbnailLast = strToCan(last);
-            lastGallery.append(thumbnailLast);
-            thumbnailLast.onclick = () => {
-                generateTool(thumbnailLast);
-            };
+            if (thumbnailLast) {
+                lastGallery.append(thumbnailLast);
+                thumbnailLast.onclick = () => {
+                    generateTool(thumbnailLast);
+                };
+            } else {
+                const thumbnailError = document.createElement('span');
+                thumbnailError.textContent = 'ERROR';
+                lastGallery.append(thumbnailError);
+            }
         }
     });
 
@@ -475,8 +454,8 @@ function validateImage(file = false, url = false) {
         for (let y = 0; y < scanner.height; y += 20) {
             for (let x = 0; x < scanner.width; x += 20) {
                 const i = pxIndex(x, y, scanner.width);
-                if (findIndex([sD[i], sD[i + 1], sD[i + 2]]) === 256) return info('Image contains colors that don\'t exist in Dredark color pallete. Use Designer for pixel arts.', false);
-                if (sD[i + 3] !== 255) return info('Image contains transparency. No transparency is allowed. Use Designer for pixel arts.', false);
+                if (findIndex([sD[i], sD[i + 1], sD[i + 2]]) === 256) return info('Image contains colors that don\'t exist in Dredark color pallete. Use DredArt for pixel arts.', false);
+                if (sD[i + 3] !== 255) return info('Image contains transparency. No transparency is allowed. Use DredArt for pixel arts.', false);
                 const j = pxIndex(x / 20, y / 20, source.width);
                 sData[j] = sD[i];
                 sData[j + 1] = sD[i + 1];
@@ -548,7 +527,7 @@ async function generateTool(sourceCanvas) {
     const YpartsToDivideInto = Math.ceil(can.height / partThreshold);
 
     // calculating size of textures for holo
-    const xSizes = generateHoloSizes(can.width, XpartsToDivideInto); // bp holo
+    const xSizes = generateHoloSizes(can.width, XpartsToDivideInto);
     const xCenters = generateCentres(xSizes);
     const ySizes = generateHoloSizes(can.height, YpartsToDivideInto);
     const yCenters = generateCentres(ySizes);
@@ -629,7 +608,8 @@ async function generateTool(sourceCanvas) {
     setupButton.id = 'da-setup-btn';
     setupButton.classList.add('long');
     setupButton.onclick = () => {
-
+        if (modeCheck.checked) runSetupLeg();
+        else runSetupBp(1);
     };
     // setupButton.textContent = 'Holo Setup';
 
@@ -682,10 +662,11 @@ async function generateTool(sourceCanvas) {
 
     function blend(c) { return Math.floor(255 - (c * 2) / 3); }
 
-    // uploadTextures([[allCan, 'block.png']]);
-    // divideCanvas(renderShadow([77, 25, 0]), xSizesBP, ySizesBP);
+    // parts initialization
     const allCanParts = divideCanvas(allCan, xSizes, ySizes, true);
-    uploadTextures(allCanParts);
+    const blendCanParts = divideCanvas(blendCan, xSizes, ySizes, false);
+    let currentParts = allCanParts;
+    let currentPartID = 0;
 
     // sticky box
     const stickyBox = document.createElement('div');
@@ -697,6 +678,7 @@ async function generateTool(sourceCanvas) {
         { threshold: [1] },
     );
     stickyObserver.observe(stickyBox);
+    stickyBox.classList.remove('pinned');
 
     // quick help bubble in sticky div
     // const helpBubble = document.createElement('div');
@@ -721,7 +703,7 @@ async function generateTool(sourceCanvas) {
     allColors.id = 'allButton';
     allColors.setAttribute('title', 'Display every color on Holo as text');
     allColors.onclick = function () {
-        // if (!this.classList.contains('selected')) refreshCurrent(allCan);
+        if (!this.classList.contains('selected')) changeCurrentParts(allCanParts);
         document.querySelectorAll('.colorLabel, #checkButton').forEach((e) => {
             e.classList.remove('selected');
         });
@@ -734,7 +716,7 @@ async function generateTool(sourceCanvas) {
     check.id = 'checkButton';
     check.setAttribute('title', 'Find mistakes easier. Only correct tiles turn grey.');
     check.onclick = function () {
-        // if (!this.classList.contains('selected')) refreshCurrent(errorCan);
+        if (!this.classList.contains('selected')) changeCurrentParts(blendCanParts);
         document.querySelectorAll('.colorLabel, #allButton').forEach((e) => {
             e.classList.remove('selected');
         });
@@ -790,7 +772,7 @@ async function generateTool(sourceCanvas) {
             cornerLabel.setAttribute('for', `da-part${i}`);
             const cornerInput = document.createElement('input');
             if (i === 0) cornerInput.checked = true;
-            cornerInput.onchange = () => { changePart(i); };
+            cornerInput.onchange = () => { changePartID(i); };
             cornerInput.type = 'radio';
             cornerInput.name = 'da-part';
             cornerInput.id = `da-part${i}`;
@@ -832,26 +814,29 @@ async function generateTool(sourceCanvas) {
     sortBox.append(sortLabel, sortNameInput, sortNameLabel, sortAmountInput, sortAmountLabel);
     mainBox.appendChild(sortBox);
 
+    console.log(imgColors);
+
+    const colorLabels = [];
+
     // add colors buttons
     for (const c in imgColors) {
         if (imgColors[c].sum === 0) continue;
         const colorTile = document.createElement('div');
         colorTile.classList.add('colorLabel');
-        colorTile.style.opacity = 0;
-        colorTile.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 200, delay: 2000, fill: 'forwards' });
+        colorLabels.push(colorTile);
 
         colorTile.textContent = c;
         colorTile.setAttribute('amount', imgColors[c][0]);
 
         const cRGB = rgb[parseInt(c, 16)];
-        colorTile.onclick = async function () {
+        colorTile.onclick = function () {
+            if (!this.classList.contains('selected')) {
+                changeCurrentParts(divideCanvas(renderColorShadow(cRGB), xSizes, ySizes));
+            }
             document.querySelectorAll('.colorLabel, #allButton, #checkButton').forEach((e) => {
                 e.classList.remove('selected');
             });
             this.classList.add('selected');
-            if (!this.classList.contains('selected')) {
-                //     refreshCurrent(renderShadow(cRGB));
-            }
         };
         colorTile.style.setProperty('--tileColor', `rgb(${cRGB[0]},${cRGB[1]},${cRGB[2]})`);
         // col.style['accent-color'] = `rgb(${cRGB[0]},${cRGB[1]},${cRGB[2]})`;
@@ -860,7 +845,6 @@ async function generateTool(sourceCanvas) {
 
     function sortColors() {
         const sortType = document.querySelector('input[name="da-sort"]:checked').value;
-        const colorLabels = document.querySelectorAll('.colorLabel');
         const colorArray = Array.from(colorLabels);
         colorArray.sort((a, b) => {
             if (sortType === '0') return parseInt(a.textContent, 16) - parseInt(b.textContent, 16);
@@ -882,8 +866,15 @@ async function generateTool(sourceCanvas) {
         });
     }
 
-    function changePart(partID) {
-        
+    function changePartID(id) {
+        currentPartID = id;
+        for (const colorLabel of colorLabels) colorLabel.setAttribute('amount', imgColors[colorLabel.textContent][currentPartID]);
+        uploadTextures(currentParts[currentPartID]);
+    }
+
+    function changeCurrentParts(canvs) {
+        currentParts = canvs;
+        uploadTextures(currentParts[currentPartID]);
     }
 
     // Return size of each holo segment from one edge
@@ -918,7 +909,7 @@ async function generateTool(sourceCanvas) {
         return result;
     }
 
-    function renderShadow(c) {
+    function renderColorShadow(c) {
         const shadowCan = document.createElement('canvas');
         shadowCan.width = can.width;
         shadowCan.height = can.height;
@@ -939,10 +930,10 @@ async function generateTool(sourceCanvas) {
     function divideCanvas(canToDiv, xLen, yLen, isCanLarge = false) {
         const canList = [];
         let iCount = 0;
-        let xDist = 0;
-        for (const x of xLen) {
-            let yDist = 0;
-            for (const y of yLen) {
+        let yDist = 0;
+        for (const y of yLen) {
+            let xDist = 0;
+            for (const x of xLen) {
                 const canDiv = document.createElement('canvas');
                 const divCtx = canDiv.getContext('2d');
                 // sizeCtx.lineWidth = 4;
@@ -955,81 +946,179 @@ async function generateTool(sourceCanvas) {
                 // divCtx.fillRect(0,0,680,680);
                 divCtx.drawImage(canToDiv, xDist, yDist, isCanLarge ? x * 40 : x, isCanLarge ? y * 40 : y, 0, 0, x * 40, y * 40);
                 // sizeCtx.strokeRect(1, 1, (x ? width2 : width1) - 1, (y ? height2 : height1) - 1);
-                canList.push([canDiv, `${holoItems[iCount][1]}.png`]);
+                canList.push([canDiv, iCount]);
                 // console.log(Object.values(holoItems)[iCount], canToDiv, xDist, yDist, divCtx.width, divCtx.height, 0, 0, divCtx.width, divCtx.height);
+                tool.append(canDiv);
                 iCount++;
-                yDist += isCanLarge ? y * 40 : y;
+                xDist += isCanLarge ? x * 40 : x;
             }
-            xDist += isCanLarge ? x * 40 : x;
+            yDist += isCanLarge ? y * 40 : y;
         }
         return canList;
     }
 
     // Insert array of canvases as game assets
     function uploadTextures(canData) {
-        for (const [c, n] of canData) {
-            c.toBlob((blob) => {
-                toggleSettingsUIBtn.click();
-                [...document.querySelectorAll('#new-ui-left button')].find((e) => e.textContent === 'Modify Assets').click();
-                const dataTransfer = new DataTransfer();
-                dataTransfer.items.add(new File([blob], n));
-                document.querySelector('.file-pane .file-pane').dispatchEvent(new DragEvent('drop', { dataTransfer }));
-                document.querySelector('#new-ui-left button').click();
-            });
-        }
+        const holoMode = modeCheck.checked ? 1 : 0;
+        canData[0].toBlob((blob) => {
+            toggleSettingsUIBtn.click();
+            [...document.querySelectorAll('#new-ui-left button')].find((e) => e.textContent === 'Modify Assets').click();
+            [...document.querySelectorAll('#new-ui-left button')].find((e) => e.textContent === 'Clear X').click();
+            document.querySelector('.modal-container .window .btn-green').click();
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(new File([blob], holoItems[holoMode][canData[1] % holoItems[holoMode].length][1]));
+            document.querySelector(`.file-pane${holoMode === 0 ? ' .file-pane' : ''}`).dispatchEvent(new DragEvent('drop', { dataTransfer }));
+            document.querySelector('#new-ui-left button').click();
+        });
     }
 
     // setup holo for user process
     // stage 1: check if have scanner, if no, observe for it
     // 2: check if scanner menu was open before, if no, ask to click R and observer its div
     // 3: automaticaly insert bp, insert template Holos, ask to place it correctly
-    function runSetupBp(stage) {
-        while (dialogContent.childNodes.length) dialogContent.lastChild.remove();
-        // const [title, img] = generateSetupContent('Grab Blueprint Scanner', 'drednot.io/img/bp_scanner.png');
+    function runSetupBp(stage = 1) {
+        while (dialogBox.childNodes.length) dialogBox.lastChild.remove();
+        dialogBox.classList.add('active');
         const invObserver = new MutationObserver(() => {
             if (swapInventoryItem('Blueprint Scanner')) {
                 invObserver.disconnect();
+                runSetupBp(2);
             }
         });
-        invObserver.observe(document.querySelector('#item-ui-inv'), {});
+
         if (stage === 1) {
-            dialogContent.append([...generateSetupContent('Grab Blueprint Scanner', 'drednot.io/img/bp_scanner.png')]);
-            swapInventoryItem('Blueprint Scanner');
-            const invObserver = new MutationObserver(() => {
-                if (swapInventoryItem('Blueprint Scanner')) {
-                    invObserver.disconnect();
-                }
-            });
-            invObserver.observe(document.querySelector('#item-ui-inv'), {});
+            if (swapInventoryItem('Blueprint Scanner')) runSetupBp(2);
+            else {
+                dialogBox.append(...generateSetupContent('Grab a Blueprint Scanner', '/img/item/scanner_blueprint.png', 'Cancel', () => { dialogBox.classList.remove('active'); }));
+                invObserver.disconnect();
+                invObserver.observe(document.querySelector('#item-ui-container'), { childList: true, subtree: true });
+            }
+        }
+        if (stage === 2) {
+            if (document.querySelector('#pui').textContent !== '') runSetupBp(3);
+            else {
+                dialogBox.append(...generateSetupContent('Click R to open the Scanner menu', '/img/item/scanner_blueprint.png', 'Cancel', () => { dialogBox.classList.remove('active'); }));
+                const rObserver = new MutationObserver(() => {
+                    if (document.querySelector('#pui').textContent !== '') {
+                        rObserver.disconnect();
+                        runSetupBp(3);
+                    }
+                });
+                rObserver.observe(document.querySelector('#pui'), { childList: true, subtree: true });
+            }
+        }
+        if (stage === 3) {
+            const textareaBP = document.querySelector('#pui textarea');
+            if (textareaBP.value !== holoBP) {
+                textareaBP.value = holoBP;
+                textareaBP.dispatchEvent(new Event('input'));
+            }
+            setTimeout(() => {
+                if (document.querySelector('#pui').style.display !== 'none') document.querySelector('#pui .close button').click();
+            }, 100);
+            dialogBox.append(...generateSetupContent('Place blueprint few times at correct position', '/img/item/scanner_blueprint.png', 'Done', () => { dialogBox.classList.remove('active'); }));
+            // insert templates
         }
     }
 
     // setup holo for user process
     // stage 1: just display what and where place blocks
     function runSetupLeg() {
-        while (dialogContent.childNodes.length) dialogContent.lastChild.remove();
-        const asking = document.createElement('p');
-        asking.textContent = 'If you have BP scanner, change mode.';
-        dialogContent.append([...generateSetupContent('Grab Blueprint Scanner', 'drednot.io/img/bp_scanner.png'), asking]);
+        while (dialogBox.childNodes.length) dialogBox.lastChild.remove();
+        const pAsk = document.createElement('p');
+        pAsk.textContent = 'If you have BP scanner, change mode for better experience.';
+
+        const pGuide = document.createElement('p');
+        pGuide.textContent = 'Input coords of bottom-left corner of Holo, then place correct blocks as shown.';
+
+        const coordsInputX = document.createElement('input');
+        const coordsInputY = document.createElement('input');
+        coordsInputX.type = 'number';
+        coordsInputY.type = 'number';
+        coordsInputX.placeholder = 0;
+        coordsInputY.placeholder = 0;
+        coordsInputX.min = 0;
+        coordsInputY.min = 0;
+        coordsInputX.max = 80;
+        coordsInputY.max = 80;
+
+        coordsInputX.oninput = () => { uppdateTable(); };
+        coordsInputY.oninput = () => { uppdateTable(); };
+
+        const table = document.createElement('div');
+        table.id = 'blocksTable';
+        const divLT = document.createElement('div');
+        const imgLT = document.createElement('img');
+        imgLT.src = '/img/item/leg_holo.png';
+        divLT.append(imgLT);
+        const divRT = document.createElement('div');
+        const imgRT = document.createElement('img');
+        imgRT.src = '/img/item/leg_holo.png';
+
+        const divLB = document.createElement('div');
+        const imgLB = document.createElement('img');
+        imgLB.src = '/img/item/leg_holo.png';
+
+        const divRB = document.createElement('div');
+        const imgRB = document.createElement('img');
+        imgRB.src = '/img/item/leg_holo.png';
+
+        table.append(divLT, divRT, divLB, divRB);
+
+        function uppdateTable() {
+            const x = parseInt(coordsInputX.value);
+            const y = parseInt(coordsInputY.value);
+            // calculate the centers
+            
+        }
     }
 
-    function generateSetupContent(text, img) {
+    function generateSetupContent(text, img, buttonText, buttonAction) {
         const hg = document.createElement('h3');
         hg.textContent = text;
 
         const ig = document.createElement('img');
         ig.src = img;
-        return [hg, ig];
+
+        const bg = document.createElement('button');
+        bg.textContent = buttonText;
+        bg.onclick = buttonAction;
+        return [hg, ig, bg];
     }
+}
+
+// MARK: settings
+function toggleSettingsUI() {
+    while (dialogBox.childNodes.length) dialogBox.lastChild.remove();
+    settings.classList.add('active');
+    const settingsHeader = document.createElement('h2');
+    settingsHeader.textContent = 'Settings';
+    settings.append(settingsHeader);
+    // settings to add:
+    // - partThreshold size (default 30)
+    // - default holo mode (default bp)
+    // - saved custom textures
+    // - clear old settings
+    // - holoItems (default 1,2,3,4) ?
+}
+
+// MARK: guide
+function toggleGuideUI() {
+    while (dialogBox.childNodes.length) dialogBox.lastChild.remove();
+    dialogBox.classList.add('active');
+    const settingsHeader = document.createElement('h2');
+    settingsHeader.textContent = 'Guide';
+    settings.append(settingsHeader);
 }
 
 // Inserting blueprint into UI
 function swapInventoryItem(item) {
     const itemsHeld = document.querySelectorAll('#item-ui-inv h3');
+    if (!itemsHeld) return false;
     if (itemsHeld.length === 0) return false;
     const searched = [...itemsHeld].filter((n) => n.textContent === item);
     if (searched.length === 0) return false;
-    searched[0].click();
+    searched[0].parentElement.parentElement.click();
     return true;
 }
 
@@ -1098,7 +1187,9 @@ function strToCan(imgStr) {
         if (x !== 0) throw new Error('Image Package not complete');
         return canStr;
     } catch (error) {
-        info('Something went wrong when loading image. Check browser console.', false);
+        info('Something went wrong when loading image data.', false);
+        console.log(error);
+        console.log(imgStr);
         return false;
     }
 }
@@ -1136,9 +1227,9 @@ function removeMessage(e) {
 function encodeBlueprint(width, height, xC, yC) {
     const buildCommands = [];
     let iCount = 0;
-    for (const xCoord of xC) {
-        for (const yCoord of yC) {
-            buildCommands.push(144, 0, ...generateTag(xCoord), ...generateTag(height - yCoord), ...generateTag(holoItems[iCount][0]), 145);
+    for (const yCoord of yC) {
+        for (const xCoord of xC) {
+            buildCommands.push(144, 0, ...generateTag(xCoord), ...generateTag(height - yCoord - 1), ...generateTag(holoItems[0][iCount][0]), 145);
             iCount++;
         }
     }

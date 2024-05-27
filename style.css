@@ -3,32 +3,33 @@
 #da-blob {
     position: absolute;
     top: 0;
-    right: 30px;
-    background-color: #c5c5c5;
-    border-radius: 0 0 50% 50%;
-    transition: cubic-bezier(1,.19,.92,.31) 100ms;
+    right: 0;
+    width: 90px;
+    height: 23px;
+    padding: 5px;
+
+    background-color: rgb(25, 35, 45);
+    border-radius: 0 0 0 10px;
+    transition: 250ms ease;
     z-index: 1000000;
     cursor: pointer;
 }
 
 #da-blob:hover {
-    border-radius: 0 0 10px 10px;
+    border-radius: 0 0 0 5px;
 }
 
 #top-bar span a:hover {
     cursor: pointer;
 }
 
-#top-bar span a:nth-last-child(3) {
+#da-blob i { 
+    height: 23px;
     color: #005686;
-    /* filter: drop-shadow(0 0 1px #d1d1d1); */
-    /* color: #d1d1d1;
-    filter: drop-shadow(0 0 1px #002f49); */
 }
 
-#top-bar span a:nth-last-child(2) {
-    color: #f84e00;
-}
+#da-blob i:nth-last-child(2) { color: #f84e00; }
+#da-blob i:nth-child(3) { color: #626262; }
 
 #top-bar span a:last-child {
     display: inline-block;
@@ -75,12 +76,13 @@
     right: 0;
     top: 0;
     width: 425px;
-    height: 410px;
+    height: 409px;
     z-index: 100;
-    transition: opacity 100ms, box-shadow 100ms, clip-path 1s, mask 1s;
+    transition: opacity ease-out 1s, box-shadow 100ms, clip-path 1s, mask 1s;
     background-color: rgb(25, 35, 45);
     color: white;
-    border-radius: 10px;
+    box-shadow: 0 4px 4px rgb(15, 21, 27);
+    border-radius: 15px;
     overflow: hidden;
     scrollbar-width: 13px;
 
@@ -96,7 +98,7 @@
 #da-popup.hidden {
     pointer-events: none;
     /* -webkit-mask: url('chrome-extension://__MSG_@@extension_id__/assets/splash1.svg#splashEffect' ) center/contain no-repeat; */
-    clip-path: path('M 0 -0.24 C 17.7013 -16.92 35.4238 -25.24 53.125 -25.24 C 79.6875 -25.24 76.3087 0.3 106.25 -0.24 C 136.1912 -0.8 132.8125 -69 159.375 -69 C 185.9375 -69 185.2363 -8.9 212.5 -0.24 C 239.7637 8.4 239.5087 -35.9 265.625 -36.56 C 291.7412 -37.24 292.74 3.08 319.77 -0.24 C 346.7788 -3.58 344.59 -50.24 370.8975 -50.24 C 388.4287 -50.24 406.47 -33.58 425 -0.24 L 425 -68.74 L 0 -68.74 L 0 -0.24 Z');
+    clip-path: path('M 0 -0.24 C 17.7013 -16.92 35.4238 -25.24 53.125 -25.24 C 79.6875 -25.24 76.3087 0.3 106.25 -0.24 C 136.1912 -0.8 132.8125 -69 159.375 -69 C 185.9375 -69 185.2363 -8.9 212.5 -0.24 C 240 2 239.5087 -35.9 265.625 -36.56 C 291.7412 -37.24 292.74 3.08 319.77 -0.24 C 346.7788 -3.58 344.59 -50.24 370.8975 -50.24 C 388.4287 -50.24 406.47 -33.58 425 -0.24 L 425 -68.74 L 0 -68.74 L 0 -0.24 Z');
 }
 
 @keyframes melt-enter {
@@ -116,11 +118,11 @@
 #da-top-bar {
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: center;
+    gap: 10%;
     color: white;
     text-align: center;
-    border: 0 solid transparent;
-    margin: 7px;
+    margin-block: 5px 5px;
     height: 23px;
     transition: 200ms linear;
 }
@@ -133,18 +135,21 @@
     box-shadow: none;
 }
 
-#da-top-bar > * {
+#da-top-bar > i {
     height: 100%;
     cursor: pointer;
-    background-color: var(--themeColor);
-    border-radius: 15px;
-    border: 0 solid transparent;
+    color: rgb(144, 144, 144);
+    text-shadow: 1px 1px var(--themeColor), -1px -1px var(--themeColor);
 }
 
 #da-top-bar span {
     cursor: move;
     margin: 7px;
+    height: 100%;
     min-width: 50%;
+    background-color: rgb(144, 144, 144);
+    border-radius: 15px;
+    box-shadow: 1px 1px white, -1px -1px white;
 }
 
 /* Everything inside tool */
@@ -163,7 +168,7 @@
     /* max-height: 400vh; */
     pointer-events: none;
     overflow: hidden;
-    transition: opacity 800ms linear;
+    transition: opacity 300ms linear;
 }
 
 #da-content > :nth-child(1 of .active) {
@@ -197,6 +202,7 @@
 }
 
 #da-menu span {
+    position: relative;
     border-radius: 10px;
     background-repeat: no-repeat;
     background-size: 100%;
@@ -206,10 +212,11 @@
     min-height: 25%;
     display: flex;
     justify-content: space-evenly;
+    overflow: hidden;
     align-items: center;
     text-align: center;
     font-size: 20px;
-    transition: background-size 1s;
+    transition: background-size 1s, color 200ms, text-shadow 200ms;
 }
 
 #da-menu span:hover {
@@ -237,7 +244,7 @@
 }
 
 #da-menu .btn-group span:nth-of-type(2) {
-    background-image: url('chrome-extension://__MSG_@@extension_id__/img/settings_banner.png');
+    background-image: url('chrome-extension://__MSG_@@extension_id__/img/guide_banner.png');
 }
 
 #da-menu > span::after {
@@ -257,6 +264,32 @@
     opacity: 1;
 }
 
+#da-menu .btn-group span:hover {
+    color: #ffffff00;
+    text-shadow: none;
+}
+
+#da-menu .btn-group span::after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 65%;
+    content: attr(data-desc);
+    transform: translate(-50%, 50%);
+    transition: transform 200ms, opacity 200ms;
+    padding: 5px;
+    border-radius: 10px;
+    background-color: rgba(25, 35, 45, .7);
+    font-size: 80%;
+    color: white;
+    opacity: 0;
+}
+
+#da-menu .btn-group span:hover::after {
+    transform: translate(-50%, -50%);
+    opacity: 1;
+}
+
 /* inputing images view */
 
 #da-insert {
@@ -267,7 +300,6 @@
     gap: 10px;
     width: calc(100% - 30px);
     height: calc(100% - 30px);
-    transition: none;
 }
 
 #da-insert.active {
@@ -333,8 +365,6 @@
     width: 15%;
     max-height: 100%;
     object-fit: contain;
-    /* flex: 15%; */
-    /* aspect-ratio: 1; */
     border-radius: 3px;
     image-rendering: pixelated;
     filter: drop-shadow(0 0 2px black);
@@ -345,12 +375,27 @@
     filter: drop-shadow(0 0 5px black);
 }
 
+#da-insert>div span {
+    display: block;
+    width: 15%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 3px;
+    box-shadow: 0 0 2px rgb(161, 0, 0);
+    text-align: center;
+    color: red;
+    background-color: white;
+}
+
 /* dialog for setup */
 #da-dialog {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    margin: auto;
+    gap: 20px;
+    max-width: 80%;
     align-items: center;
+    justify-content: center;
 }
 
 /* #da-dialog.hidden {
@@ -551,20 +596,36 @@ div.sticky {
     border-radius: 0 0 10px 10px;
     /* box-shadow: 0 0 5px black; */
     --stickTheme: rgb(25, 35, 45);
+    margin: none;
 }
 
-.sticky > button {
+.sticky > button, #da-ui>.sort label {
     border-radius: 7px;
     padding: 7px;
     background: rgb(188, 188, 188);
-    color: black;
-    border: 5px solid transparent;
+    color: white;
     box-shadow: var(--themeColor) 0px 3px;
+    cursor: pointer;
+    transition: background-color 200ms, box-shadow 200ms, transform 200ms;
 }
 
-.sticky > button:hover {
+.sticky > button:hover, #da-ui>.sort label:hover {
     transform: translateY(2px);
     box-shadow: var(--themeColor) 0px 1px;
+}
+
+.sticky > button.selected, #da-ui>.sort :checked + label { 
+    background-color: var(--themeColor);
+    box-shadow: rgb(188, 188, 188) 0px 1px;
+    transform: translateY(2px);
+}
+
+.sticky:not(:has(#da-part1)) { 
+    grid-template-columns: 1fr 1fr;
+}
+
+.sticky:not(:has(#da-part1)) .partSelector { 
+    display: none;
 }
 
 /* Part selection */
@@ -592,11 +653,6 @@ div.sticky {
     display: none;
 }
 
-/* .partSelector:has(.blank:nth-last-of-type(3)) {
-    width: 30px;
-    flex-wrap: wrap;
-} */
-
 .partSelector label:hover {
     filter: brightness(0.8);
 }
@@ -605,6 +661,17 @@ div.sticky {
     background-color: var(--themeColor);
     border-radius: 7px;
     box-shadow: inset 0 0 5px black;
+}
+
+/* Sorting ui */
+#da-ui>.sort {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+#da-ui>.sort label {
+    display: block;
 }
 
 /* Color labels */
@@ -618,16 +685,15 @@ div.sticky {
     background-color: var(--tileColor);
     transform-origin: center;
     cursor: pointer;
-    animation: popIn .5s;
+    animation: scaleIn 400ms;
     transition: clip-path 250ms, box-shadow 300ms;
     /* clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); */
-    clip-path: path("M 32.414 51.324 C 28.308 50.884 29.07 46.228 20.977 52.937 C 5.727 51.91 -1.898 51.324 -3.951 41.646 C -10.549 32.995 -7.03 25.956 -3.951 26.103 C -6.444 15.399 -8.643 8.214 -2.484 -2.344 C 17.458 -2.344 24.056 -6.01 36.813 -4.25 C 31.094 -6.889 49.863 -10.995 55.875 -2.051 C 58.075 -5.423 64.087 -6.01 70.245 -2.49 C 81.536 -4.837 105 -5 112 6 C 110 16 116 22 112 26 C 116 36 119 42 99 52 C 74.351 51.764 72.005 50.737 62.914 51.617 C 57.048 51.03 53.676 49.857 47.664 52.35 C 44.291 51.03 40.185 51.764 37.4 51.324 Z");
+    /* clip-path: path("M 32.414 51.324 C 28.308 50.884 29.07 46.228 20.977 52.937 C 5.727 51.91 -1.898 51.324 -3.951 41.646 C -10.549 32.995 -7.03 25.956 -3.951 26.103 C -6.444 15.399 -8.643 8.214 -2.484 -2.344 C 17.458 -2.344 24.056 -6.01 36.813 -4.25 C 31.094 -6.889 49.863 -10.995 55.875 -2.051 C 58.075 -5.423 64.087 -6.01 70.245 -2.49 C 81.536 -4.837 105 -5 112 6 C 110 16 116 22 112 26 C 116 36 119 42 99 52 C 74.351 51.764 72.005 50.737 62.914 51.617 C 57.048 51.03 53.676 49.857 47.664 52.35 C 44.291 51.03 40.185 51.764 37.4 51.324 Z"); */
 }
 
-@keyframes popIn {
-    from {
-        opacity: 0;
-    }
+@keyframes scaleIn {
+    0% { scale: 0 }
+    80% { scale: 1.08 }
 }
 
 #da-ui>.colorLabel[amount='0'] {
@@ -641,7 +707,7 @@ div.sticky {
     clip-path: path("M 37.9088 48.236 C 34.4585 47.698 30 48 24 48 C 15 48 12 44 5 41 C 2 36 1 26 3 22 C 6 14 2 8 7 4 C 19.8061 1.156 34 1 37 1 C 42 1 44 1 53 2 C 61 2 66.0168 2.08 70 1 C 77.786 0.028 82 3 84.1926 9.199 C 86.6571 15.377 87 19 87 28 C 87 35 84 41 84 44 C 78 49 69 46 65 46 C 56 48 57 47 51 48 C 45 48 41.2319 47.643 37.9045 48.233 Z");
 }
 
-#da-ui>.colorLabel.selected, #allButton.selected {
+#da-ui>.colorLabel.selected {
     box-shadow: 0 0 10px var(--tileColor);
     clip-path: path("M 37.9088 48.236 C 34.4585 47.698 30.8142 46.228 26.2276 42.014 C 20.4336 38.94 12.9521 42.257 6.59 38.265 C 1.9462 35.705 10.1877 26.016 9.8909 21.742 C 11.7872 14.397 10.6721 7.852 14.6333 5.049 C 19.8061 1.156 35.5397 6.876 37.6088 5.28 C 40.0256 5.64 43.6126 1.798 51.5997 4.419 C 58.7187 6.385 66.0168 2.08 71.3931 1.262 C 77.786 0.028 84.6972 2.777 84.1926 9.199 C 86.6571 15.377 77.7616 21.04 78.0584 27.16 C 78.3128 33.24 82.3408 39.48 79.7968 41.44 C 77.2528 43.36 68.1792 41 62.4128 40.56 C 56.6888 40.12 54.3144 41.56 50.4984 43.96 C 46.64 46.32 41.2319 47.643 37.9045 48.233 Z");
 }
@@ -662,9 +728,8 @@ div.sticky {
 #da-popup button{
     padding: 10px;
     color: white;
-    /* box-shadow: rgb(51, 51, 51) 0px 3px; */
     text-shadow: 0 0 7px black;
-    /* box-shadow: inset 0 0 5px black; */
+    border: none;
 }
 
 #da-popup input[type='file'],
