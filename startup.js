@@ -1,18 +1,5 @@
 const teamMenu = document.getElementById('team_menu');
-const gameTopBar = document.querySelector('#top-bar div');
 const legHoloItems = ['anchor', 'sign', 'sign_hover', 'sign_near', 'item_hatch_bg', 'item_hatch', 'item_hatch_starter', 'bg_ship', 'tiles_subworld', 'tiles_overworld', 'bg_gradient'];
-//     0: 'bg_ship'
-const holojkItems = {
-    50: 'scrap',
-    52: 'ball_vg',
-    54: 'ball_bg',
-    119: 'hand_cannon',
-    161: 'void_orb',
-    254: 'annihilator_tile',
-    323: 'gremlin_red',
-    324: 'gremlin_orange',
-    325: 'gremlin_yellow',
-};
 
 const base64ToFile = (url) => {
     const arr = url.split(',');
@@ -77,7 +64,10 @@ function addIcon(p, f) {
     i.onclick = f;
 }
 
-addIcon('fa-palette', () => { chrome.runtime.sendMessage({ action: 'togglePopup' }); });
+addIcon('fa-palette', () => {
+    const isDredArtLoaded = document.querySelector('#da-popup') != null;
+    chrome.runtime.sendMessage({ action: isDredArtLoaded ? 'togglePopup' : 'loadScript' });
+});
 
 addIcon('fa-broom', disableLegacyHolo);
 

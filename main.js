@@ -152,7 +152,6 @@ const holoItems = [
         [1, 'sign_hover.png'],
         [2, 'sign_near.png'],
         [3, 'item_hatch_bg.png'],
-        [4, 'comp_silver.png'],
     ],
 ];
 
@@ -216,7 +215,12 @@ guideButton.textContent = 'Guide';
 guideButton.setAttribute('data-desc', 'Learn how to use DredArt!');
 guideButton.onclick = () => { toggleGuideUI(); }; // todo
 
-helpButtonGroup.append(settingsButton, guideButton);
+const mosaicButton = document.createElement('span');
+mosaicButton.textContent = 'Mosaic';
+mosaicButton.setAttribute('data-desc', 'Help finish the project!');
+mosaicButton.onclick = () => { window.open('https://discord.gg/wM2B5k5S6M'); }; // todo
+
+helpButtonGroup.append(settingsButton, guideButton, mosaicButton);
 
 mainMenu.append(useButton, createButton, helpButtonGroup);
 
@@ -240,7 +244,7 @@ mainContent.append(mainMenu, dialogBox, settings, insertBox, mainBox);
 tool.append(topBar, mainContent, messageContainer);
 
 chrome.runtime.onMessage.addListener((req) => {
-    if (req.action === 'das') tool.classList.toggle('hidden');
+    if (req.action === 'togglePopup') tool.classList.toggle('hidden');
 });
 
 // Dragging popup handler
@@ -423,9 +427,7 @@ function validateImage(file = false, url = false) {
     const img = new Image();
     const imgUrl = url ? (url.startsWith('data') ? url : `https://corsing.kapixar.repl.co/${url.slice(url.indexOf('://') + 2)}`) : URL.createObjectURL(file);
     img.src = imgUrl;
-    console.log(imgUrl);
-    img.onerror = function (e) {
-        console.log(e);
+    img.onerror = function () {
         return info('There was an issue resolving this URL. (If you dragged from Discord, CORS Proxy may be down - try different upload option).', false);
     };
     img.onload = async function () {
@@ -504,6 +506,7 @@ async function generateTool(sourceCanvas) {
     const can = document.createElement('canvas');
     can.width = sourceCanvas.width;
     can.height = sourceCanvas.height;
+    const imageAspectRatio = sourceCanvas.width / sourceCanvas.height;
     const ctx = can.getContext('2d', { willReadFrequently: true, colorSpace: 'srgb' });
     ctx.fillStyle = 'rgb(187,187,187)';
     ctx.drawImage(sourceCanvas, 0, 0);
@@ -673,12 +676,11 @@ async function generateTool(sourceCanvas) {
     stickyBox.classList.add('sticky', 'long');
 
     // make stickyBox float
-    const stickyObserver = new IntersectionObserver(
-        ([e]) => e.target.classList.toggle('pinned', e.intersectionRatio < 1),
-        { threshold: [1] },
-    );
+    const stickyObserver = new IntersectionObserver(([e]) => {
+        console.log(e.intersectionRatio, e.target.classList.contains('pinned'));
+        if (e.intersectionRatio !== 0) e.target.classList.toggle('pinned', e.intersectionRatio < 1);
+    }, { threshold: [1] });
     stickyObserver.observe(stickyBox);
-    stickyBox.classList.remove('pinned');
 
     // quick help bubble in sticky div
     // const helpBubble = document.createElement('div');
@@ -764,6 +766,12 @@ async function generateTool(sourceCanvas) {
     const partBox = document.createElement('div');
     partBox.classList.add('partSelector');
     partBox.style.setProperty('--partsOnXAxis', XpartsToDivideInto);
+    // max height of selector 100px
+    // max width of selector 200px
+    // based on aspect ratio of image
+    partBox.style.setProperty('--selectorHeight', `${Math.min(80, 200 / imageAspectRatio)}px`);
+    partBox.style.setProperty('--selectorWidth', `${Math.min(200, 80 * imageAspectRatio)}px`);
+    partBox.style.backgroundImage = `url(${thUrl})`;
 
     for (let y = 0; y < YpartsToDivideInto; y++) {
         for (let x = 0; x < XpartsToDivideInto; x++) {
@@ -783,6 +791,7 @@ async function generateTool(sourceCanvas) {
     stickyBox.appendChild(partBox);
 
     mainBox.appendChild(stickyBox);
+    stickyBox.classList.remove('pinned');
 
     // Sorting form
     const sortBox = document.createElement('div');
@@ -1025,18 +1034,22 @@ async function generateTool(sourceCanvas) {
     // stage 1: just display what and where place blocks
     function runSetupLeg() {
         while (dialogBox.childNodes.length) dialogBox.lastChild.remove();
-        const pAsk = document.createElement('p');
-        pAsk.textContent = 'If you have BP scanner, change mode for better experience.';
+        dialogBox.classList.add('active');
+
+        const hGuide = document.createElement('h3');
+        hGuide.textContent = 'Legacy Setup';
 
         const pGuide = document.createElement('p');
-        pGuide.textContent = 'Input coords of bottom-left corner of Holo, then place correct blocks as shown.';
+        pGuide.textContent = `Input coordinates (click / to find them) of bottom-left corner of Painting, then place correct blocks as shown below.
+        You can edit blocks in settings.`;
 
+        const coordsInputBox = document.createElement('div');
         const coordsInputX = document.createElement('input');
         const coordsInputY = document.createElement('input');
         coordsInputX.type = 'number';
         coordsInputY.type = 'number';
-        coordsInputX.placeholder = 0;
-        coordsInputY.placeholder = 0;
+        coordsInputX.placeholder = 1;
+        coordsInputY.placeholder = 1;
         coordsInputX.min = 0;
         coordsInputY.min = 0;
         coordsInputX.max = 80;
@@ -1045,31 +1058,54 @@ async function generateTool(sourceCanvas) {
         coordsInputX.oninput = () => { uppdateTable(); };
         coordsInputY.oninput = () => { uppdateTable(); };
 
+        const coordsOkButton = document.createElement('button');
+        coordsOkButton.textContent = 'Done';
+        coordsOkButton.onclick = () => { dialogBox.classList.remove('active'); };
+        coordsInputBox.append(coordsInputX, coordsInputY, coordsOkButton);
+
         const table = document.createElement('div');
         table.id = 'blocksTable';
-        const divLT = document.createElement('div');
-        const imgLT = document.createElement('img');
-        imgLT.src = '/img/item/leg_holo.png';
-        divLT.append(imgLT);
-        const divRT = document.createElement('div');
-        const imgRT = document.createElement('img');
-        imgRT.src = '/img/item/leg_holo.png';
+        table.style.setProperty('--tableX', xSizes.length);
 
-        const divLB = document.createElement('div');
-        const imgLB = document.createElement('img');
-        imgLB.src = '/img/item/leg_holo.png';
+        let IDcounter = 0;
+        for (const x of ySizes) {
+            const row = document.createElement('div');
+            for (const y of xSizes) {
+                const cell = document.createElement('div');
+                cell.setAttribute('data-coords', `${x},${y - 1}`);
+                const cellImg = document.createElement('img');
+                const imgSrc = holoItems[1][IDcounter % holoItems[1].length][1];
+                cellImg.src = `img/${imgSrc}`;
+                cellImg.alt = imgSrc;
+                cellImg.title = imgSrc;
+                cell.appendChild(cellImg);
+                row.appendChild(cell);
+                IDcounter++;
+            }
+            table.appendChild(row);
+        }
 
-        const divRB = document.createElement('div');
-        const imgRB = document.createElement('img');
-        imgRB.src = '/img/item/leg_holo.png';
+        dialogBox.append(hGuide, pGuide, coordsInputBox, table);
 
-        table.append(divLT, divRT, divLB, divRB);
+        uppdateTable();
 
         function uppdateTable() {
-            const x = parseInt(coordsInputX.value);
-            const y = parseInt(coordsInputY.value);
+            const x = Math.max(0, Math.min(80, parseInt(coordsInputX.value) ?? 1));
+            const y = Math.max(0, Math.min(80, parseInt(coordsInputY.value) ?? 1));
+
+            const tableCells = document.querySelectorAll('#blocksTable div div');
+
+            let counter = 0;
+            for (const yC of yCenters) {
+                for (const xC of xCenters) {
+                    const cell = tableCells[counter % tableCells.length];
+                    const newX = x + xC;
+                    const newY = y + yC;
+                    cell.setAttribute('data-coords', `${newX}, ${newY}`);
+                    counter++;
+                }
+            }
             // calculate the centers
-            
         }
     }
 
