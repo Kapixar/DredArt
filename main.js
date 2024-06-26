@@ -112,48 +112,11 @@ const decodePix = (str) => {
     return new Uint8Array(uint8Array.buffer, 0, numUint8s);
 };
 
+const { version } = chrome.runtime.getManifest();
+
 const toggleSettingsUIBtn = document.querySelector(`button[onclick="toggleUI('settings');"`);
 const rgb = [[222, 165, 164], [214, 145, 136], [173, 111, 105], [128, 64, 64], [77, 0, 0], [77, 25, 0], [128, 0, 0], [144, 30, 30], [186, 1, 1], [179, 54, 54], [179, 95, 54], [255, 0, 0], [216, 124, 99], [255, 64, 64], [255, 128, 128], [255, 195, 192], [195, 153, 83], [128, 85, 64], [128, 106, 64], [77, 51, 38], [77, 51, 0], [128, 42, 0], [155, 71, 3], [153, 101, 21], [213, 70, 0], [218, 99, 4], [255, 85, 0], [237, 145, 33], [255, 179, 31], [255, 128, 64], [255, 170, 128], [255, 212, 128], [181, 179, 92], [77, 64, 38], [77, 77, 0], [128, 85, 0], [179, 128, 7], [183, 162, 20], [179, 137, 54], [238, 230, 0], [255, 170, 0], [255, 204, 0], [255, 255, 0], [255, 191, 64], [255, 255, 64], [223, 190, 111], [255, 255, 128], [234, 218, 184], [199, 205, 144], [128, 128, 64], [77, 77, 38], [64, 77, 38], [128, 128, 0], [101, 114, 32], [141, 182, 0], [165, 203, 12], [179, 179, 54], [191, 201, 33], [206, 255, 0], [170, 255, 0], [191, 255, 64], [213, 255, 128], [248, 249, 156], [253, 254, 184], [135, 169, 107], [106, 128, 64], [85, 128, 64], [51, 77, 38], [51, 77, 0], [67, 106, 13], [85, 128, 0], [42, 128, 0], [103, 167, 18], [132, 222, 2], [137, 179, 54], [95, 179, 54], [85, 255, 0], [128, 255, 64], [170, 255, 128], [210, 248, 176], [143, 188, 143], [103, 146, 103], [64, 128, 64], [38, 77, 38], [25, 77, 0], [0, 77, 0], [0, 128, 0], [34, 139, 34], [3, 192, 60], [70, 203, 24], [54, 179, 54], [54, 179, 95], [0, 255, 0], [64, 255, 64], [119, 221, 119], [128, 255, 128], [64, 128, 85], [64, 128, 106], [38, 77, 51], [0, 77, 26], [0, 77, 51], [0, 128, 43], [23, 114, 69], [0, 171, 102], [28, 172, 120], [11, 218, 81], [0, 255, 85], [80, 200, 120], [64, 255, 128], [128, 255, 170], [128, 255, 212], [168, 227, 189], [110, 174, 161], [64, 128, 128], [38, 77, 64], [38, 77, 77], [0, 77, 77], [0, 128, 85], [0, 166, 147], [0, 204, 153], [0, 204, 204], [54, 179, 137], [54, 179, 179], [0, 255, 170], [0, 255, 255], [64, 255, 191], [64, 255, 255], [128, 255, 255], [133, 196, 204], [93, 138, 168], [64, 106, 128], [38, 64, 77], [0, 51, 77], [0, 128, 128], [0, 85, 128], [0, 114, 187], [8, 146, 208], [54, 137, 179], [33, 171, 205], [0, 170, 255], [100, 204, 219], [64, 191, 255], [128, 212, 255], [175, 238, 238], [64, 85, 128], [38, 51, 77], [0, 26, 77], [0, 43, 128], [0, 47, 167], [54, 95, 179], [40, 106, 205], [0, 127, 255], [0, 85, 255], [49, 140, 231], [73, 151, 208], [64, 128, 255], [113, 166, 210], [100, 149, 237], [128, 170, 255], [182, 209, 234], [146, 161, 207], [64, 64, 128], [38, 38, 77], [0, 0, 77], [25, 0, 77], [0, 0, 128], [42, 0, 128], [0, 0, 205], [54, 54, 179], [95, 54, 179], [0, 0, 255], [28, 28, 240], [106, 90, 205], [64, 64, 255], [133, 129, 217], [128, 128, 255], [177, 156, 217], [150, 123, 182], [120, 81, 169], [85, 64, 128], [106, 64, 128], [51, 38, 77], [51, 0, 77], [85, 0, 128], [137, 54, 179], [85, 0, 255], [138, 43, 226], [167, 107, 207], [127, 64, 255], [191, 64, 255], [148, 87, 235], [170, 128, 255], [153, 85, 187], [140, 100, 149], [128, 64, 128], [64, 38, 77], [77, 38, 77], [77, 0, 77], [128, 0, 128], [159, 0, 197], [179, 54, 179], [184, 12, 227], [170, 0, 255], [255, 0, 255], [255, 64, 255], [213, 128, 255], [255, 128, 255], [241, 167, 254], [128, 64, 106], [105, 45, 84], [77, 38, 64], [77, 0, 51], [128, 0, 85], [162, 0, 109], [179, 54, 137], [202, 31, 123], [255, 0, 170], [255, 29, 206], [233, 54, 167], [207, 107, 169], [255, 64, 191], [218, 112, 214], [255, 128, 213], [230, 168, 215], [145, 95, 109], [128, 64, 85], [77, 38, 51], [77, 0, 25], [128, 0, 42], [215, 0, 64], [179, 54, 95], [255, 0, 127], [255, 0, 85], [255, 0, 40], [222, 49, 99], [208, 65, 126], [215, 59, 62], [255, 64, 127], [249, 90, 97], [255, 128, 170], [17, 17, 17], [34, 34, 34], [51, 51, 51], [68, 68, 68], [85, 85, 85], [102, 102, 102], [119, 119, 119], [136, 136, 136], [153, 153, 153], [170, 170, 170], [187, 187, 187], [204, 204, 204], [221, 221, 221], [238, 238, 238], [255, 255, 255]];
 const canvasSettings = { colorSpace: 'srgb' };
-
-const holoItems = [
-    [
-        // bp items
-        [49, 'comp_exp.png'],
-        [50, 'comp_iron.png'],
-        [52, 'ball_vg.png'],
-        [54, 'ball_bg.png'],
-        [119, 'hand_cannon.png'],
-        [161, 'void_orb.png'],
-        [254, 'annihilator_tile.png'],
-        [300, 'wrench_bronze_et.png'],
-        [301, 'wrench_silver_et.png'],
-        [302, 'wrench_gold_et.png'],
-        [303, 'wrench_flux_et.png'],
-        [304, 'wrench_platinum_et.png'],
-        [311, 'wrench_platinum.png'],
-        [312, 'wrench_flux.png'],
-        [313, 'cap.png'],
-        [314, 'glasses.png'],
-        [315, 'shades.png'],
-        [316, 'top_hat.png'],
-        [317, 'horns.png'],
-        [318, 'mask_alien.png'],
-        [319, 'mask_clown.png'],
-        [320, 'mask_goblin.png'],
-        [322, 'witch_hat.png'],
-        [323, 'gremlin_red.png'],
-        [324, 'gremlin_orange.png'],
-        [325, 'gremlin_yellow.png'],
-    ],
-    [
-        // legacy items
-        [0, 'sign.png'],
-        [1, 'sign_hover.png'],
-        [2, 'sign_near.png'],
-        [3, 'item_hatch_bg.png'],
-    ],
-];
 
 const tool = document.createElement('div');
 tool.id = 'da-popup';
@@ -169,7 +132,10 @@ topBar.id = 'da-top-bar';
 const menuHam = document.createElement('i');
 menuHam.classList.add('fas', 'big-icon', 'fa-bars');
 menuHam.onclick = () => {
-    if (document.querySelector('#da-content .active:not(#da-menu)')) mainMenu.classList.toggle('active');
+    if (document.querySelector('#da-content .active:not(#da-menu)')) {
+        mainMenu.classList.toggle('active');
+        if (insertBox.classList.contains('active')) insertBox.classList.remove('active');
+    }
 };
 
 const closeBtn = document.createElement('i');
@@ -180,6 +146,7 @@ closeBtn.onclick = () => {
 
 const title = document.createElement('span');
 title.textContent = 'DredArt';
+title.setAttribute('data-subtitle', `${version} by I am Shrek`);
 topBar.append(menuHam, title, closeBtn);
 
 dragElement(tool, title);
@@ -207,17 +174,17 @@ helpButtonGroup.classList.add('btn-group');
 
 const settingsButton = document.createElement('span');
 settingsButton.textContent = 'Settings';
-settingsButton.setAttribute('data-desc', 'Tweak your experience!');
+settingsButton.setAttribute('data-desc', 'Tweak your needs!');
 settingsButton.onclick = () => { toggleSettingsUI(); };
 
 const guideButton = document.createElement('span');
 guideButton.textContent = 'Guide';
-guideButton.setAttribute('data-desc', 'Learn how to use DredArt!');
+guideButton.setAttribute('data-desc', 'Learn DredArt!');
 guideButton.onclick = () => { toggleGuideUI(); }; // todo
 
 const mosaicButton = document.createElement('span');
 mosaicButton.textContent = 'Mosaic';
-mosaicButton.setAttribute('data-desc', 'Help finish the project!');
+mosaicButton.setAttribute('data-desc', 'Help the Mosaic!');
 mosaicButton.onclick = () => { window.open('https://discord.gg/wM2B5k5S6M'); }; // todo
 
 helpButtonGroup.append(settingsButton, guideButton, mosaicButton);
@@ -225,12 +192,15 @@ helpButtonGroup.append(settingsButton, guideButton, mosaicButton);
 mainMenu.append(useButton, createButton, helpButtonGroup);
 
 // Settings tab
-const settings = document.createElement('div');
-settings.id = 'da-settings';
+const settingsBox = document.createElement('div');
+settingsBox.id = 'da-settings';
 
 // dialog - setup
 const dialogBox = document.createElement('div');
 dialogBox.id = 'da-dialog';
+
+const setupBox = document.createElement('div');
+setupBox.id = 'da-setup';
 
 // inserting image
 const insertBox = document.createElement('div');
@@ -240,7 +210,7 @@ insertBox.id = 'da-insert';
 const mainBox = document.createElement('div');
 mainBox.id = 'da-ui';
 
-mainContent.append(mainMenu, dialogBox, settings, insertBox, mainBox);
+mainContent.append(mainMenu, insertBox, settingsBox, dialogBox, setupBox, mainBox);
 tool.append(topBar, mainContent, messageContainer);
 
 chrome.runtime.onMessage.addListener((req) => {
@@ -307,12 +277,7 @@ function generateInsertion() {
     insertHeader.textContent = 'Insert PixelMap';
 
     // close button
-    const closeButton = document.createElement('span');
-    closeButton.textContent = '❮';
-    closeButton.onclick = () => {
-        insertBox.classList.remove('active');
-        mainMenu.classList.add('active');
-    };
+    insertBox.append(generateCloseButton(insertBox));
 
     // File input handler
     const fileLabel = document.createElement('label');
@@ -331,7 +296,7 @@ function generateInsertion() {
     const dropTip = document.createElement('span');
     dropTip.textContent = 'Drag & Drop';
     const pasteTip = document.createElement('span');
-    pasteTip.textContent = 'Paste image or URL';
+    pasteTip.textContent = 'Paste';
     fileLabel.append(dropTip, pasteTip);
 
     // Drop Handler
@@ -346,8 +311,9 @@ function generateInsertion() {
     fileLabel.ondrop = function (e) {
         e.preventDefault();
         fileLabel.classList.remove('highlight');
+
         const imageUrl = e.dataTransfer.getData('URL');
-        if (imageUrl.includes('?width')) return validateImage(false, imageUrl.slice(0, imageUrl.lastIndexOf('?')));
+        if (imageUrl.includes('discordapp') && imageUrl.includes('width=')) return info('You can\'t drag from Discord. Instead copy and paste it please :)', false);
 
         if (e.dataTransfer.files) {
             if (e.dataTransfer.files.length === 1 && e.dataTransfer.files[0].type.includes('image')) return validateImage(e.dataTransfer.files[0]);
@@ -359,11 +325,12 @@ function generateInsertion() {
     document.onpaste = (e) => {
         if (!insertBox.classList.contains('active') || mainMenu.classList.contains('active')) return;
         e.preventDefault();
-        const { items } = e.clipboardData;
+        const { files } = e.clipboardData;
         // if (items.length > 1) return info('You can only paste one file', false);
-        const file = items[0].getAsFile();
+        const file = files[0];
         if (file) return validateImage(file);
         const textURL = e.clipboardData.getData('Text');
+        if (!textURL.includes('data:image')) return info('No file in pasted content.', false);
         if (textURL) return validateImage(false, textURL);
         info('Image not found in pasted content', false);
 
@@ -372,12 +339,12 @@ function generateInsertion() {
 
     // last used
     const lastGallery = document.createElement('div');
-    chrome.storage.local.get('lastUsed').then((result) => {
-        if (!result.lastUsed) {
-            lastGallery.textContent = 'Nothing. Let\'s start painting!';
+    chrome.storage.local.get('DA_lastUsed').then((result) => {
+        if (!result.DA_lastUsed) {
+            lastGallery.textContent = 'Empty. Let\'s start painting!';
             return;
         }
-        for (const last of result.lastUsed) {
+        for (const last of result.DA_lastUsed) {
             const thumbnailLast = strToCan(last);
             if (thumbnailLast) {
                 lastGallery.append(thumbnailLast);
@@ -393,45 +360,44 @@ function generateInsertion() {
     });
 
     // load from the chat
-    const chatLoad = document.createElement('button');
-    chatLoad.textContent = 'Load from chat';
-    chatLoad.onclick = () => {
-        if (document.getElementById('exit_button').style.display === 'none') return info('You need to join a ship to do that.', false);
-        const messages = document.querySelectorAll('#chat-content p');
-        let sender = null;
-        let str = '';
-        for (const mess of messages) {
-            if (sender) {
-                if (!mess.textContent.includes(sender)) continue;
-                str += mess.textContent.slice(mess.textContent.indexOf(':') + 2);
-                continue;
-            } else if (mess.textContent.includes('DA$')) {
-                sender = mess.querySelector('bdi').textContent;
-                str += mess.textContent.slice(mess.textContent.indexOf(':') + 5);
-            }
-        }
-        if (str === '') return info('No image data found in chat.', false);
-        const canChat = strToCan(str.slice(0, -3));
-        if (canChat) generateTool(canChat);
-    };
+    // const chatLoad = document.createElement('button');
+    // chatLoad.textContent = 'Load from chat';
+    // chatLoad.onclick = () => {
+    //     if (document.getElementById('exit_button').style.display === 'none') return info('You need to join a ship to do that.', false);
+    //     const messages = document.querySelectorAll('#chat-content p');
+    //     let sender = null;
+    //     let str = '';
+    //     for (const mess of messages) {
+    //         if (sender) {
+    //             if (!mess.textContent.includes(sender)) continue;
+    //             str += mess.textContent.slice(mess.textContent.indexOf(':') + 2);
+    //             continue;
+    //         } else if (mess.textContent.includes('DA$')) {
+    //             sender = mess.querySelector('bdi').textContent;
+    //             str += mess.textContent.slice(mess.textContent.indexOf(':') + 5);
+    //         }
+    //     }
+    //     if (str === '') return info('No image data found in chat.', false);
+    //     const canChat = strToCan(str.slice(0, -8));
+    //     if (canChat) generateTool(canChat);
+    // };
 
-    insertBox.append(closeButton, insertHeader, fileUpload, fileLabel, chatLoad, lastGallery);
+    insertBox.append(insertHeader, fileUpload, fileLabel, lastGallery);
 }
 
 // validate image from various sources
 function validateImage(file = false, url = false) {
     if (file.length === null && !url) return info('Probably file is empty.', false);
 
-    if (file.type !== 'image/png' && !url) return info('File is not a PNG.', false);
+    if (file.type !== 'image/png' && !url) return info('File is not a PNG - like DredArt images.', false);
 
     const img = new Image();
-    const imgUrl = url ? (url.startsWith('data') ? url : `https://corsing.kapixar.repl.co/${url.slice(url.indexOf('://') + 2)}`) : URL.createObjectURL(file);
+    const imgUrl = url || URL.createObjectURL(file);
     img.src = imgUrl;
     img.onerror = function () {
-        return info('There was an issue resolving this URL. (If you dragged from Discord, CORS Proxy may be down - try different upload option).', false);
+        return info('Failed to load (If you dragged from Discord).', false);
     };
     img.onload = async function () {
-        console.log(img.src);
         URL.revokeObjectURL(imgUrl);
         if (this.width > 1600 || this.height > 1625) {
             return info('Too large image!', false);
@@ -456,7 +422,7 @@ function validateImage(file = false, url = false) {
         for (let y = 0; y < scanner.height; y += 20) {
             for (let x = 0; x < scanner.width; x += 20) {
                 const i = pxIndex(x, y, scanner.width);
-                if (findIndex([sD[i], sD[i + 1], sD[i + 2]]) === 256) return info('Image contains colors that don\'t exist in Dredark color pallete. Use DredArt for pixel arts.', false);
+                if (findIndex([sD[i], sD[i + 1], sD[i + 2]]) === 256) return info('Image contains colors that don\'t exist in Dredark color palette. Use DredArt for pixel arts.', false);
                 if (sD[i + 3] !== 255) return info('Image contains transparency. No transparency is allowed. Use DredArt for pixel arts.', false);
                 const j = pxIndex(x / 20, y / 20, source.width);
                 sData[j] = sD[i];
@@ -499,6 +465,15 @@ function validateImage(file = false, url = false) {
 async function generateTool(sourceCanvas) {
     while (mainBox.childNodes.length) mainBox.lastChild.remove();
     insertBox.classList.remove('active');
+    insertBox.animate([
+        { opacity: 1, transform: 'scale(1) translateY(0)' },
+        { opacity: 0, transform: 'scale(.5) translateY(-150%)' },
+    ], {
+        duration: 200,
+        easing: 'ease-in-out',
+    });
+    dialogBox.classList.remove('active');
+    settingsBox.classList.remove('active');
     tool.classList.add('loading');
     mainBox.classList.add('active');
 
@@ -514,20 +489,21 @@ async function generateTool(sourceCanvas) {
 
     // Saving art to string and last Used
     const canString = canToStr(can, data);
-    const previous = await chrome.storage.local.get('lastUsed');
-    if (!previous.lastUsed) chrome.storage.local.set({ lastUsed: [canString] });
+    const previous = await chrome.storage.local.get('DA_lastUsed');
+    if (!previous.DA_lastUsed) chrome.storage.local.set({ DA_lastUsed: [canString] });
     else {
-        const spotID = previous.lastUsed.indexOf(canString);
-        if (spotID !== -1) previous.lastUsed.splice(spotID, 1);
-        previous.lastUsed.unshift(canString);
-        if (previous.lastUsed.length > 5) previous.lastUsed = previous.lastUsed.slice(0, 5);
-        chrome.storage.local.set({ lastUsed: previous.lastUsed });
+        const spotID = previous.DA_lastUsed.indexOf(canString);
+        if (spotID !== -1) previous.DA_lastUsed.splice(spotID, 1);
+        previous.DA_lastUsed.unshift(canString);
+        if (previous.DA_lastUsed.length > 5) previous.DA_lastUsed = previous.DA_lastUsed.slice(0, 5);
+        chrome.storage.local.set({ DA_lastUsed: previous.DA_lastUsed });
     }
 
-    // TODO: add this to settings or determine on screen width
-    const partThreshold = 30;
-    const XpartsToDivideInto = Math.ceil(can.width / partThreshold);
-    const YpartsToDivideInto = Math.ceil(can.height / partThreshold);
+    let regionThreshold = 30;
+    const resThreshold = await chrome.storage.sync.get('DA_threshold');
+    regionThreshold = resThreshold.DA_threshold || regionThreshold;
+    const XpartsToDivideInto = Math.ceil(can.width / regionThreshold);
+    const YpartsToDivideInto = Math.ceil(can.height / regionThreshold);
 
     // calculating size of textures for holo
     const xSizes = generateHoloSizes(can.width, XpartsToDivideInto);
@@ -535,19 +511,11 @@ async function generateTool(sourceCanvas) {
     const ySizes = generateHoloSizes(can.height, YpartsToDivideInto);
     const yCenters = generateCentres(ySizes);
 
-    // const xSizesLeg = generateHoloSizes(can.width, XpartsToDivideInto); // leg holo
-    // const xCentersLeg = generateCentres(xSizesLeg);
-    // const ySizesLeg = generateHoloSizes(can.height, YpartsToDivideInto);
-    // const yCentersLeg = generateCentres(ySizesLeg);
-
-    console.log(xSizes, xCenters, ySizes, yCenters);
-
     // BP string
     const holoBP = await encodeBlueprint(can.width, can.height, xCenters, yCenters);
-    console.log(holoBP);
 
     // Calculating existing colors inside the worker
-    const { imgColors, artThemeRGB } = await scanCanvasWithWorker();
+    const { imgColors, artThemeRGB, reqContrast } = await scanCanvasWithWorker();
 
     // First box in Holo UI - info about art
     const stats = document.createElement('div');
@@ -565,9 +533,9 @@ async function generateTool(sourceCanvas) {
     const ironCost = sourceCanvas.width * sourceCanvas.height * 2;
     const pxInfo = [
         [`Art size: ${sourceCanvas.width} x ${sourceCanvas.height}`, false],
-        [`Paint cost: ${ironCost} iron`, false],
+        [`Paint cost: ${ironCost} iron`, 'Pure paint cost'],
         [`Full cost: ${Math.round(ironCost * 1.02) + Math.abs(sourceCanvas.width + sourceCanvas.height - 23) * 4} iron`, 'Expanding starter ship + 2% of mistakes'],
-        ['Estimated time: X hours', '(Work In Progress) Based on average painting speed'],
+        ['Estimated time: X hours', '(WIP) Based on average painting speed'],
     ];
 
     for (const stat of pxInfo) {
@@ -578,25 +546,34 @@ async function generateTool(sourceCanvas) {
     }
 
     // MARK: chat send button
-    const sendChat = document.createElement('label');
-    sendChat.classList.add('long');
-    sendChat.id = 'da-send-chat';
-    sendChat.textContent = 'Share by chat';
-    sendChat.onclick = () => {
-        if (document.getElementById('exit_button').style.display === 'none') return info('You need to join a ship to do that.', false);
-        const strToSend = `DA$${canString}$+$`;
-        let counter = 0;
-        const chatBox = document.getElementById('chat');
-        const chatInp = document.getElementById('chat-input');
-        const chatBtn = document.getElementById('chat-send');
-        const sendingInt = setInterval(() => {
-            if (counter > strToSend.length) clearInterval(sendingInt);
-            if (chatBox.classList.contains('closed')) chatBtn.click();
-            chatInp.value = strToSend.slice(counter, counter + 300);
-            chatBtn.click();
-            counter += 300;
-        }, 1500);
-    };
+    // const sendChat = document.createElement('label');
+    // sendChat.classList.add('long');
+    // sendChat.id = 'da-send-chat';
+    // let sendingInt;
+    // sendChat.onclick = () => {
+    //     if (document.getElementById('exit_button').style.display === 'none') return info('You need to join a ship to do that.', false);
+    //     const strToSend = `DA$${canString}$finish$`;
+    //     let counter = 0;
+    //     const chatBox = document.getElementById('chat');
+    //     const chatInp = document.getElementById('chat-input');
+    //     const chatBtn = document.getElementById('chat-send');
+    //     if (sendChat.classList.contains('chat_sending')) {
+    //         sendChat.classList.remove('chat_sending');
+    //         clearInterval(sendingInt);
+    //     } else {
+    //         sendChat.classList.add('chat_sending');
+    //         sendingInt = setInterval(() => {
+    //             if (counter > strToSend.length) {
+    //                 sendChat.classList.remove('chat_sending');
+    //                 clearInterval(sendingInt);
+    //             }
+    //             if (chatBox.classList.contains('closed')) chatBtn.click();
+    //             chatInp.value = strToSend.slice(counter, counter + 300);
+    //             chatBtn.click();
+    //             counter += 300;
+    //         }, 1500);
+    //     }
+    // };
 
     // slider what type of holo use
     const holoModeBox = document.createElement('label');
@@ -605,6 +582,13 @@ async function generateTool(sourceCanvas) {
     const modeCheck = document.createElement('input');
     modeCheck.type = 'checkbox';
     modeCheck.id = 'holo-type';
+    modeCheck.onchange = () => {
+        const selectedBtn = document.querySelector('.colorLabel.selected');
+        if (selectedBtn) {
+            selectedBtn.classList.remove('selected');
+            selectedBtn.click();
+        }
+    };
 
     // holo setup button
     const setupButton = document.createElement('div');
@@ -614,17 +598,27 @@ async function generateTool(sourceCanvas) {
         if (modeCheck.checked) runSetupLeg();
         else runSetupBp(1);
     };
-    // setupButton.textContent = 'Holo Setup';
 
-    mainBox.append(stats, sendChat, modeCheck, holoModeBox, setupButton);
+    mainBox.append(stats, modeCheck, holoModeBox, setupButton);
 
-    // Setting theme of image
+    // Setting theme and contrast to bg
     const length = ((stats.clientHeight * can.width) / can.height) / stats.clientWidth;
 
     const themeString = `rgb(${artThemeRGB[0]}, ${artThemeRGB[1]}, ${artThemeRGB[2]})`;
     tool.style.setProperty('--themeColor', themeString);
+    tool.style.setProperty('--contrastColor', reqContrast ? 'white' : 'rgb(25, 35, 45)');
     stats.style = `background-image: linear-gradient(to right, transparent 0%, var(--themeColor) ${length * 100}%), url(${thUrl});`;
-    // topBar.style.backgroundColor = themeString;
+
+    const blobBtns = [
+        document.querySelector('#da-blob i'),
+        document.querySelector('#da-blob i:nth-last-child(2)'),
+        document.querySelector('#da-blob i:nth-child(3)'),
+    ];
+    for (const blobBtn of blobBtns) {
+        blobBtn.style.color = themeString;
+        if (reqContrast) blobBtn.style.textShadow = '0 0 2px white';
+        else blobBtn.style.textShadow = 'none';
+    }
 
     // draw Show all canvas
     const allCan = document.createElement('canvas');
@@ -632,7 +626,6 @@ async function generateTool(sourceCanvas) {
     allCan.width = can.width * 40;
     allCan.height = can.height * 40;
     allCtx.imageSmoothingEnabled = false;
-    // allCtx.drawImage(can, 0, 0, allCtx.width, allCtx.height);
     allCtx.fillStyle = 'rgb(153,153,153)';
     allCtx.font = 'bold 24px monospace';
     allCtx.shadowColor = 'black';
@@ -647,29 +640,60 @@ async function generateTool(sourceCanvas) {
         }
     }
 
+    const allCanLegacy = document.createElement('canvas');
+    const allCtxLegacy = allCanLegacy.getContext('2d');
+    allCanLegacy.width = can.width * 40;
+    allCanLegacy.height = can.height * 40;
+    allCtxLegacy.imageSmoothingEnabled = false;
+    allCtxLegacy.fillStyle = 'rgb(153,153,153)';
+    allCtxLegacy.font = 'bold 24px monospace';
+    for (let y = 0; y < can.height; y++) {
+        for (let x = 0; x < can.width; x++) {
+            const i = (x + y * can.width) * 4;
+            const t = findIndex([data[i], data[i + 1], data[i + 2]]).toString(16).padStart(2, '0').toUpperCase();
+            allCtxLegacy.fillStyle = `rgb(${data[i]},${data[i + 1]},${data[i + 2]})`;
+            allCtxLegacy.fillText(t, x * 40 + 6, y * 40 + 28);
+        }
+    }
+
     // draw error canvas
     const blendCan = document.createElement('canvas');
-    const chtx = blendCan.getContext('2d', settings);
+    const chtx = blendCan.getContext('2d', settingsBox);
     blendCan.width = can.width;
     blendCan.height = can.height;
     chtx.drawImage(can, 0, 0);
     const checkData = chtx.getImageData(0, 0, blendCan.width, blendCan.height);
     const cData = checkData.data;
     for (let i = 0; i < cData.length; i += 4) {
-        cData[i] = blend(cData[i]);
-        cData[i + 1] = blend(cData[i + 1]);
-        cData[i + 2] = blend(cData[i + 2]);
-        cData[i + 3] = 153;
+        cData[i] = blend(cData[i]) / 1.32;
+        cData[i + 1] = blend(cData[i + 1]) / 1.32;
+        cData[i + 2] = blend(cData[i + 2]) / 1.32;
+        cData[i + 3] = 180;
     }
     chtx.putImageData(checkData, 0, 0);
 
+    const blendCanLegacy = document.createElement('canvas');
+    const blendCtxLegacy = blendCanLegacy.getContext('2d', settingsBox);
+    blendCanLegacy.width = can.width;
+    blendCanLegacy.height = can.height;
+    blendCtxLegacy.drawImage(can, 0, 0);
+    const checkDataLegacy = blendCtxLegacy.getImageData(0, 0, blendCanLegacy.width, blendCanLegacy.height);
+    const cDataLegacy = checkDataLegacy.data;
+    for (let i = 0; i < cDataLegacy.length; i += 4) {
+        cDataLegacy[i] = blend(cDataLegacy[i]);
+        cDataLegacy[i + 1] = blend(cDataLegacy[i + 1]);
+        cDataLegacy[i + 2] = blend(cDataLegacy[i + 2]);
+        cDataLegacy[i + 3] = 153;
+    }
+    blendCtxLegacy.putImageData(checkDataLegacy, 0, 0);
+
     function blend(c) { return Math.floor(255 - (c * 2) / 3); }
 
-    // parts initialization
-    const allCanParts = divideCanvas(allCan, xSizes, ySizes, true);
-    const blendCanParts = divideCanvas(blendCan, xSizes, ySizes, false);
-    let currentParts = allCanParts;
-    let currentPartID = 0;
+    // regions canvases initialization
+    const allCanRegions = divideCanvas(allCan, xSizes, ySizes, true);
+    const blendCanRegions = divideCanvas(blendCan, xSizes, ySizes, false);
+    const allCanLegacyRegions = divideCanvas(allCanLegacy, xSizes, ySizes, true);
+    const blendCanLegacyRegions = divideCanvas(blendCanLegacy, xSizes, ySizes, false);
 
     // sticky box
     const stickyBox = document.createElement('div');
@@ -677,7 +701,6 @@ async function generateTool(sourceCanvas) {
 
     // make stickyBox float
     const stickyObserver = new IntersectionObserver(([e]) => {
-        console.log(e.intersectionRatio, e.target.classList.contains('pinned'));
         if (e.intersectionRatio !== 0) e.target.classList.toggle('pinned', e.intersectionRatio < 1);
     }, { threshold: [1] });
     stickyObserver.observe(stickyBox);
@@ -700,12 +723,13 @@ async function generateTool(sourceCanvas) {
     // stickyBox.appendChild(helpBubble);
 
     // show all button
-    const allColors = document.createElement('button');
-    allColors.textContent = 'Show all';
-    allColors.id = 'allButton';
-    allColors.setAttribute('title', 'Display every color on Holo as text');
-    allColors.onclick = function () {
-        if (!this.classList.contains('selected')) changeCurrentParts(allCanParts);
+    const showAllBtn = document.createElement('label');
+    showAllBtn.textContent = 'Show all';
+    showAllBtn.id = 'allButton';
+    showAllBtn.classList.add('colorLabel');
+    showAllBtn.setAttribute('title', 'Display every color on Holo as text');
+    showAllBtn.onclick = function () {
+        if (!this.classList.contains('selected')) changeCurrentRegions(modeCheck.checked ? allCanLegacyRegions : allCanRegions);
         document.querySelectorAll('.colorLabel, #checkButton').forEach((e) => {
             e.classList.remove('selected');
         });
@@ -713,19 +737,20 @@ async function generateTool(sourceCanvas) {
     };
 
     // check button
-    const check = document.createElement('button');
-    check.textContent = 'Find errors';
-    check.id = 'checkButton';
-    check.setAttribute('title', 'Find mistakes easier. Only correct tiles turn grey.');
-    check.onclick = function () {
-        if (!this.classList.contains('selected')) changeCurrentParts(blendCanParts);
+    const FindErrBtn = document.createElement('label');
+    FindErrBtn.textContent = 'Find errors';
+    FindErrBtn.id = 'checkButton';
+    FindErrBtn.classList.add('colorLabel');
+    FindErrBtn.setAttribute('title', 'Find mistakes easier. Only correct tiles turn grey.');
+    FindErrBtn.onclick = function () {
+        if (!this.classList.contains('selected')) changeCurrentRegions(modeCheck.checked ? blendCanLegacyRegions : blendCanRegions);
         document.querySelectorAll('.colorLabel, #allButton').forEach((e) => {
             e.classList.remove('selected');
         });
         this.classList.add('selected');
     };
 
-    stickyBox.append(allColors, check);
+    stickyBox.append(showAllBtn);
 
     // color search
     // const searchBox = document.createElement('div');
@@ -762,34 +787,37 @@ async function generateTool(sourceCanvas) {
     // stickyBox.appendChild(searchBox);
     // setInputFilter(search1, search2);
 
-    // Part selection
-    const partBox = document.createElement('div');
-    partBox.classList.add('partSelector');
-    partBox.style.setProperty('--partsOnXAxis', XpartsToDivideInto);
-    // max height of selector 100px
-    // max width of selector 200px
-    // based on aspect ratio of image
-    partBox.style.setProperty('--selectorHeight', `${Math.min(80, 200 / imageAspectRatio)}px`);
-    partBox.style.setProperty('--selectorWidth', `${Math.min(200, 80 * imageAspectRatio)}px`);
-    partBox.style.backgroundImage = `url(${thUrl})`;
+    // Region selection
+    if (XpartsToDivideInto > 1 || YpartsToDivideInto > 1) {
+        const regionBox = document.createElement('div');
+        regionBox.classList.add('regionSelector');
+        regionBox.style.setProperty('--partsOnXAxis', XpartsToDivideInto);
+        // max height of selector 100px
+        // max width of selector 200px
+        // based on aspect ratio of image
+        regionBox.style.setProperty('--selectorHeight', `${Math.min(70, 140 / imageAspectRatio)}px`);
+        regionBox.style.setProperty('--selectorWidth', `${Math.min(140, 70 * imageAspectRatio)}px`);
+        regionBox.style.backgroundImage = `url(${thUrl})`;
 
-    for (let y = 0; y < YpartsToDivideInto; y++) {
-        for (let x = 0; x < XpartsToDivideInto; x++) {
-            const i = x + y * XpartsToDivideInto;
-            const cornerLabel = document.createElement('label');
-            cornerLabel.setAttribute('for', `da-part${i}`);
-            const cornerInput = document.createElement('input');
-            if (i === 0) cornerInput.checked = true;
-            cornerInput.onchange = () => { changePartID(i); };
-            cornerInput.type = 'radio';
-            cornerInput.name = 'da-part';
-            cornerInput.id = `da-part${i}`;
-            cornerInput.value = i;
-            partBox.append(cornerInput, cornerLabel);
+        for (let y = 0; y < YpartsToDivideInto; y++) {
+            for (let x = 0; x < XpartsToDivideInto; x++) {
+                const i = x + y * XpartsToDivideInto;
+                const cornerLabel = document.createElement('label');
+                cornerLabel.setAttribute('for', `da-region${i}`);
+                const cornerInput = document.createElement('input');
+                if (i === 0) cornerInput.checked = true;
+                cornerInput.onchange = () => { changeRegionID(i); };
+                cornerInput.type = 'radio';
+                cornerInput.name = 'da-region';
+                cornerInput.id = `da-region${i}`;
+                cornerInput.value = i;
+                regionBox.append(cornerInput, cornerLabel);
+            }
         }
-    }
-    stickyBox.appendChild(partBox);
+        stickyBox.appendChild(regionBox);
+    } else stickyBox.classList.add('simple');
 
+    stickyBox.appendChild(FindErrBtn);
     mainBox.appendChild(stickyBox);
     stickyBox.classList.remove('pinned');
 
@@ -797,7 +825,7 @@ async function generateTool(sourceCanvas) {
     const sortBox = document.createElement('div');
     sortBox.classList.add('long', 'sort');
     const sortLabel = document.createElement('span');
-    sortLabel.textContent = 'Sort by: ';
+    sortLabel.textContent = 'Sort by';
 
     const sortNameInput = document.createElement('input');
     sortNameInput.type = 'radio';
@@ -807,7 +835,7 @@ async function generateTool(sourceCanvas) {
     sortNameInput.checked = true;
     sortNameInput.onclick = function () { sortColors(); };
     const sortNameLabel = document.createElement('label');
-    sortNameLabel.textContent = 'Name';
+    sortNameLabel.textContent = 'Value';
     sortNameLabel.setAttribute('for', 'da-sname');
 
     const sortAmountInput = document.createElement('input');
@@ -822,8 +850,6 @@ async function generateTool(sourceCanvas) {
 
     sortBox.append(sortLabel, sortNameInput, sortNameLabel, sortAmountInput, sortAmountLabel);
     mainBox.appendChild(sortBox);
-
-    console.log(imgColors);
 
     const colorLabels = [];
 
@@ -840,7 +866,7 @@ async function generateTool(sourceCanvas) {
         const cRGB = rgb[parseInt(c, 16)];
         colorTile.onclick = function () {
             if (!this.classList.contains('selected')) {
-                changeCurrentParts(divideCanvas(renderColorShadow(cRGB), xSizes, ySizes));
+                changeCurrentRegions(divideCanvas(renderColorShadow(cRGB), xSizes, ySizes));
             }
             document.querySelectorAll('.colorLabel, #allButton, #checkButton').forEach((e) => {
                 e.classList.remove('selected');
@@ -875,15 +901,21 @@ async function generateTool(sourceCanvas) {
         });
     }
 
-    function changePartID(id) {
-        currentPartID = id;
-        for (const colorLabel of colorLabels) colorLabel.setAttribute('amount', imgColors[colorLabel.textContent][currentPartID]);
-        uploadTextures(currentParts[currentPartID]);
+    let currentRegions = null;
+    let currentRegionID = 0;
+    function changeRegionID(id) {
+        currentRegionID = id;
+        for (const colorLabel of colorLabels) colorLabel.setAttribute('amount', imgColors[colorLabel.textContent][currentRegionID]);
+        sortColors();
+        if (!currentRegions) {
+            showAllBtn.classList.add('selected');
+            showAllBtn.click();
+        } else uploadTextures(currentRegions[currentRegionID]);
     }
 
-    function changeCurrentParts(canvs) {
-        currentParts = canvs;
-        uploadTextures(currentParts[currentPartID]);
+    function changeCurrentRegions(canvs) {
+        currentRegions = canvs;
+        uploadTextures(currentRegions[currentRegionID]);
     }
 
     // Return size of each holo segment from one edge
@@ -945,19 +977,23 @@ async function generateTool(sourceCanvas) {
             for (const x of xLen) {
                 const canDiv = document.createElement('canvas');
                 const divCtx = canDiv.getContext('2d');
-                // sizeCtx.lineWidth = 4;
-                // canDiv.width = 680;
-                // canDiv.height = 680;
                 canDiv.width = x % 2 ? x * 40 : (x + 1) * 40;
                 canDiv.height = y % 2 ? y * 40 : (y + 1) * 40;
                 divCtx.imageSmoothingEnabled = false;
-                // divCtx.fillStyle = 'black';
-                // divCtx.fillRect(0,0,680,680);
-                divCtx.drawImage(canToDiv, xDist, yDist, isCanLarge ? x * 40 : x, isCanLarge ? y * 40 : y, 0, 0, x * 40, y * 40);
+                divCtx.lineWidth = 5;
+                divCtx.strokeStyle = themeString;
+
+                // Calculate the dimensions based on whether isCanLarge is true
+                const width = isCanLarge ? x * 40 : x;
+                const height = isCanLarge ? y * 40 : y;
+
+                // Draw the rectangle around the image
+                divCtx.strokeRect(0, 0, x * 40, y * 40);
+
+                // Draw the canvas
+                divCtx.drawImage(canToDiv, xDist, yDist, width, height, 0, 0, x * 40, y * 40);
                 // sizeCtx.strokeRect(1, 1, (x ? width2 : width1) - 1, (y ? height2 : height1) - 1);
                 canList.push([canDiv, iCount]);
-                // console.log(Object.values(holoItems)[iCount], canToDiv, xDist, yDist, divCtx.width, divCtx.height, 0, 0, divCtx.width, divCtx.height);
-                tool.append(canDiv);
                 iCount++;
                 xDist += isCanLarge ? x * 40 : x;
             }
@@ -965,19 +1001,85 @@ async function generateTool(sourceCanvas) {
         }
         return canList;
     }
-
+    let lastHoloTexture = null;
     // Insert array of canvases as game assets
     function uploadTextures(canData) {
+        applyPaintingTextures();
         const holoMode = modeCheck.checked ? 1 : 0;
         canData[0].toBlob((blob) => {
             toggleSettingsUIBtn.click();
             [...document.querySelectorAll('#new-ui-left button')].find((e) => e.textContent === 'Modify Assets').click();
-            [...document.querySelectorAll('#new-ui-left button')].find((e) => e.textContent === 'Clear X').click();
-            document.querySelector('.modal-container .window .btn-green').click();
-            const dataTransfer = new DataTransfer();
-            dataTransfer.items.add(new File([blob], holoItems[holoMode][canData[1] % holoItems[holoMode].length][1]));
-            document.querySelector(`.file-pane${holoMode === 0 ? ' .file-pane' : ''}`).dispatchEvent(new DragEvent('drop', { dataTransfer }));
+            if (lastHoloTexture) {
+                const tds = [...document.querySelectorAll(`.file-pane .file-pane-name`)].find((e) => e.textContent === lastHoloTexture);
+                if (tds) {
+                    const td = tds.parentElement;
+                    td.querySelector('button').click();
+                }
+            }
+            const fileName = holoItems[holoMode][canData[1] % holoItems[holoMode].length][1];
+            lastHoloTexture = fileName;
+            dropTexture(document.querySelector(`.file-pane${holoMode === 0 ? ' .file-pane' : ''}`), blob, fileName);
             document.querySelector('#new-ui-left button').click();
+        });
+    }
+
+    function removeLastTexture() {
+        toggleSettingsUIBtn.click();
+        [...document.querySelectorAll('#new-ui-left button')].find((e) => e.textContent === 'Modify Assets').click();
+        if (lastHoloTexture) {
+            const tds = [...document.querySelectorAll(`.file-pane .file-pane-name`)].find((e) => e.textContent === lastHoloTexture);
+            if (tds) {
+                const td = tds.parentElement;
+                td.querySelector('button').click();
+            }
+        }
+        document.querySelector('#new-ui-left button').click();
+    }
+
+    const whiteCan = document.createElement('canvas');
+    whiteCan.width = 64;
+    whiteCan.height = 64;
+    const whiteCtx = whiteCan.getContext('2d');
+    whiteCtx.fillStyle = 'white';
+    whiteCtx.fillRect(0, 0, 64, 64);
+    const whiteCanBlob = await toBlobPromise(whiteCan);
+
+    const tilesSubworld = await fetch(chrome.runtime.getURL('img/tiles_subworld.png'));
+    const tilesSubworldBlob = await tilesSubworld.blob();
+
+    const paintTextures = [
+        [whiteCanBlob, 'bg_ship.png'],
+        [tilesSubworldBlob, 'tiles_subworld.png'],
+    ];
+    // assert clear bg and invisible blocks
+    function applyPaintingTextures() {
+        if (localStorage.getItem('dredArtApplied')) return;
+        localStorage.setItem('dredArtApplied', 1);
+        toggleSettingsUIBtn.click();
+        [...document.querySelectorAll('#new-ui-left button')].find((e) => e.textContent === 'Modify Assets').click();
+        paintTextures.forEach((pT) => {
+            dropTexture(document.querySelector(`.file-pane`), pT[0], pT[1]);
+        });
+        document.querySelector('#new-ui-left button').click();
+    }
+
+    function dropTexture(spot, blob, fileName) {
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(new File([blob], fileName));
+        // firefox changes required
+        spot.dispatchEvent(new DragEvent('drop', { dataTransfer }));
+    }
+
+    // Helper function to convert toBlob to a Promise
+    function toBlobPromise(canvas) {
+        return new Promise((resolve, reject) => {
+            canvas.toBlob((blob) => {
+                if (blob) {
+                    resolve(blob);
+                } else {
+                    reject(new Error('Blob creation failed'));
+                }
+            });
         });
     }
 
@@ -985,20 +1087,44 @@ async function generateTool(sourceCanvas) {
     // stage 1: check if have scanner, if no, observe for it
     // 2: check if scanner menu was open before, if no, ask to click R and observer its div
     // 3: automaticaly insert bp, insert template Holos, ask to place it correctly
+    const templateLBCan = document.createElement('canvas');
+    templateLBCan.width = xSizes[0] * 40;
+    templateLBCan.height = ySizes[ySizes.length - 1] * 40;
+    const templateLBCtx = templateLBCan.getContext('2d');
+    templateLBCtx.fillStyle = 'white';
+    templateLBCtx.fillRect(0, 0, templateLBCan.width, templateLBCan.height);
+    templateLBCtx.strokeStyle = 'black';
+    templateLBCtx.lineWidth = 20;
+    templateLBCtx.moveTo(templateLBCan.width / 2, templateLBCan.height / 2);
+    templateLBCtx.lineTo(10, templateLBCan.height - 10);
+    templateLBCtx.lineTo(10, templateLBCan.height - 100);
+    templateLBCtx.moveTo(10, templateLBCan.height - 10);
+    templateLBCtx.lineTo(100, templateLBCan.height - 10);
+    templateLBCtx.stroke();
+
+    // const templateLBCanFile = await toBlobPromise(templateLBCan);
+
+    const invObserver = new MutationObserver(() => {
+        if (swapInventoryItem('Blueprint Scanner')) {
+            invObserver.disconnect();
+            runSetupBp(2);
+        }
+    });
+    const rObserver = new MutationObserver(() => {
+        if (document.querySelector('#pui').textContent !== '') {
+            rObserver.disconnect();
+            runSetupBp(3);
+        }
+    });
+
     function runSetupBp(stage = 1) {
-        while (dialogBox.childNodes.length) dialogBox.lastChild.remove();
-        dialogBox.classList.add('active');
-        const invObserver = new MutationObserver(() => {
-            if (swapInventoryItem('Blueprint Scanner')) {
-                invObserver.disconnect();
-                runSetupBp(2);
-            }
-        });
+        while (setupBox.childNodes.length) setupBox.lastChild.remove();
+        setupBox.classList.add('active');
 
         if (stage === 1) {
             if (swapInventoryItem('Blueprint Scanner')) runSetupBp(2);
             else {
-                dialogBox.append(...generateSetupContent('Grab a Blueprint Scanner', '/img/item/scanner_blueprint.png', 'Cancel', () => { dialogBox.classList.remove('active'); }));
+                setupBox.append(...generateSetupContent('Grab a Blueprint Scanner', '/img/item/scanner_blueprint.png', 'Cancel', () => { setupBox.classList.remove('active'); stopSetupBp(); }));
                 invObserver.disconnect();
                 invObserver.observe(document.querySelector('#item-ui-container'), { childList: true, subtree: true });
             }
@@ -1006,42 +1132,49 @@ async function generateTool(sourceCanvas) {
         if (stage === 2) {
             if (document.querySelector('#pui').textContent !== '') runSetupBp(3);
             else {
-                dialogBox.append(...generateSetupContent('Click R to open the Scanner menu', '/img/item/scanner_blueprint.png', 'Cancel', () => { dialogBox.classList.remove('active'); }));
-                const rObserver = new MutationObserver(() => {
-                    if (document.querySelector('#pui').textContent !== '') {
-                        rObserver.disconnect();
-                        runSetupBp(3);
-                    }
-                });
+                setupBox.append(...generateSetupContent('Click R to open the Scanner menu', '/img/item/scanner_blueprint.png', 'Cancel', () => { setupBox.classList.remove('active'); stopSetupBp(); }));
                 rObserver.observe(document.querySelector('#pui'), { childList: true, subtree: true });
             }
         }
         if (stage === 3) {
             const textareaBP = document.querySelector('#pui textarea');
+            if (!textareaBP) return info('Something went wrong, try again.', false);
             if (textareaBP.value !== holoBP) {
                 textareaBP.value = holoBP;
                 textareaBP.dispatchEvent(new Event('input'));
             }
             setTimeout(() => {
                 if (document.querySelector('#pui').style.display !== 'none') document.querySelector('#pui .close button').click();
-            }, 100);
-            dialogBox.append(...generateSetupContent('Place blueprint few times at correct position', '/img/item/scanner_blueprint.png', 'Done', () => { dialogBox.classList.remove('active'); }));
-            // insert templates
+            }, 500);
+            setupBox.append(...generateSetupContent('Place blueprint multiple times at correct position, arrow points at bottom-left corner. Find errors works only with 2 times place!', '/img/item/scanner_blueprint.png', 'Done', () => {
+                setupBox.classList.remove('active');
+                stopSetupBp();
+                removeLastTexture();
+                showAllBtn.classList.remove('selected');
+                showAllBtn.click();
+                refreshTXT();
+            }));
+            const fileLBindex = XpartsToDivideInto * (YpartsToDivideInto - 1);
+            uploadTextures([templateLBCan, fileLBindex]);
         }
+    }
+
+    function stopSetupBp() {
+        invObserver.disconnect();
+        rObserver.disconnect();
     }
 
     // setup holo for user process
     // stage 1: just display what and where place blocks
     function runSetupLeg() {
-        while (dialogBox.childNodes.length) dialogBox.lastChild.remove();
-        dialogBox.classList.add('active');
+        while (setupBox.childNodes.length) setupBox.lastChild.remove();
+        setupBox.classList.add('active');
 
         const hGuide = document.createElement('h3');
         hGuide.textContent = 'Legacy Setup';
 
         const pGuide = document.createElement('p');
-        pGuide.textContent = `Input coordinates (click / to find them) of bottom-left corner of Painting, then place correct blocks as shown below.
-        You can edit blocks in settings.`;
+        pGuide.textContent = `Input coordinates (click / to find them) of bottom-left corner of Painting, then place correct blocks as shown below.`;
 
         const coordsInputBox = document.createElement('div');
         const coordsInputX = document.createElement('input');
@@ -1059,8 +1192,10 @@ async function generateTool(sourceCanvas) {
         coordsInputY.oninput = () => { uppdateTable(); };
 
         const coordsOkButton = document.createElement('button');
-        coordsOkButton.textContent = 'Done';
-        coordsOkButton.onclick = () => { dialogBox.classList.remove('active'); };
+        coordsOkButton.textContent = 'Placed!';
+        coordsOkButton.onclick = () => {
+            setupBox.classList.remove('active');
+        };
         coordsInputBox.append(coordsInputX, coordsInputY, coordsOkButton);
 
         const table = document.createElement('div');
@@ -1068,14 +1203,15 @@ async function generateTool(sourceCanvas) {
         table.style.setProperty('--tableX', xSizes.length);
 
         let IDcounter = 0;
-        for (const x of ySizes) {
+        for (const y of ySizes) {
             const row = document.createElement('div');
-            for (const y of xSizes) {
+            for (const x of xSizes) {
                 const cell = document.createElement('div');
                 cell.setAttribute('data-coords', `${x},${y - 1}`);
                 const cellImg = document.createElement('img');
-                const imgSrc = holoItems[1][IDcounter % holoItems[1].length][1];
-                cellImg.src = `img/${imgSrc}`;
+                let imgSrc = `img/${holoItems[1][IDcounter % holoItems[1].length][1]}`;
+                if (imgSrc === 'img/item_hatch_bg.png') imgSrc = chrome.runtime.getURL('/img/hatch.png');
+                cellImg.src = imgSrc;
                 cellImg.alt = imgSrc;
                 cellImg.title = imgSrc;
                 cell.appendChild(cellImg);
@@ -1084,14 +1220,17 @@ async function generateTool(sourceCanvas) {
             }
             table.appendChild(row);
         }
+        if (IDcounter > holoItems[1].length) info('Warning, too few blocks for too many regions. The same image parts will repeat. Keep track of selected region.', false);
 
-        dialogBox.append(hGuide, pGuide, coordsInputBox, table);
+        setupBox.append(hGuide, pGuide, coordsInputBox, table);
 
         uppdateTable();
 
         function uppdateTable() {
-            const x = Math.max(0, Math.min(80, parseInt(coordsInputX.value) ?? 1));
-            const y = Math.max(0, Math.min(80, parseInt(coordsInputY.value) ?? 1));
+            const inputX = coordsInputX.value === '' ? 1 : parseInt(coordsInputX.value);
+            const inputY = coordsInputY.value === '' ? 1 : parseInt(coordsInputY.value);
+            const x = Math.max(0, Math.min(80, inputX));
+            const y = Math.max(0, Math.min(80, inputY));
 
             const tableCells = document.querySelectorAll('#blocksTable div div');
 
@@ -1100,12 +1239,11 @@ async function generateTool(sourceCanvas) {
                 for (const xC of xCenters) {
                     const cell = tableCells[counter % tableCells.length];
                     const newX = x + xC;
-                    const newY = y + yC;
+                    const newY = can.height - (y + yC) + 1;
                     cell.setAttribute('data-coords', `${newX}, ${newY}`);
                     counter++;
                 }
             }
-            // calculate the centers
         }
     }
 
@@ -1114,6 +1252,7 @@ async function generateTool(sourceCanvas) {
         hg.textContent = text;
 
         const ig = document.createElement('img');
+        ig.onload = () => { ig.style.opacity = 1; };
         ig.src = img;
 
         const bg = document.createElement('button');
@@ -1121,30 +1260,176 @@ async function generateTool(sourceCanvas) {
         bg.onclick = buttonAction;
         return [hg, ig, bg];
     }
+
+    // Default region change
+    // clearHolo();
 }
 
 // MARK: settings
 function toggleSettingsUI() {
-    while (dialogBox.childNodes.length) dialogBox.lastChild.remove();
-    settings.classList.add('active');
+    while (settingsBox.childNodes.length) settingsBox.lastChild.remove();
+    settingsBox.classList.add('active');
+    mainMenu.classList.remove('active');
     const settingsHeader = document.createElement('h2');
     settingsHeader.textContent = 'Settings';
-    settings.append(settingsHeader);
-    // settings to add:
-    // - partThreshold size (default 30)
-    // - default holo mode (default bp)
-    // - saved custom textures
-    // - clear old settings
-    // - holoItems (default 1,2,3,4) ?
+    settingsBox.append(settingsHeader);
+
+    // close button
+    settingsBox.appendChild(generateCloseButton(dialogBox));
+
+    // custom textures
+    const customTexturesDiv = document.createElement('div');
+    const customTexturesP = document.createElement('p');
+    customTexturesP.textContent = 'Texture pack to insert when disabling Holo';
+    const customTexturesLabel = document.createElement('p');
+    customTexturesLabel.textContent = 'Current: None';
+    chrome.storage.local.get('DA_txt', (res) => {
+        if (res.DA_txt) customTexturesLabel.textContent = `Current: ${res.DA_txt}`;
+    });
+    const customTexturesInput = document.createElement('input');
+    customTexturesInput.type = 'file';
+    customTexturesInput.id = 'da-holoTXT';
+    customTexturesInput.accept = 'application/x-zip-compressed';
+
+    const customTexturesUpload = document.createElement('label');
+    customTexturesUpload.classList.add('da-btn');
+    customTexturesUpload.textContent = 'Insert zip';
+    customTexturesUpload.setAttribute('for', 'da-holoTXT');
+    const customTexturesRemove = document.createElement('button');
+    customTexturesRemove.textContent = 'Remove current';
+
+    customTexturesInput.onchange = function () {
+        if (this.files[0].type !== 'application/x-zip-compressed') return info('That is not a zip file.', false);
+        openDB().then((db) => {
+            const zip = new File([this.files[0]], this.files[0].name, {
+                type: this.files[0].type,
+                lastModified: this.files[0].lastModified,
+            });
+            saveFile(db, zip).then(() => {
+                info('Successfully changed your default texture!');
+                customTexturesLabel.textContent = `Current: ${this.files[0].name}`;
+                chrome.storage.local.set({ DA_txt: this.files[0].name });
+            });
+        });
+    };
+
+    customTexturesRemove.onclick = () => {
+        chrome.storage.local.get('DA_txt', (res) => {
+            if (!res.DA_txt) return info('You do not have any default texture.', false);
+            openDB().then((db) => {
+                clearFiles(db).then(() => {
+                    info('Successfully removed your default texture!');
+                    customTexturesLabel.textContent = 'Current: None';
+                    chrome.storage.local.remove('DA_txt');
+                });
+            });
+        });
+    };
+
+    customTexturesDiv.append(customTexturesP, customTexturesLabel, customTexturesInput, customTexturesUpload, customTexturesRemove);
+    settingsBox.appendChild(customTexturesDiv);
+
+    // region threshold
+    const regionThresholdLabel = document.createElement('label');
+    const regionThresholdInput = document.createElement('input');
+    regionThresholdInput.type = 'number';
+    regionThresholdInput.min = 5;
+    regionThresholdInput.max = 100;
+    regionThresholdInput.value = 30;
+    regionThresholdInput.placeholder = 30;
+    chrome.storage.sync.get('DA_threshold', (res) => {
+        if (res.DA_threshold) regionThresholdInput.value = res.DA_threshold;
+    });
+    regionThresholdInput.oninput = () => { a = regionThresholdInput.value; };
+    regionThresholdLabel.textContent = 'Maximum region size: ';
+    regionThresholdLabel.append(regionThresholdInput);
+    settingsBox.append(regionThresholdLabel);
+
+    regionThresholdInput.onchange = () => {
+        const value = parseInt(regionThresholdInput.value);
+        if (value < 5 || value > 100) {
+            regionThresholdInput.value = 30;
+            return info('Threshold must be between 5 and 100', false);
+        }
+        chrome.storage.sync.set({ DA_threshold: value });
+        info('Threshold changed. Changes will apply for next inserted painting.');
+    };
+
+    // const defaultHoloModeLabel = document.createElement('label');
+    // const defaultHoloModeInput = document.createElement('input');
+    // defaultHoloModeInput.type = 'checkbox';
+    // defaultHoloModeInput.checked = false;
+    // defaultHoloModeLabel.textContent = 'Default Holo Mode:';
+    // defaultHoloModeLabel.append(defaultHoloModeInput);
+    // settings.append(defaultHoloModeLabel);
+
+    // TODO: HOLO ITEMS CHOICE
+
+    // restore default
+    const restoreDefault = document.createElement('button');
+    restoreDefault.textContent = 'Restore default settings';
+    restoreDefault.onclick = () => {
+        chrome.storage.local.remove('DA_txt');
+        chrome.storage.sync.remove('DA_threshold');
+        chrome.storage.sync.remove('DA_holoMode');
+        info('Settings restored to default.');
+        toggleSettingsUI();
+    };
+
+    settingsBox.append(restoreDefault);
 }
 
 // MARK: guide
 function toggleGuideUI() {
     while (dialogBox.childNodes.length) dialogBox.lastChild.remove();
+    mainMenu.classList.remove('active');
     dialogBox.classList.add('active');
     const settingsHeader = document.createElement('h2');
-    settingsHeader.textContent = 'Guide';
-    settings.append(settingsHeader);
+    settingsHeader.textContent = 'DredArt Guide';
+    dialogBox.append(settingsHeader);
+
+    dialogBox.appendChild(generateCloseButton(dialogBox));
+
+    // const pVideo = document.createElement('p');
+    // pVideo.textContent = 'Video guide coming soon :D';
+    // const videoLink = document.createElement('p');
+    // videoLink.textContent = 'coming soon :D';
+
+    const pText = document.createElement('p');
+    pText.textContent = 'More comprehensive guide coming soon. Here are some tips to get you started:';
+    dialogBox.append(settingsHeader, pText);
+
+    const listArray = [
+        'If you didnt already, generate image in Designer and save it',
+        'Click Paint and insert image',
+        'Choose holo mode: blueprint or legacy with block. BP is much more recommended',
+        'Follow the instructions at setup',
+        'Start painting!',
+        'You can paint one region at time, you can change current one by clicking on region selector in the middle',
+        'Show all colors to see all colors on Holo as text',
+        'Find errors to see only correct tiles as one shade of grey. That way you can find mistakes easier',
+        'For the most efficient painting, use single color at time',
+        'IF SOMETHING IS NOT WORKING, USE REFRESH BUTTON IN RIGHT TOP CORNER!!!',
+    ];
+
+    const OL = document.createElement('OL');
+    listArray.forEach((e) => {
+        const li = document.createElement('li');
+        li.textContent = e;
+        OL.appendChild(li);
+    });
+
+    dialogBox.appendChild(OL);
+}
+
+function generateCloseButton(box) {
+    const closeButton = document.createElement('i');
+    closeButton.classList.add('fas', 'fa-times', 'close');
+    closeButton.onclick = () => {
+        box.classList.remove('active');
+        mainMenu.classList.add('active');
+    };
+    return closeButton;
 }
 
 // Inserting blueprint into UI
@@ -1168,39 +1453,23 @@ function pxIndex(x, y, w) {
     return (x + y * w) * 4;
 }
 
-function canToStr(canStr, dataCan) { // converts pixel art into base64 (78x78 will give 5k characters)
+function canToStr(canStr, dataCan) { // converts pixel art into base2048 string
     let imgStr = `${canStr.width},${canStr.height},`;
-    // let prevID = '';
-    // let sameCount = 0;
     const imgArray = [];
     for (let y = 0; y < canStr.height; y++) {
         for (let x = 0; x < canStr.width; x++) {
             const i = (x + y * canStr.width) * 4;
             const cID = findIndex([dataCan[i], dataCan[i + 1], dataCan[i + 2]]);
             imgArray.push(cID);
-            // const t = findIndex([dataCan[i], dataCan[i + 1], dataCan[i + 2]]).toString(16).padStart(2, '0').toUpperCase();
-            // if (prevID === t && sameCount < 9) sameCount++;
-            // else {
-            //     imgStr += prevID;
-            //     if (sameCount > 1) imgStr += `;${sameCount}`;
-            //     sameCount = 1;
-            //     prevID = t;
-            // }
         }
     }
     const compressedImg = encodePix(imgArray);
     imgStr += compressedImg;
-    // imgStr += prevID;
-    // if (sameCount > 1) imgStr += `;${sameCount}`;
-    // const compressedUint8array = pako.gzip(imgStr);
-    // const b64encodedString = btoa(String.fromCharCode.apply(null, compressedUint8array));
     return imgStr;
 }
 
 function strToCan(imgStr) {
     try {
-        // const compressedUint8Array = Uint8Array.from(atob(base64Str), (c) => c.charCodeAt(0));
-        // const inflatedStr = pako.inflate(compressedUint8Array, { to: 'string' });
         const [width, height, base2048] = imgStr.split(',');
         const imgArray = decodePix(base2048);
         const canStr = document.createElement('canvas');
@@ -1224,8 +1493,6 @@ function strToCan(imgStr) {
         return canStr;
     } catch (error) {
         info('Something went wrong when loading image data.', false);
-        console.log(error);
-        console.log(imgStr);
         return false;
     }
 }
@@ -1265,10 +1532,11 @@ function encodeBlueprint(width, height, xC, yC) {
     let iCount = 0;
     for (const yCoord of yC) {
         for (const xCoord of xC) {
-            buildCommands.push(144, 0, ...generateTag(xCoord), ...generateTag(height - yCoord - 1), ...generateTag(holoItems[0][iCount][0]), 145);
+            buildCommands.push(144, 0, ...generateTag(xCoord), ...generateTag(height - yCoord - 1), ...generateTag(holoItems[0][iCount % holoItems[0].length][0]), 145);
             iCount++;
         }
     }
+    if (iCount > holoItems[0].length) info('Warning, too few items for too many regions. The same image parts will repeat. Keep track of selected region.', false);
     const uint8Array = [144, 0, ...generateTag(width), ...generateTag(height), 144, ...buildCommands, 145, 145];
     return base64Arraybuffer(pako.deflateRaw(uint8Array));
 }
@@ -1293,3 +1561,128 @@ const base64Arraybuffer = async (dt) => {
     });
     return base64.substring(base64.indexOf(',') + 1);
 };
+
+// let db;
+function openDB() {
+    return new Promise((resolve, reject) => {
+        if (!('indexedDB' in window)) {
+            alert('This browser doesn\'t support IndexedDB. Saving Texture pack is not available.');
+            reject(new Error('Error opening IndexedDB - no support'));
+        }
+
+        const request = window.indexedDB.open('holoTXT', 1);
+
+        request.onerror = () => {
+            alert('IndexedDB is off?! Saving Texture pack is not available.');
+            reject(new Error('Error opening IndexedDB  - database off'));
+        };
+        request.onsuccess = (event) => {
+            const db = event.target.result;
+            resolve(db);
+        };
+
+        request.onupgradeneeded = (event) => {
+            const db = event.target.result;
+            db.createObjectStore('holoTXT', { keyPath: 'fileName' });
+        };
+    });
+}
+
+function saveFile(db, file) {
+    return new Promise((resolve, reject) => {
+        const transaction = db.transaction(['holoTXT'], 'readwrite');
+        const store = transaction.objectStore('holoTXT');
+        const request = store.put({ fileName: file.name, file });
+
+        request.onerror = () => {
+            reject(new Error('Error saving file to IndexedDB'));
+        };
+
+        request.onsuccess = () => {
+            resolve('File saved successfully');
+        };
+    });
+}
+
+function clearFiles(db) {
+    return new Promise((resolve, reject) => {
+        const transaction = db.transaction(['holoTXT'], 'readwrite');
+        const store = transaction.objectStore('holoTXT');
+        const request = store.clear();
+
+        request.onerror = () => {
+            reject(new Error('Error removing files from IndexedDB'));
+        };
+
+        request.onsuccess = () => {
+            resolve('Files removed successfully');
+        };
+    });
+}
+
+//  Message of the update
+function displayMOTU() {
+    if (document.getElementById('da-motu')) return;
+    chrome.storage.sync.set({ DA_version: version });
+    notificationBlob.classList.remove('new');
+    const updateMessage = [
+        'Welcome to DredArt 2.0!',
+        'After long time of waiting, we are finally in new era of painting!',
+        'Now you can paint even faster and more reliable than ever!',
+        'This version finally works and brings a lot of new features and improvements like:',
+        '- Blueprint Holo',
+        '- Refreshed design',
+        '- Better performance',
+        '- Painting history... And more!',
+        'Next usefull features are already in development!',
+        '=',
+        'I finally got enough free time to finish this project, at least the extension.',
+        'The old "render" part is still in development, but I hope to finish it in few months.',
+        'When it\'s all finished, DredArt will concist of these modules:',
+        '- Painter - this extension',
+        '- Designer - standalone pixelart convertor',
+        '- Editor - pixelart editor build into Designer',
+        '- BlueArt - clean blueprint art creator',
+        '- Pocket - compact version of Painter',
+        'I hope you will enjoy this release! Stay tuned for more updates!',
+        'You can find out more and hang out with me on (my discord)[https://discord.gg/8Zv7zjJ]',
+        'On that server we will also finally finish the MOSAIC project',
+        'I am Shrek [kapixar], the creator of DredArt',
+    ];
+    const motu = document.createElement('div');
+    motu.id = 'da-motu';
+    const motuH = document.createElement('h2');
+    [motuH.textContent] = updateMessage;
+    motu.append(motuH);
+    for (const line of updateMessage.slice(1).slice(0, -1)) {
+        const motuLine = document.createElement(line[0] === '-' ? 'li' : line[0] === '=' ? 'hr' : 'p');
+        // if has link, make it clickable
+        if (line.includes('discord.gg')) {
+            const [before] = line.split('(my discord)');
+            motuLine.textContent = before;
+            const link = document.createElement('a');
+            link.href = 'https://discord.gg/8Zv7zjJ';
+            link.textContent = 'my discord';
+            motuLine.append(link);
+        } else motuLine.textContent = line[0] === '-' ? line.substring(2) : line;
+        motu.append(motuLine);
+    }
+    document.body.append(motu);
+
+    const sign = document.createElement('i');
+    sign.textContent = updateMessage[updateMessage.length - 1];
+    motu.append(sign);
+
+    const closeButton = document.createElement('button');
+    closeButton.textContent = 'Close';
+    closeButton.onclick = () => { motu.remove(); };
+    motu.append(closeButton);
+}
+
+const notificationBlob = document.createElement('i');
+notificationBlob.classList.add('fas', 'fa-bell', 'notificationBlob');
+chrome.storage.sync.get('DA_version', (data) => {
+    if (!data.DA_version || data.DA_version !== version) notificationBlob.classList.add('new');
+});
+notificationBlob.onclick = () => { displayMOTU(); };
+title.append(notificationBlob);

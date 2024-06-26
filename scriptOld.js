@@ -1089,7 +1089,7 @@ function disableLegacyHolo() {
     localStorage.removeItem('tool-holo');
     document.querySelector('#new-ui-left button').click();
     document.querySelectorAll('#tool-holo div, #allButton, #checkButton').forEach((e) => { e.classList.remove('selected'); });
-    if (localStorage.getItem('tool-txt') == 'true') {
+    if (localStorage.getItem('tool-txt') === 'true') {
         openDB().then(() => {
             retrieveFile('tool_txt.zip').then((file) => {
                 const dataTransfer = new DataTransfer();

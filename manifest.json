@@ -1,13 +1,13 @@
 {
     "name": "DredArt",
-    "description": "drednot.io extension for pixel arts. Use any image and paint it using Holo!",
+    "description": "Painting tool for drednot.io game. Paint any image as pixel art using Holo!",
     "version": "2.0",
-    "author": "Kapixar, Kapi73#3815, I am Shrek",
+    "author": "Kapixar, I am Shrek",
     "manifest_version": 3,
     "content_scripts": [
         {
            "matches": ["https://drednot.io/*", "https://test.drednot.io/*"],
-           "css": ["style.css"],
+           "css": ["startup.css"],
            "js": ["startup.js"]
         }
     ],
@@ -22,19 +22,21 @@
         "default_title": "Open DredArt"
     },
     "icons": { 
-        "16": "img/logo16.png",
-        "32": "img/logo32.png",
-        "48": "img/logo48.png",
-        "128": "img/logo128.png" 
+        "16": "img/icons/icon16.png",
+        "32": "img/icons/icon32.png",
+        "48": "img/icons/icon48.png",
+        "64": "img/icons/icon64.png",
+        "128": "img/icons/icon128.png" 
     },
     "web_accessible_resources": [
         { 
             "resources": [
-                "public/index.html",  "scanner.js", "help.html", 
-                "assets/splash1.svg",  "assets/splash2.svg", 
-                "img/hatch.png", "img/settings_banner.png", "img/guide_banner.png", "img/painter.png", "img/designer.png", 
-                "img/legacy_bg.png", "img/setup_blank.png", "img/setup_color.png", "img/bp_bg.png", "img/icon16.png", 
-                "img/palette-mini.png", "img/icons8-settings.svg", "img/icons8-x-50.png"],
+                "public/index.html", "startup.css", "scanner.js", 
+                "img/hatch.png", "img/tiles_subworld.png",
+                "img/banners/settings_banner.png", "img/banners/guide_banner.png", "img/banners/mosaic_banner.png", "img/banners/painter.png", "img/banners/designer.png", 
+                "img/chat_share.png", "img/chat_desc.png", "img/chat_halt.png",
+                "img/legacy_bg.png", "img/bp_bg.png", "img/setup_blank.png", "img/setup_color.png" 
+            ],
             "matches": ["https://drednot.io/*", "https://test.drednot.io/*"]
         }
     ],
