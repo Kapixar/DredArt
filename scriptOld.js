@@ -1,3 +1,18 @@
+// chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+//     console.log("sent from tab.id=", sender.id);
+// });
+
+// chrome.scripting
+//     .executeScript({
+//         target: {
+//             tabId: tab.id,
+//         },
+//         func: () => {
+//             document.body.style.border = '5px solid green';
+//         },
+//     })
+//     .then(() => console.log('script injected'));
+
 // Top bar buttons
 const topBar = document.querySelector('#top-bar .icons') || document.querySelector('#top-bar span');
 const start = document.createElement('a');
@@ -9,17 +24,15 @@ start.onclick = () => {
 };
 start.innerHTML = '<i class=\'fas big-icon fa-palette\'></i><div class=\'tooltip tooltip-low dark\'>DredArt</div>';
 
-const holoOff = document.createElement('a');
-holoOff.id = 'paint-stop';
-holoOff.onclick = () => { removeHolo(); };
-holoOff.innerHTML = '<i class=\'fas big-icon fa-times-circle\'></i><div class=\'tooltip tooltip-low dark\'>Disable Holo</div>';
+const h = document.createElement('a');
+h.onclick = () => { disableLegacyHolo(); };
+h.innerHTML = "<i class='fas big-icon fa-times-circle'></i><div class='tooltip tooltip-low dark'>Disable Holo</div>";
 
-const refresh = document.createElement('a');
-refresh.id = 'paint-refresh';
-refresh.onclick = () => { refreshTXT(); };
-refresh.innerHTML = '<i class=\'fas big-icon fa-redo\'></i><div class=\'tooltip tooltip-low dark\'>Refresh</div>';
+const r = document.createElement('a');
+r.onclick = () => { refreshTXT(); };
+r.innerHTML = "<i class='fas big-icon fa-redo'></i><div class='tooltip tooltip-low dark'>Refresh</div>";
 
-topBar.append(start, holoOff, refresh);
+topBar.append(start, h, r);
 
 function renderTool() {
     const rgb = [[222, 165, 164], [214, 145, 136], [173, 111, 105], [128, 64, 64], [77, 0, 0], [77, 25, 0], [128, 0, 0], [144, 30, 30], [186, 1, 1], [179, 54, 54], [179, 95, 54], [255, 0, 0], [216, 124, 99], [255, 64, 64], [255, 128, 128], [255, 195, 192], [195, 153, 83], [128, 85, 64], [128, 106, 64], [77, 51, 38], [77, 51, 0], [128, 42, 0], [155, 71, 3], [153, 101, 21], [213, 70, 0], [218, 99, 4], [255, 85, 0], [237, 145, 33], [255, 179, 31], [255, 128, 64], [255, 170, 128], [255, 212, 128], [181, 179, 92], [77, 64, 38], [77, 77, 0], [128, 85, 0], [179, 128, 7], [183, 162, 20], [179, 137, 54], [238, 230, 0], [255, 170, 0], [255, 204, 0], [255, 255, 0], [255, 191, 64], [255, 255, 64], [223, 190, 111], [255, 255, 128], [234, 218, 184], [199, 205, 144], [128, 128, 64], [77, 77, 38], [64, 77, 38], [128, 128, 0], [101, 114, 32], [141, 182, 0], [165, 203, 12], [179, 179, 54], [191, 201, 33], [206, 255, 0], [170, 255, 0], [191, 255, 64], [213, 255, 128], [248, 249, 156], [253, 254, 184], [135, 169, 107], [106, 128, 64], [85, 128, 64], [51, 77, 38], [51, 77, 0], [67, 106, 13], [85, 128, 0], [42, 128, 0], [103, 167, 18], [132, 222, 2], [137, 179, 54], [95, 179, 54], [85, 255, 0], [128, 255, 64], [170, 255, 128], [210, 248, 176], [143, 188, 143], [103, 146, 103], [64, 128, 64], [38, 77, 38], [25, 77, 0], [0, 77, 0], [0, 128, 0], [34, 139, 34], [3, 192, 60], [70, 203, 24], [54, 179, 54], [54, 179, 95], [0, 255, 0], [64, 255, 64], [119, 221, 119], [128, 255, 128], [64, 128, 85], [64, 128, 106], [38, 77, 51], [0, 77, 26], [0, 77, 51], [0, 128, 43], [23, 114, 69], [0, 171, 102], [28, 172, 120], [11, 218, 81], [0, 255, 85], [80, 200, 120], [64, 255, 128], [128, 255, 170], [128, 255, 212], [168, 227, 189], [110, 174, 161], [64, 128, 128], [38, 77, 64], [38, 77, 77], [0, 77, 77], [0, 128, 85], [0, 166, 147], [0, 204, 153], [0, 204, 204], [54, 179, 137], [54, 179, 179], [0, 255, 170], [0, 255, 255], [64, 255, 191], [64, 255, 255], [128, 255, 255], [133, 196, 204], [93, 138, 168], [64, 106, 128], [38, 64, 77], [0, 51, 77], [0, 128, 128], [0, 85, 128], [0, 114, 187], [8, 146, 208], [54, 137, 179], [33, 171, 205], [0, 170, 255], [100, 204, 219], [64, 191, 255], [128, 212, 255], [175, 238, 238], [64, 85, 128], [38, 51, 77], [0, 26, 77], [0, 43, 128], [0, 47, 167], [54, 95, 179], [40, 106, 205], [0, 127, 255], [0, 85, 255], [49, 140, 231], [73, 151, 208], [64, 128, 255], [113, 166, 210], [100, 149, 237], [128, 170, 255], [182, 209, 234], [146, 161, 207], [64, 64, 128], [38, 38, 77], [0, 0, 77], [25, 0, 77], [0, 0, 128], [42, 0, 128], [0, 0, 205], [54, 54, 179], [95, 54, 179], [0, 0, 255], [28, 28, 240], [106, 90, 205], [64, 64, 255], [133, 129, 217], [128, 128, 255], [177, 156, 217], [150, 123, 182], [120, 81, 169], [85, 64, 128], [106, 64, 128], [51, 38, 77], [51, 0, 77], [85, 0, 128], [137, 54, 179], [85, 0, 255], [138, 43, 226], [167, 107, 207], [127, 64, 255], [191, 64, 255], [148, 87, 235], [170, 128, 255], [153, 85, 187], [140, 100, 149], [128, 64, 128], [64, 38, 77], [77, 38, 77], [77, 0, 77], [128, 0, 128], [159, 0, 197], [179, 54, 179], [184, 12, 227], [170, 0, 255], [255, 0, 255], [255, 64, 255], [213, 128, 255], [255, 128, 255], [241, 167, 254], [128, 64, 106], [105, 45, 84], [77, 38, 64], [77, 0, 51], [128, 0, 85], [162, 0, 109], [179, 54, 137], [202, 31, 123], [255, 0, 170], [255, 29, 206], [233, 54, 167], [207, 107, 169], [255, 64, 191], [218, 112, 214], [255, 128, 213], [230, 168, 215], [145, 95, 109], [128, 64, 85], [77, 38, 51], [77, 0, 25], [128, 0, 42], [215, 0, 64], [179, 54, 95], [255, 0, 127], [255, 0, 85], [255, 0, 40], [222, 49, 99], [208, 65, 126], [215, 59, 62], [255, 64, 127], [249, 90, 97], [255, 128, 170], [17, 17, 17], [34, 34, 34], [51, 51, 51], [68, 68, 68], [85, 85, 85], [102, 102, 102], [119, 119, 119], [136, 136, 136], [153, 153, 153], [170, 170, 170], [187, 187, 187], [204, 204, 204], [221, 221, 221], [238, 238, 238], [255, 255, 255]];
@@ -100,7 +113,7 @@ function renderTool() {
     }
 
     // Create pixel art
-    document.getElementById('nImg').onclick = function () { window.open(chrome.runtime.getURL('../render/index.html')); };
+    document.getElementById('nImg').onclick = function () { window.open(chrome.runtime.getURL('../public/index.html')); };
 
     // Help page
     document.getElementById('help').onclick = function () { window.open(chrome.runtime.getURL('../help.html')); };
@@ -209,7 +222,7 @@ function renderTool() {
             content.classList.remove('hidden');
             messageBox.classList.add('hidden');
             for (let i = 0; i < navChildren.length; i++) navChildren[i].classList.remove('hidden');
-            refresh.classList.add('expanded');
+            r.classList.add('expanded');
 
             // settings setup
             let settObj;
@@ -732,9 +745,10 @@ function renderTool() {
                 col.setAttribute('amount', imgColors[c][0]);
 
                 const cRGB = rgb[parseInt(c, 16)];
-                col.onclick = function () {
+                col.onclick = async function () {
                     if (!this.classList.contains('selected')) {
                         refreshCurrent(renderShadow(cRGB));
+                        console.log(await encodeBlueprint(can.width, can.height, blueprintShadow(cRGB)));
                     }
                     document.querySelectorAll('#tool-holo>div, #allButton, #checkButton').forEach((e) => {
                         e.classList.remove('selected');
@@ -763,6 +777,71 @@ function renderTool() {
                 shadowCtx.putImageData(holoData, 0, 0);
                 return shadowCan;
             }
+
+            function blueprintShadow(c) {
+                const buildCommands = [];
+                for (let y = 0; y < can.height; y++) {
+                    const spots = [];
+                    for (let x = 0; x < can.width; x++) {
+                        const i = pxID(x, y, can.width);
+                        spots.push(data[i] === c[0] && data[i + 1] === c[1] && data[i + 2] === c[2] ? 0 : 1);
+                    }
+                    const fIx = spots.indexOf(1);
+                    console.log(spots);
+                    if (fIx === -1) continue;
+                    const lIx = spots.lastIndexOf(1);
+                    if (lIx - fIx > 64) {
+                        const cIx = Math.floor((lIx + fIx) / 2);
+                        buildCommands.push(144, 0, ...generateTag(fIx), ...generateTag(y), 54, ...generateTag(parseInt(spots.slice(fIx, cIx).reverse().join(''), 2)), 145);
+                        buildCommands.push(144, 0, ...generateTag(cIx), ...generateTag(y), 54, ...generateTag(parseInt(spots.slice(cIx, lIx).reverse().join(''), 2)), 145);
+                    } else {
+                        buildCommands.push(144, 0, ...generateTag(fIx), ...generateTag(y), 54, ...generateTag(parseInt(spots.slice(fIx, lIx).reverse().join(''), 2)), 145);
+                    }
+                    console.log(buildCommands);
+                }
+                return buildCommands;
+            }
+
+            function pxID(x, y, w) {
+                return (x + y * w) * 4;
+            }
+
+            function encodeBlueprint(width, height, commands) {
+                // let comArray = []
+                // commands.forEach((c) => {
+                //     comArray.push(144, 0);
+                //     comArray = comArray.concat(generateTag(c.x));
+                //     comArray = comArray.concat(generateTag(c.y));
+                //     comArray = comArray.concat(generateTag(c.item));
+                //     if (c.bits && c.bits != 1) comArray = comArray.concat(generateTag(c.bits));
+                //     if (c.shape && c.shape != 1) comArray = comArray.concat(generateTag(c.shape));
+                //     comArray.push(145);
+                // });
+                // console.log(comArray);
+                const uint8Array = [144, 0, ...generateTag(width), ...generateTag(height), 144, ...commands, 145, 145];
+                return base64Arraybuffer(pako.deflateRaw(uint8Array));
+            }
+
+            function generateTag(e) {
+                if (e < 63) return [e];
+                if (e < 256) return [128, e];
+
+                let binary = e.toString(2);
+                let bits = 8;
+                while (bits < binary.length) bits *= 2;
+
+                binary = binary.padStart(bits, '0');
+                return [bits === 64 ? 131 : bits === 32 ? 130 : 129, ...binary.match(/.{1,8}/g).reverse().map((x) => parseInt(x, 2))];
+            }
+
+            const base64Arraybuffer = async (dt) => {
+                const base64 = await new Promise((rr) => {
+                    const reader = new FileReader();
+                    reader.onload = () => rr(reader.result);
+                    reader.readAsDataURL(new Blob([dt]));
+                });
+                return base64.substring(base64.indexOf(',') + 1);
+            };
 
             // draw on canvas and display it
             function refreshCurrent(canvas) {
@@ -938,7 +1017,7 @@ function refreshTXT() {
     document.querySelector('#new-ui-left button').click();
 }
 
-function removeHolo() {
+function disableLegacyHolo() {
     document.evaluate('//button[text()=" Settings"]', teamMenu, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click();
     document.evaluate('//button[text()="Modify Assets"]', teamMenu, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click();
     holoItems.forEach((i) => {

@@ -1,0 +1,25 @@
+/* Startup icons */
+body {
+    --daBlue: #005686;
+    --daOrange: #f84e00;
+    --daGray: #c5c5c5;
+}
+#da-blob {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 90px;
+    height: 23px;
+    padding: 5px;
+
+    background-color: rgb(25, 35, 45);
+    border-radius: 0 0 0 10px;
+    z-index: 1000000;
+}
+#da-blob i { 
+    height: 23px;
+    color: var(--daBlue);
+    cursor: pointer;
+}
+#da-blob i:nth-last-child(2) { color: var(--daOrange); }
+#da-blob i:nth-child(3) { color: var(--daGray); }

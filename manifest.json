@@ -1,28 +1,47 @@
 {
     "name": "DredArt",
-    "description": "Dredark extension for pixel arts. Use any PNG and paint it using Holo!",
-    "version": "1.4.2",
-    "author": "I am Shrek, Kapi73#3815",
+    "description": "Painting tool for drednot.io game. Paint any image as pixel art using Holo!",
+    "version": "2.0",
+    "author": "Kapixar, I am Shrek",
     "manifest_version": 3,
     "content_scripts": [
         {
            "matches": ["https://drednot.io/*", "https://test.drednot.io/*"],
-           "css": ["style.css"],
-           "js": ["script.js"]
+           "css": ["startup.css"],
+           "js": ["startup.js"]
         }
     ],
     "background": {
-        "service_worker": "background.js"
+        "service_worker": "background.js"        
+    },
+    "permissions": [
+        "storage",
+        "scripting"
+    ],
+    "action": {
+        "default_title": "Open DredArt"
     },
     "icons": { 
-        "16": "img/icon16.png",
-        "48": "img/icon48.png",
-        "128": "img/icon128.png" 
+        "16": "img/icons/icon16.png",
+        "32": "img/icons/icon32.png",
+        "48": "img/icons/icon48.png",
+        "64": "img/icons/icon64.png",
+        "128": "img/icons/icon128.png" 
     },
     "web_accessible_resources": [
         { 
-            "resources": ["render/index.html", "help.html", "img/hatch.png", "img/mosaic.png"],
+            "resources": [
+                "public/index.html", "startup.css", "scanner.js", 
+                "img/hatch.png", "img/tiles_subworld.png",
+                "img/banners/settings_banner.png", "img/banners/guide_banner.png", "img/banners/mosaic_banner.png", "img/banners/painter.png", "img/banners/designer.png", 
+                "img/chat_share.png", "img/chat_desc.png", "img/chat_halt.png",
+                "img/legacy_bg.png", "img/bp_bg.png", "img/setup_blank.png", "img/setup_color.png" 
+            ],
             "matches": ["https://drednot.io/*", "https://test.drednot.io/*"]
         }
+    ],
+    "host_permissions": [
+        "https://*.drednot.io/*"
     ]
+    
 }
