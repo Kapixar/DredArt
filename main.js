@@ -399,7 +399,7 @@ function validateImage(file = false, url = false) {
     };
     img.onload = async function () {
         URL.revokeObjectURL(imgUrl);
-        if (this.width > 1600 || this.height > 1625) {
+        if (this.width > 1760 || this.height > 1785) {
             return info('Too large image!', false);
         }
         if (this.width < 20 || this.height < 45) {
@@ -419,9 +419,11 @@ function validateImage(file = false, url = false) {
         const scanCtx = scanner.getContext('2d', canvasSettings);
         scanCtx.drawImage(this, 0, 0);
         const sD = scanCtx.getImageData(0, 0, scanner.width, scanner.height).data;
+        console.log(sD);
         for (let y = 0; y < scanner.height; y += 20) {
             for (let x = 0; x < scanner.width; x += 20) {
                 const i = pxIndex(x, y, scanner.width);
+                console.log(i, sD[i], sD[i + 1], sD[i + 2], findIndex([sD[i], sD[i + 1], sD[i + 2]]));
                 if (findIndex([sD[i], sD[i + 1], sD[i + 2]]) === 256) return info('Image contains colors that don\'t exist in Dredark color palette. Use DredArt for pixel arts.', false);
                 if (sD[i + 3] !== 255) return info('Image contains transparency. No transparency is allowed. Use DredArt for pixel arts.', false);
                 const j = pxIndex(x / 20, y / 20, source.width);
@@ -435,30 +437,6 @@ function validateImage(file = false, url = false) {
         if (source.width < 6 || source.height < 6) return info('DredArt Painter supports only Pixel Maps larger than 5 pixels.', false);
 
         generateTool(source);
-
-        // displaying info
-        // info();
-        // const desc = document.createElement('p');
-        // desc.classList.add('desc');
-        // desc.textContent = `${file.name.length > 15 ? `${file.name.substring(0, 14)}...` : file.name}, ${source.width} width x ${source.height} height`;
-
-        // const thumbnail = document.createElement('img');
-        // const thurl = source.toDataURL();
-        // thumbnail.src = thurl;
-        // thumbnail.onload = function () { URL.revokeObjectURL(thurl); };
-        // thumbnail.setAttribute('class', 'pixelart');
-
-        // const settingD = document.createElement('div');
-        // settingD.innerHTML = '<p>Coordinates for bottom-left corner of painting<br><input type=\'text\' placeholder=\'1\' id=\'cornerX\'> x <input type=\'text\' placeholder=\'1\' id=\'cornerY\'></p>';
-
-        // const rPix = document.createElement('button');
-        // rPix.textContent = 'Generate!';
-        // rPix.onclick = function () { renderPixelart(source, corner1.value, corner2.value); };
-
-        // message.append(desc, thumbnail, settingD, rPix);
-        // const corner1 = document.getElementById('cornerX');
-        // const corner2 = document.getElementById('cornerY');
-        // setInputFilter(corner1, corner2);
     };
 }
 
@@ -535,7 +513,7 @@ async function generateTool(sourceCanvas) {
         [`Art size: ${sourceCanvas.width} x ${sourceCanvas.height}`, false],
         [`Paint cost: ${ironCost} iron`, 'Pure paint cost'],
         [`Full cost: ${Math.round(ironCost * 1.02) + Math.abs(sourceCanvas.width + sourceCanvas.height - 23) * 4} iron`, 'Expanding starter ship + 2% of mistakes'],
-        ['Estimated time: X hours', '(WIP) Based on average painting speed'],
+        // ['Estimated time: X hours', '(WIP) Based on average painting speed'],
     ];
 
     for (const stat of pxInfo) {
@@ -609,16 +587,12 @@ async function generateTool(sourceCanvas) {
     tool.style.setProperty('--contrastColor', reqContrast ? 'white' : 'rgb(25, 35, 45)');
     stats.style = `background-image: linear-gradient(to right, transparent 0%, var(--themeColor) ${length * 100}%), url(${thUrl});`;
 
-    const blobBtns = [
-        document.querySelector('#da-blob i'),
-        document.querySelector('#da-blob i:nth-last-child(2)'),
-        document.querySelector('#da-blob i:nth-child(3)'),
-    ];
-    for (const blobBtn of blobBtns) {
-        blobBtn.style.color = themeString;
-        if (reqContrast) blobBtn.style.textShadow = '0 0 2px white';
-        else blobBtn.style.textShadow = 'none';
-    }
+    const sheet = new CSSStyleSheet();
+    sheet.replaceSync(`body:has(#da-popup:not(.hidden)) #da-blob i { 
+         color: ${themeString};
+        text-shadow: 0 0 2px ${reqContrast ? 'white' : 'black'};
+    }`);
+    document.adoptedStyleSheets = [sheet];
 
     // draw Show all canvas
     const allCan = document.createElement('canvas');
@@ -626,7 +600,6 @@ async function generateTool(sourceCanvas) {
     allCan.width = can.width * 40;
     allCan.height = can.height * 40;
     allCtx.imageSmoothingEnabled = false;
-    allCtx.fillStyle = 'rgb(153,153,153)';
     allCtx.font = 'bold 24px monospace';
     allCtx.shadowColor = 'black';
     for (let y = 0; y < can.height; y++) {
@@ -645,7 +618,6 @@ async function generateTool(sourceCanvas) {
     allCanLegacy.width = can.width * 40;
     allCanLegacy.height = can.height * 40;
     allCtxLegacy.imageSmoothingEnabled = false;
-    allCtxLegacy.fillStyle = 'rgb(153,153,153)';
     allCtxLegacy.font = 'bold 24px monospace';
     for (let y = 0; y < can.height; y++) {
         for (let x = 0; x < can.width; x++) {
@@ -866,7 +838,7 @@ async function generateTool(sourceCanvas) {
         const cRGB = rgb[parseInt(c, 16)];
         colorTile.onclick = function () {
             if (!this.classList.contains('selected')) {
-                changeCurrentRegions(divideCanvas(renderColorShadow(cRGB), xSizes, ySizes));
+                changeCurrentRegions(divideCanvas(renderColorShadow(cRGB), xSizes, ySizes, true));
             }
             document.querySelectorAll('.colorLabel, #allButton, #checkButton').forEach((e) => {
                 e.classList.remove('selected');
@@ -952,19 +924,35 @@ async function generateTool(sourceCanvas) {
 
     function renderColorShadow(c) {
         const shadowCan = document.createElement('canvas');
-        shadowCan.width = can.width;
-        shadowCan.height = can.height;
+        shadowCan.width = can.width * 40;
+        shadowCan.height = can.height * 40;
         const shadowCtx = shadowCan.getContext('2d');
         shadowCtx.fillStyle = `rgb(${c[0] / 1.32}, ${c[1] / 1.32}, ${c[2] / 1.32})`;
+        shadowCtx.strokeStyle = `rgb(${c[0] / 1.32}, ${c[1] / 1.32}, ${c[2] / 1.32})`;
         shadowCtx.fillRect(0, 0, shadowCan.width, shadowCan.height);
-        const holoData = shadowCtx.getImageData(0, 0, shadowCan.width, shadowCan.height);
-        const hData = holoData.data;
-        for (let i = 0; i < data.length; i += 4) {
-            if (data[i] === c[0] && data[i + 1] === c[1] && data[i + 2] === c[2]) {
-                hData[i + 3] = 0;
+        shadowCtx.lineWidth = 3;
+
+        // const holoData = shadowCtx.getImageData(0, 0, shadowCan.width, shadowCan.height);
+        // const hData = holoData.data;
+        // for (let i = 0; i < data.length; i += 4) {
+        //     if (data[i] === c[0] && data[i + 1] === c[1] && data[i + 2] === c[2]) {
+        //         hData[i + 3] = 0;
+        //     }
+        // }
+        // shadowCtx.putImageData(holoData, 0, 0);
+
+        for (let y = 0; y < can.height; y++) {
+            for (let x = 0; x < can.width; x++) {
+                if (xCenters.includes(x) && yCenters.includes(y)) shadowCtx.shadowBlur = 2;
+                else shadowCtx.shadowBlur = 0;
+                const i = (x + y * can.width) * 4;
+                if (data[i] === c[0] && data[i + 1] === c[1] && data[i + 2] === c[2]) {
+                    shadowCtx.clearRect(x * 40, y * 40, 40, 40);
+                    // draw inner empty square inside
+                    shadowCtx.strokeRect(x * 40 + 10, y * 40 + 10, 20, 20);
+                }
             }
         }
-        shadowCtx.putImageData(holoData, 0, 0);
         return shadowCan;
     }
 

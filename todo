@@ -1,7 +1,39 @@
-left to do:
 - guide
 - message on install and uninstall
 
+
+
 - legacy holo upgrade, show little studs on 
+- estimated time + more statistics
+
+
+- support images from member list and skysea
+
+- change color to original when popup is hidden
+- nicer movable window
+
 
 - crowd detection, smart thing that speeds up painting with telling where to paint to minimalize movemnt
+
+- nicer in game update log
+
+
+settings:
+Redesign
+are actually closed on close
+- default holo mode
+- items and blocks used by Holo
+- color of background for single color mode
+
+
+
+
+
+- swap to another field when paint is picked up
+- more clear if to place paint in one color mode
+- paint running out warning
+- more invisible textures?
+- fix find errors on bp
+
+- fix allignent of arrow bp setup, and make it better looking
+- fix too large border of unalligned paints

@@ -87,16 +87,18 @@
 - removed tank as texture
 
 2.0*
-- redesign
-- blueprint mode
-- quick start guide
-- legacy mode still available
-- efficiency jump
-- minimal impact when not using extension
-- show all is default mode
-- images from discord are now supported (by copy paste)
+- redesign, animations
+- blueprint mode + legacy mode
+- holo finally working in 99% cases
+- holo setup process
+- invisible blocks textures
+- efficiency:
+    - minimal impact when not using extension
+    - instant load of pixelarts
+- image stats
+- last used paintings
+- images from discord supported (by copy paste)
 - movable popup
-- full code refactor
 
 ! settings reduced to:
  - texture pack overrides
@@ -104,3 +106,7 @@
 more will be added in future
 
 * Render is still in 1.4.1 state
+
+2.1
+
+- icons in button blob revert to original colors when popup is hidden

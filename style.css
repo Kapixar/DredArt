@@ -36,7 +36,7 @@
     width: 425px;
     height: 409px;
     z-index: 100;
-    transition: opacity ease-out 1s, box-shadow 100ms, clip-path 1s, mask 1s;
+    transition: opacity ease-out 1s, box-shadow 100ms, clip-path .7s, mask 1s;
     background-color: rgb(25, 35, 45);
     /* background: linear-gradient(180deg, rgb(25, 35, 45) 80%, var(--themeColor) 100%); */
     color: white;
@@ -54,18 +54,6 @@
     pointer-events: none;
     /* -webkit-mask: url('chrome-extension://__MSG_@@extension_id__/assets/splash1.svg#splashEffect' ) center/contain no-repeat; */
     clip-path: path('M 0 -0.24 C 17.7013 -16.92 35.4238 -25.24 53.125 -25.24 C 79.6875 -25.24 76.3087 0.3 106.25 -0.24 C 136.1912 -0.8 132.8125 -69 159.375 -69 C 185.9375 -69 185.2363 -8.9 212.5 -0.24 C 240 2 239.5087 -35.9 265.625 -36.56 C 291.7412 -37.24 292.74 3.08 319.77 -0.24 C 346.7788 -3.58 344.59 -50.24 370.8975 -50.24 C 388.4287 -50.24 406.47 -33.58 425 -0.24 L 425 -68.74 L 0 -68.74 L 0 -0.24 Z');
-}
-
-@keyframes melt-enter {
-    0% {
-        /* clip-path: url('chrome-extension://__MSG_@@extension_id__/assets/splash1.svg#splashEffect'); */
-        mask: url('chrome-extension://__MSG_@@extension_id__/assets/splash1.svg#splashEffect' ) center/contain no-repeat;
-    }
-
-    100% {
-        /* clip-path: url('chrome-extension://__MSG_@@extension_id__/assets/splash2.svg#splashEffect'); */
-        mask: url('chrome-extension://__MSG_@@extension_id__/assets/splash2.svg#splashEffect' ) center/contain no-repeat;
-    }
 }
 
 /* Top bar */
